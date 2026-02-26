@@ -13,9 +13,9 @@ interface ServicoType {
 
 let catalogoServico: ServicoType[] = []
 
-
+//adicionar um servico novo
 export function adicionarServico(servico: ServicoType): ResponceType {
-    if (!servico.nome || servico.precoHora >= 0) {
+    if (!servico.nome || servico.precoHora <= 0) {
         return ({
             status: false,
             mensagem: "Erro: Nome obrigatorio e preço do serviço tem que ser maior q 0",
@@ -41,6 +41,26 @@ export function adicionarServico(servico: ServicoType): ResponceType {
     }
 }
 
+//Listar todos os servicos
 
+export function listarServicos(): ServicoType[] {
+    //TUDO: implementar fetch de servidor
 
-export default adicionarServico
+    return catalogoServico
+}
+
+//Apagar um servico
+
+export function apagarservico(nome: string): boolean{
+    //TUDO: implementar fetch de servidor
+
+    const novoCatalogoTemp: ServicoType [] = []
+    for(let i = 0; i < catalogoServico.length; i++){
+        if (catalogoServico[i]?.nome !== nome){
+            if (catalogoServico[i])novoCatalogoTemp.push(catalogoServico[i]!)
+        }
+    } // devolve um novo catalogo sem o servico apagado
+
+    catalogoServico = novoCatalogoTemp
+    return true
+}
