@@ -1,5 +1,5 @@
 import express, {type Request, type Response} from "express";
-import {adicionarServico, apagarservico, listarServicos} from "./sevico.js";
+import {adicionarServico, apagarservico, listarServicos, obterServico} from "./sevico.js";
 
 const app = express(); 
 app.use(express.json());
@@ -34,6 +34,19 @@ app.delete("/apagar-servico",(req: Request, res: Response) => {
     } else {
         res.json({
             menssage:"nome do servico e obrigatorio"
+        })
+    }
+})
+
+//Rota para obter servico por nome
+app.get("/obter-servico", (req: Request, res: Response) => {
+    const { nome } = req.query
+    if(nome) {
+    const servicoObitido = obterServico (nome as string)
+    res.json(servicoObitido)
+    } else {
+        res.json({
+            menssage:"servico nao emcontrado"
         })
     }
 })

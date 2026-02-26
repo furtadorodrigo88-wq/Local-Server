@@ -64,3 +64,13 @@ export function apagarservico(nome: string): boolean{
     catalogoServico = novoCatalogoTemp
     return true
 }
+
+// obter um servico pelo nome
+
+export function obterServico(nome: string): ServicoType| null {
+    for (let i=0; i < catalogoServico.length; i++){
+        if (catalogoServico[i]?.nome === nome)
+            return catalogoServico[i]!
+    }
+    return null
+}
