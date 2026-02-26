@@ -1,5 +1,5 @@
 
-interface pedidoServico {
+interface PedidoServico {
     cliente: string,
     discricao: string,
     horasEstimadas: number,
@@ -9,8 +9,11 @@ interface pedidoServico {
 
 
 
-function processarPedido (pedido: pedidoServico, precoHora: number) {
+function processarPedido (pedido: PedidoServico, precoHora: number) {
     let total = pedido.horasEstimadas * precoHora
     pedido.uregente? total = total + total * 0.3 : total
     return total
 }
+
+
+export default processarPedido
