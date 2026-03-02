@@ -1,76 +1,66 @@
-interface ResponceType {
-    status: boolean,
-    mensagem: string,
-    data: ServicoType | null,
-}
-interface ServicoType {
-    nome: string,
-    precoHora: number,
-    categoria: string,
-    minimoDescontado: number,
-    porcentagemDesconto: number
-}
+import { type ResponseType, type ServicoType } from "./utils/types.js"
 
-let catalogoServico: ServicoType[] = []
+export let catalogoServicos: ServicoType[] = []
 
-//adicionar um servico novo
-export function adicionarServico(servico: ServicoType): ResponceType {
-    if (!servico.nome || servico.precoHora <= 0) {
+// adicionar um serviço novo
+export function adicionarServico(novoServico: ServicoType): ResponseType {
+    if (!novoServico.nome || novoServico.precoHora <= 0) {
         return ({
             status: false,
-            mensagem: "Erro: Nome obrigatorio e preço do serviço tem que ser maior q 0",
-            data: null
-        })
+            message: "Erro: Nome obrigatório e preço deve ser maior que zero.",
+            data: null,
+        });
     }
 
-    for (let i = 0; i < catalogoServico.length; i++) {
-        if (catalogoServico[i]?.nome === servico.nome) {
+    for (let i = 0; i < catalogoServicos.length; i++) {
+        if (catalogoServicos[i]?.nome === novoServico.nome) {
             return ({
                 status: false,
-                mensagem: "Erro: Serviço existente",
-                data: null
-        })
+                message: `Erro: O serviço '${novoServico.nome}' já existe.`,
+                data: null,
+            });
         }
     }
 
-    catalogoServico.push(servico)
-    return {
+    catalogoServicos.push(novoServico);
+
+    return ({
         status: true,
-        mensagem: "serviço adicionado com susseço",
-        data: servico
-    }
+        message: "Sucesso: Serviço adicionado!",
+        data: novoServico,
+    });
 }
 
-//Listar todos os servicos
-
+// listar todos os serviços
 export function listarServicos(): ServicoType[] {
-    //TUDO: implementar fetch de servidor
+    // TODO: implementar fetch de servicos
 
-    return catalogoServico
+    return catalogoServicos
 }
 
-//Apagar um servico
+// apagar um servico 
+export function apagarServico(nome: string): boolean {
+    // TODO: implementar delete de servico
 
-export function apagarservico(nome: string): boolean{
-    //TUDO: implementar fetch de servidor
+    const novoCatalogoTemp: ServicoType[] = []
 
-    const novoCatalogoTemp: ServicoType [] = []
-    for(let i = 0; i < catalogoServico.length; i++){
-        if (catalogoServico[i]?.nome !== nome){
-            if (catalogoServico[i])novoCatalogoTemp.push(catalogoServico[i]!)
+    for (let i = 0; i < catalogoServicos.length; i++) {
+        if (catalogoServicos[i]?.nome !== undefined && catalogoServicos[i]?.nome !== nome) {
+            novoCatalogoTemp.push(catalogoServicos[i]!)
         }
-    } // devolve um novo catalogo sem o servico apagado
+    } // devolve um novo catalogo sem o servico que foi apagado
 
-    catalogoServico = novoCatalogoTemp
+    catalogoServicos = novoCatalogoTemp
+
     return true
 }
 
 // obter um servico pelo nome
-
-export function obterServico(nome: string): ServicoType| null {
-    for (let i=0; i < catalogoServico.length; i++){
-        if (catalogoServico[i]?.nome === nome)
-            return catalogoServico[i]!
+export function obterServico(nome: string): ServicoType | null {
+    for (let i = 0; i < catalogoServicos.length; i++) {
+        if (catalogoServicos[i]?.nome === nome) {
+            return catalogoServicos[i]!
+        }
     }
     return null
 }
