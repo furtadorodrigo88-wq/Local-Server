@@ -23,7 +23,7 @@ export function selecionarServicos(nome: string) {
 }
 
 //funcao para selecionar prestador
-export function prestador (nome: string){
+export function selecionarPrestador (nome: string){
     for (let i = 0; i < prestadoresDeServico.length; i++) {
         if (prestadoresDeServico[i]?.nome === nome) {
             prestadoresSelecionados.push(prestadoresDeServico[i]!)
@@ -31,7 +31,7 @@ export function prestador (nome: string){
         }
     }
     return {
-        status: true,
+        status: false,
         mensage: "Prestador add nao existente",
         data: null
     }

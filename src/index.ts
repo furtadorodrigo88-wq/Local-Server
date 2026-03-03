@@ -1,6 +1,7 @@
 import express, { type Request, type Response } from "express"
-import { calcularOrcamento, selecionarServicos } from "./orcamento.js"
+import { calcularOrcamento, criarPrestadorDeServico, selecionarPrestador, selecionarServicos } from "./orcamento.js"
 import { adicionarServico, apagarServico, listarServicos, obterServico, } from "./sevico.js"
+import { json } from "node:stream/consumers"
 
 const app = express()
 app.use(express.json())
@@ -16,6 +17,14 @@ app.post("/adicionar-servico", (req: Request, res: Response) => {
     const addServicoResponse = adicionarServico(novoServico)
 
     res.json(addServicoResponse)
+})
+
+
+// rota para criar prestador
+app.post("/criar-prestador", (req: Request, res: Response) => {
+    const novoPrestador = req.body
+    const addPrestador = criarPrestadorDeServico(novoPrestador)
+    res.json(addPrestador)
 })
 
 // rota para listar todos os servicos
@@ -63,6 +72,18 @@ app.post("/selecionar-servico", (req: Request, res: Response) => {
 
     res.json(selecinarServicoResponse)
 })
+
+
+// rota para selecionar prestador
+app.post("/selecionar-prestador",(req: Request, res: Response) => {
+    const { nome } = req.body
+    const selecionarPrestadorResponse = selecionarPrestador (nome as string)
+    res.json(selecionarPrestadorResponse)
+})
+
+
+
+
 
 // rota para calcular orcamento
 app.post("/calcular-orcamento", (req: Request, res: Response) => {
