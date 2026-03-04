@@ -1,5 +1,5 @@
 import express, { type Request, type Response } from "express"
-import { calcularOrcamento, criarPrestadorDeServico, selecionarPrestador, selecionarServicos } from "./orcamento.js"
+import { apagarPrestadorServico, calcularOrcamento, criarPrestadorDeServico, editarPrestadorServico, listarPrestadoresServicos, selecionarPrestador, selecionarServicos } from "./orcamento.js"
 import { adicionarServico, apagarServico, listarServicos, obterServico, } from "./sevico.js"
 import { json } from "node:stream/consumers"
 
@@ -79,6 +79,37 @@ app.post("/selecionar-prestador",(req: Request, res: Response) => {
     const { nome } = req.body
     const selecionarPrestadorResponse = selecionarPrestador (nome as string)
     res.json(selecionarPrestadorResponse)
+})
+
+//rota para listar todos os prestadores de servico
+app.get("/listar-prestadores", (req: Request, res: Response) => {
+    const listPrestadoresServicoResponse = listarPrestadoresServicos()
+
+    res.json(listPrestadoresServicoResponse)
+})
+
+//rota para apagar prestador
+app.delete("/apagar-prestador", (req: Request, res: Response) => {
+    const { nome } = req.query
+
+    if (nome) {
+        const apagarPrestadorResponse = apagarPrestadorServico(nome as string)
+
+        res.json(apagarPrestadorResponse)
+    } else {
+        res.json({
+            message: "Nome do Prestador eh obrigatorio"
+        })
+    }
+})
+
+//rota para editar prestador de servico
+app.put("/editar-prestador", (req: Request, res: Response) => {
+    const { nomeDoPrestador, novosDadosDoPrestador } = req.body
+
+    const editarPrestadorServicoReponse = editarPrestadorServico ( nomeDoPrestador as string, novosDadosDoPrestador)
+
+    res.json(editarPrestadorServicoReponse)
 })
 
 

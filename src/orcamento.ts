@@ -7,8 +7,10 @@ const minimoParaDesconto: number = 100
 const percentagemDesconto: number = 0.1
 
 const servicosSelecionados: ServicoType[] = []
-const prestadoresDeServico: PrestadorType[] = []
+let prestadoresDeServico: PrestadorType[] = []
 const prestadoresSelecionados: PrestadorType[] = []
+
+
 
 
 // funcao para selecionar servicos e horasEstimadas
@@ -23,7 +25,7 @@ export function selecionarServicos(nome: string) {
 }
 
 //funcao para selecionar prestador
-export function selecionarPrestador (nome: string){
+export function selecionarPrestador(nome: string) {
     for (let i = 0; i < prestadoresDeServico.length; i++) {
         if (prestadoresDeServico[i]?.nome === nome) {
             prestadoresSelecionados.push(prestadoresDeServico[i]!)
@@ -39,13 +41,13 @@ export function selecionarPrestador (nome: string){
 
 
 //funcao para criar prestador de servico
-export function criarPrestadorDeServico (novoPrestador: PrestadorType){
+export function criarPrestadorDeServico(novoPrestador: PrestadorType) {
     prestadoresDeServico.map((prestadorExistente: PrestadorType) => {
         if (prestadorExistente.nome === novoPrestador.nome) {
             // se o prestador ja existir, retorne uma mensagem de erro
             return {
                 status: false,
-                mensage:"Prestador de servico ja existente",
+                mensage: "Prestador de servico ja existente",
                 data: null
             }
         }
@@ -58,6 +60,86 @@ export function criarPrestadorDeServico (novoPrestador: PrestadorType){
         data: novoPrestador
     }
 }
+
+// funcao para editar prestador de servico
+export function editarPrestadorServico(nomeDoPrestador: string, novosDadosDoPrestador: PrestadorType) {
+    //emcontrar prestador de servico e editar na minha lista
+    //ciclo que percore a lista e verificar o nome do prestador de servico
+    prestadoresDeServico.map((prestadorExistente: PrestadorType) => {
+        if (prestadorExistente.nome === nomeDoPrestador) {
+            prestadorExistente.nome = novosDadosDoPrestador.nome
+            prestadorExistente.precoHora = novosDadosDoPrestador.precoHora
+            prestadorExistente.proficao = novosDadosDoPrestador.proficao
+            prestadorExistente.minimoDesconto = novosDadosDoPrestador.minimoDesconto
+            prestadorExistente.porcentagemDesconto = novosDadosDoPrestador.porcentagemDesconto
+            prestadorExistente.taxaUregencia = novosDadosDoPrestador.taxaUregencia
+
+            return {
+                status: true,
+                mensage: "Prestador editado com sucesso",
+                data: prestadorExistente
+            }
+        }
+    })
+    // se nao existir prestador com nome recebido, retorna mensage erro
+    return{
+        status: false,
+        mensage: "Nenhum Prestador de servico com esse nome encontrado",
+        data: null
+    }
+
+}
+
+// listar todos os prestadores serviços
+export function listarPrestadoresServicos(): PrestadorType[] {
+    return prestadoresDeServico
+}
+
+// apagar um prestador de servico 
+export function apagarPrestadorServico(nomeprestador: string) {
+    if (nomeprestador === ""){
+        return {
+            status: false,
+            mensage: "nome de prestador OBRIGATORIO",
+            data: null
+        }
+    }
+    const prestadoreExiste = prestadoresDeServico.some(
+        (prestadorExistente: PrestadorType) => 
+                prestadorExistente.nome === nomeprestador
+    )
+
+    if (!prestadoreExiste) {
+        return{
+            status: false,
+            mensage: "Nao existe nenhum prestador de servico com nome",
+            data: null
+        }
+    }
+        
+        prestadoresDeServico.filter(
+            (prestadorExistente: PrestadorType) => {
+                prestadorExistente.nome !== nomeprestador
+            }
+        )
+        return {
+            status: true,
+            mensage: "Prestador de servico apagado com sucesso",
+            data: prestadoresDeServico
+        }
+    } 
+
+
+// obter um prestador servico pelo nome
+export function obterPrestadorServico(nome: string): PrestadorType | null {
+    for (let i = 0; i < prestadoresDeServico.length; i++) {
+        if (prestadoresDeServico[i]?.nome === nome) {
+            return prestadoresDeServico[i]!
+        }
+    }
+    return null
+}
+
 
 // funcao para calcular o orcamento
 export function calcularOrcamento(pedido: PedidoServicoType) {
