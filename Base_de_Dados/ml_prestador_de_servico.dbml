@@ -1,0 +1,26 @@
+Table tbl_prestador [headercolor: #175e7a] {
+	id integer [ pk, increment, not null, unique ]
+	profissao varchar(100) [ not null ]
+	minimo_Desconto decimal(10, 2)
+	porcentage_Desconto decimal(10, 2)
+	taxa_Uregencia decimal(10, 2)
+	nif numeric [ not null ]
+	enabled_at boolean [ not null ]
+	create_at datetime
+	update_at datetime
+}
+
+Table tbl_users [headercolor: #175e7a] {
+	id integer [ pk, increment, not null, unique ]
+	nome varchar(50) [ not null ]
+	numero_especificacao varchar(100) [ not null, unique ]
+	data_nas date [ not null ]
+	email varchar(100) [ not null ]
+	contacto varchar(255)
+	pais varchar(100) [ not null ]
+	localidade varchar(100) [ not null ]
+	enabled_at boolean [ not null ]
+	create_at datetime [ not null ]
+	update_at datetime [ not null ]
+}
+
