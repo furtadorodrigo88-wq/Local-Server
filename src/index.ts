@@ -1,7 +1,9 @@
 import express, { type Request, type Response } from "express"
 import { apagarPrestadorServico, calcularOrcamento, criarPrestadorDeServico, editarPrestadorServico, listarPrestadoresServicos, selecionarPrestador, selecionarServicos } from "./orcamento.js"
-import { adicionarServico, apagarServico, listarServicos, obterServico, } from "./sevico.js"
+import { adicionarServico, apagarServico, getServceById, getService, listarServicos, obterServico, } from "./sevico.js"
 import { json } from "node:stream/consumers"
+import { getUserById, getUsers, insertUser, updateUser } from "./user.js"
+import { getServers } from "node:dns"
 
 const app = express()
 app.use(express.json())
@@ -75,9 +77,9 @@ app.post("/selecionar-servico", (req: Request, res: Response) => {
 
 
 // rota para selecionar prestador
-app.post("/selecionar-prestador",(req: Request, res: Response) => {
+app.post("/selecionar-prestador", (req: Request, res: Response) => {
     const { nome } = req.body
-    const selecionarPrestadorResponse = selecionarPrestador (nome as string)
+    const selecionarPrestadorResponse = selecionarPrestador(nome as string)
     res.json(selecionarPrestadorResponse)
 })
 
@@ -107,9 +109,101 @@ app.delete("/apagar-prestador", (req: Request, res: Response) => {
 app.put("/editar-prestador", (req: Request, res: Response) => {
     const { nomeDoPrestador, novosDadosDoPrestador } = req.body
 
-    const editarPrestadorServicoReponse = editarPrestadorServico ( nomeDoPrestador as string, novosDadosDoPrestador)
+    const editarPrestadorServicoReponse = editarPrestadorServico(nomeDoPrestador as string, novosDadosDoPrestador)
 
     res.json(editarPrestadorServicoReponse)
+})
+
+//selecionar todos os utilizadores presente no base de dados
+app.get("/get-users", async (req: Request, res: Response) => {
+    const getUsersResponse = await getUsers()
+    res.json(getUsersResponse)
+})
+
+//selecionar utilizador pelo id
+app.get("/get-users-by-id", async (req: Request, res: Response) => {
+    const { id } = req.query
+    if (id) {
+        const getUserByIdResponse = await getUserById(id as string)
+        if (!getUserByIdResponse){
+            res.status(404).json({
+                status: "erro",
+                message: "Utilizador nao emcontrado",
+                data: null
+            })
+        }
+        res.status(200).json({
+            status: "success",
+            message: "Utilisador encontrado",
+            data: getUserByIdResponse
+        })
+    } else {
+        res.status(400).json({
+            status: "erro",
+            message: "id obrigatorrio",
+            data: null
+        })
+}
+})
+
+
+//inserir utilisador no bd
+app.patch("/insert-User", async (req: Request, res: Response) => {
+    const query = req.body
+    const insertUserResponse = await insertUser (query)
+    res.status(200).json({
+            status: "success",
+            message: "Utilisador Inserido",
+            data: insertUserResponse
+        })
+})
+
+
+//atualizar utilizador pelo id
+app.put("/update-User", async (req: Request, res: Response) => {
+    const id  = req.query.id as string
+    const newData = req.body
+    const updateUserResponse = await updateUser (id, newData)
+    res.status(200).json({
+            status: "success",
+            message: "Utilisador atualizado",
+            data: updateUserResponse
+        })
+})
+
+
+//selecionar todos os servicos presente no base de dados
+app.get("/get-service", async (req: Request, res: Response) => {
+    const getServiceResponse = await getService ()
+    res.json(getServiceResponse)
+})
+
+
+//selecionar sevico pelo id
+app.get("/get-service-by-id", async (req: Request, res: Response) => {
+    const { id } = req.query
+    if (id) {
+        const idNumber = Number (id)
+        const getserviceByIdResponse = await getServceById (idNumber)
+        if (!getserviceByIdResponse){
+            res.status(404).json({
+                status: "erro",
+                message: "Utilizador nao emcontrado",
+                data: null
+            })
+        }
+        res.status(200).json({
+            status: "success",
+            message: "Utilisador encontrado",
+            data: getserviceByIdResponse
+        })
+    } else {
+        res.status(400).json({
+            status: "erro",
+            message: "id obrigatorrio",
+            data: null
+        })
+}
 })
 
 
@@ -124,7 +218,8 @@ app.post("/calcular-orcamento", (req: Request, res: Response) => {
 
     res.json({
         mensage: "Orçamento calculado com sucesso",
-        orcamentoTotal: calcularOrcamentoresponse})
+        orcamentoTotal: calcularOrcamentoresponse
+    })
 })
 
 app.listen(8080, () => {

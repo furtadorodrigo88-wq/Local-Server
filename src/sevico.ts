@@ -1,4 +1,5 @@
 import { type ResponseType, type ServicoType } from "./utils/types.js"
+import db from "./lib/db.js"
 
 export let catalogoServicos: ServicoType[] = []
 
@@ -63,4 +64,19 @@ export function obterServico(nome: string): ServicoType | null {
         }
     }
     return null
+}
+
+
+// pegar dados de servicos
+export async function getService() {
+    const [ rows ] = await db.execute("SELECT * FROM tbl_servicos")
+    return rows
+};
+
+
+//pegar dados de servico atravez de id
+export async function getServceById (id: number) {
+    const [ rows ] = await db.execute("SELECT * FROM tbl_servicos WHERE tbl_servicos.id = ?", [id])
+    if (Array.isArray(rows) && rows.length === 0) return null
+    return Array.isArray(rows) ? rows [0] : null
 }
