@@ -80,3 +80,43 @@ export async function getServceById (id: number) {
     if (Array.isArray(rows) && rows.length === 0) return null
     return Array.isArray(rows) ? rows [0] : null
 }
+
+
+//colocar um novo servico
+export async function insertservce ( service: any ) {
+    try{
+    const user = await db.execute("INSERT INTO tbl_servicos VALUE(?,?,?,?,?,?,?)", [
+        service.id,
+        service.nome,
+        service.descricao,
+        service.categoria,
+        service.enabled,
+        new Date(),
+        new Date()
+    ])
+    return user
+}catch  (err) {
+    console.log(err)
+    return null
+}
+}
+
+
+//atualizar servico pelo id
+export async function updateServce (id: string, service: any) {
+    try {
+        const updatedUser = await db.execute("UPDATE tbl_servicos SET nome=?, descricao=?, categoria=?, enabled=?, updated_at=? WHERE id=?", [
+        service.nome,
+        service.descricao,
+        service.categoria,
+        service.enabled,
+        new Date(),
+        id
+    ])
+    return updatedUser
+    } catch (err) {
+        console.log(err)
+        return null
+    }
+    
+}

@@ -1,6 +1,6 @@
 import express, { type Request, type Response } from "express"
 import { apagarPrestadorServico, calcularOrcamento, criarPrestadorDeServico, editarPrestadorServico, listarPrestadoresServicos, selecionarPrestador, selecionarServicos } from "./orcamento.js"
-import { adicionarServico, apagarServico, getServceById, getService, listarServicos, obterServico, } from "./sevico.js"
+import { adicionarServico, apagarServico, getServceById, getService, insertservce, listarServicos, obterServico, updateServce, } from "./sevico.js"
 import { json } from "node:stream/consumers"
 import { getUserById, getUsers, insertUser, updateUser } from "./user.js"
 import { getServers } from "node:dns"
@@ -204,6 +204,30 @@ app.get("/get-service-by-id", async (req: Request, res: Response) => {
             data: null
         })
 }
+})
+
+
+//inserir utilisador no bd
+app.patch("/insert-servce", async (req: Request, res: Response) => {
+    const query = req.body
+    const insertServeceResponse = await insertservce (query)
+    res.status(200).json({
+            status: "success",
+            message: "Servico Inserido",
+            data: insertServeceResponse
+        })
+})
+
+//atualizar utilizador pelo id
+app.put("/update-servce", async (req: Request, res: Response) => {
+    const id  = req.query.id as string
+    const newData = req.body
+    const updateServceResponse = await updateServce (id, newData)
+    res.status(200).json({
+            status: "success",
+            message: "Servico atualizado",
+            data: updateServceResponse
+        })
 })
 
 
