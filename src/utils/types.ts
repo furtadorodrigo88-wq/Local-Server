@@ -28,3 +28,29 @@ export interface PrestadorType {
     porcentagemDesconto: number
     taxaUregencia: number
 }
+
+//reformulaçao de type
+
+export interface UserType {
+    id: number;
+    nome: string;
+    numero: string;
+    data_nascimento: Date;
+    email: string;
+    telefone: string;
+    pais: string;
+    localidade: string;
+    password: string;
+    enabled: boolean;
+}
+
+
+export interface Servicetype {
+    id: string,
+    nome: string,
+    descricao: string,
+    categoria: string,
+    enabled: boolean,
+    updated_et: string,
+    created_at: string
+}

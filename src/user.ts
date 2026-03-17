@@ -1,4 +1,5 @@
 import db from "./lib/db.js"
+import type { UserType } from "./utils/types.js"
 
 
 // pegar dados de utilizador
@@ -15,10 +16,10 @@ export async function getUserById (id: string) {
 }
 
 //colocar um novo utilizador
-export async function insertUser ( utilizador: any ) {
+export async function insertUser ( utilizador: UserType ) {
     try{
     const user = await db.execute("INSERT INTO tbl_utilizadores VALUE(?,?,?,?,?,?,?,?,?,?,?,?)", [
-        utilizador.id,
+        null,
         utilizador.nome,
         utilizador.numero,
         utilizador.data_nascimento,
@@ -32,14 +33,15 @@ export async function insertUser ( utilizador: any ) {
         new Date()
     ])
     return user
-}catch  (err) {
-    console.log(err)
-    return null
+}catch (err) {
+    console.error("Erro ao inserir utilizador:", err);
+    return null;
+
 }
 }
 
 //atualizar utilizador atravez do id
-export async function updateUser (id: string, utilizador: any) {
+export async function updateUser (id: string, utilizador: UserType) {
     try {
         const updatedUser = await db.execute("UPDATE tbl_utilizadores SET nome=?, numero=?, data_nascimento=?, email=?, telefone=?, pais=?, localidade=?, password=?, enabled=?, updated_at=? WHERE id=?", [
         utilizador.nome,
@@ -58,6 +60,20 @@ export async function updateUser (id: string, utilizador: any) {
     } catch (err) {
         console.log(err)
         return null
+    }
+    
+}
+
+
+// delete utilizador pelo id
+export async function DeleteUsers (id: string) {
+    try {
+        const query = "DELETE FROM tbl_utilizadores WHERE id=?"
+        const value = [id]
+        const rows = await db.execute(query, value)
+        return rows
+    } catch (err) {
+        console.log(err)
     }
     
 }
