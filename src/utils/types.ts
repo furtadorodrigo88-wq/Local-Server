@@ -35,7 +35,7 @@ export interface UserType {
     id: number;
     nome: string;
     numero: string;
-    data_nascimento: Date;
+    data_nascimento: string;
     email: string;
     telefone: string;
     pais: string;

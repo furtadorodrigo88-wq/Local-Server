@@ -1,5 +1,8 @@
 import db from "./lib/db.js"
+import { formatDataDDMMYY } from "./utils/data.js"
+import { hashPasseword } from "./utils/passeword.js"
 import type { UserType } from "./utils/types.js"
+import { generateUUID } from "./utils/uuid.js"
 
 
 // pegar dados de utilizador
@@ -18,16 +21,16 @@ export async function getUserById (id: string) {
 //colocar um novo utilizador
 export async function insertUser ( utilizador: UserType ) {
     try{
-    const user = await db.execute("INSERT INTO tbl_utilizadores VALUE(?,?,?,?,?,?,?,?,?,?,?,?)", [
-        null,
+    const user = await db.execute("INSERT INTO tbl_utilizadores VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", [
+        generateUUID(),
         utilizador.nome,
         utilizador.numero,
-        utilizador.data_nascimento,
+        formatDataDDMMYY (utilizador.data_nascimento),
         utilizador.email,
         utilizador.telefone,
         utilizador.pais,
         utilizador.localidade,
-        utilizador.password,
+        await hashPasseword(utilizador.password),
         utilizador.enabled,
         new Date(),
         new Date()
@@ -46,7 +49,7 @@ export async function updateUser (id: string, utilizador: UserType) {
         const updatedUser = await db.execute("UPDATE tbl_utilizadores SET nome=?, numero=?, data_nascimento=?, email=?, telefone=?, pais=?, localidade=?, password=?, enabled=?, updated_at=? WHERE id=?", [
         utilizador.nome,
         utilizador.numero,
-        utilizador.data_nascimento,
+        formatDataDDMMYY (utilizador.data_nascimento),
         utilizador.email,
         utilizador.telefone,
         utilizador.pais,
