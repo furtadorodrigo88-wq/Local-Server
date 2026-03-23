@@ -1,4 +1,5 @@
 import db from "./lib/db.js"
+import type { PrestadorType } from "./utils/types.js"
 
 export class Prestador {
     nome: string
@@ -44,7 +45,7 @@ export async function getproviderById (id: string) {
 }
 
 //colocar um novo utilizador
-export async function createProvider(p: Prestador) {
+export async function createProvider(p: PrestadorType) {
     const query = "INSERT INTO tbl_prestadores (nome, precoHora, proficao, minimoDesconto, porcentagemDesconto, taxaUregencia) VALUES (?, ?, ?, ?, ?, ?)"
     const value =[
         p.nome, 
