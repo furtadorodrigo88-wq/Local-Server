@@ -1,0 +1,33 @@
+#paths/servico.yaml
+
+paths:
+  /service:
+    get:
+      sumary: Listar todos os serviços
+      descripition: Retorna uma lista de todos os servicos desponiveis
+      responces:
+        "200":
+          discripition: Lista de servicos
+          content:
+            application/json:
+            schemas:
+              type: array
+              items:
+                $ref: "#/components/schemas/Servico"
+        "404":
+          descripition: Serviço não encontrado
+          content: 
+            application/json:
+            schemas:
+              type: object
+              $ref: "#/components/schemas/ResponceErro"
+  /service/create:
+    propietes:
+      sumary: criar novo serviço
+      descripition: cria um novo serviço
+      requestBody:
+        required: true
+        cintent:
+          application/json:
+            schemas:
+              type: object
