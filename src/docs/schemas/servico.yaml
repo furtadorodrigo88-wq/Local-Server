@@ -36,6 +36,35 @@ componentes:
         type: string
         format: date-time
         example: "2023-10-27T09:00:00Z"
+    #schema para criar novo serviço
+    CreateService:
+      type: object
+      propietes:
+        nome:
+          type: string
+          example: "Serviço de Limpeza"
+        discripition:
+          type: string
+          example: "Descrição detalhada do serviço de limpeza"
+        categoria:
+          type: string
+          example: "Limpeza"
+        enabled:
+          type: boolean
+          example: true
+    #schema generico para sucesso
+    ResponceSucesso:
+      type: object
+      propietes:
+        message: 
+          type: string
+          example: "serviço criado com sucesso"
+        status:
+          type: boolean
+          example: true
+        data:
+          type: object
+          $ref: "#/conponetes/schemas/Servico"
     #schema generico de resposta de erro
     ResponceErro:
       type: object
