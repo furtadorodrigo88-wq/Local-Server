@@ -42,6 +42,8 @@ export interface UserType {
     localidade: string
     password: string
     enabled: boolean
+    updated_et: string
+    created_at: string
 }
 
 

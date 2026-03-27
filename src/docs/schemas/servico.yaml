@@ -7,43 +7,42 @@
 #    updated_et: string
 #   created_at: string
 
-componentes:
+components:
   schemas:
-  #schema principal de serviço
     Servico:
       type: object
-      propietes:
-      id:
-        type: integer
-        example: 1
-      nome:
-        type: string
-        example: "Serviço de limpeza"
-      discrição:
-        type: string
-        example: "Descrição detalhada do serviço"
-      categoria:
-        type: string
-        example: "Limpeza"
-      enabled:
-        type: boolean
-        example: true
-      updated_at:
-        type: string
-        format: date-time
-        example: "2023-10-27T10:00:00Z"
-      created_at:
-        type: string
-        format: date-time
-        example: "2023-10-27T09:00:00Z"
-    #schema para criar novo serviço
+      properties:
+        id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: "Serviço de limpeza"
+        descricao:
+          type: string
+          example: "Descrição detalhada do serviço"
+        categoria:
+          type: string
+          example: "Limpeza"
+        enabled:
+          type: boolean
+          example: true
+        updated_at:
+          type: string
+          format: date-time
+          example: "2023-10-27T10:00:00Z"
+        created_at:
+          type: string
+          format: date-time
+          example: "2023-10-27T09:00:00Z"
+          
     CreateService:
       type: object
-      propietes:
+      properties:
         nome:
           type: string
           example: "Serviço de Limpeza"
-        discripition:
+        description:
           type: string
           example: "Descrição detalhada do serviço de limpeza"
         categoria:
@@ -52,10 +51,10 @@ componentes:
         enabled:
           type: boolean
           example: true
-    #schema generico para sucesso
-    ResponceSucesso:
+          
+    ResponseSucessoServico:
       type: object
-      propietes:
+      properties:
         message: 
           type: string
           example: "serviço criado com sucesso"
@@ -63,19 +62,17 @@ componentes:
           type: boolean
           example: true
         data:
-          type: object
-          $ref: "#/conponetes/schemas/Servico"
-    #schema generico de resposta de erro
-    ResponceErro:
+          $ref: "#/components/schemas/Servico"
+          
+    ResponseErroServico:
       type: object
-      propietes: 
+      properties: 
         message: 
           type: string
           example: "Erro ao buscar servicos"
         status: 
           type: boolean
           example: false
-        data: 
+        data:
           type: object
-          propietes: 
-            null
+          nullable: true

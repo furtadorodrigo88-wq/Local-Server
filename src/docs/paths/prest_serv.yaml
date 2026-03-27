@@ -1,0 +1,154 @@
+#paths/prest_serv.yaml
+
+paths:
+  /serviceProv:
+    get:
+      summary: Listar todos as prestações de serviços
+      tags:
+        - service provision
+      description: Retorna uma lista de todas as prestações de serviços disponiveis
+      responses:
+        "200":
+          description: Lista de prestações de serviços
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PrestacaoServico"
+        "404":
+          description: Prestacao Servico não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroPrestacaoServico"
+  /serviceProv/create:
+    post:
+      summary: criar novo Prestacao Servico
+      tags:
+        - service provision
+      description: cria um novo Prestacao Servico
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/CreatePrestacaoServico"
+      responses:
+        "200":
+          description: Prestacao Servico criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoPrestacao"
+        "400":
+          description: Dados inválidos fornecidos
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroPrestacao"
+  /serviceProv/get-by-id/{id}:
+    get:
+      summary: Buscar um Prestacao Servico
+      tags:
+        - service provision
+      description: Retorna um Prestacao Servico especifico pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do Prestacao Servico a ser buscado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Prestacao Servico encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoPrestacao"
+        "404":
+          description: Prestacao Servico não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroPrestacao"
+  /serviceProv/update/{id}:
+    put:
+      summary: atualizar um Prestacao Servico
+      tags:
+        - service provision
+      description: Atualizar Prestacao Servico pelo id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do Prestacao Servico a ser atualizado
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/CreatePrestador"
+      responses:
+        "200":
+          description: Prestacao Servico atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoPrestacao"
+        "400":
+          description: Dados inválidos fornecidos
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroPrestacao"
+        "404":
+          description: Prestacao Servico não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroPrestacao"
+  /serviceProv/delete/{id}:
+    delete:
+      summary: Deletar um Prestacao Servico
+      tags:
+        - service provision
+      description: Deletar Prestacao Servico pelo id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do Prestacao Servico a ser deletado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Prestacao Servico deletado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoPrestacao"
+        "404":
+          description: Prestacao Servico não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroPrestacao"

@@ -1,0 +1,136 @@
+# schemas/user.yaml
+
+#   id: number
+#   nome: string
+#   numero: string
+#   data_nascimento: string
+#   email: string
+#   telefone: string
+#   pais: string
+#   localidade: string
+#   password: string
+#   enabled: boolean
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: "Serviço de limpeza"
+        numero:
+          type: string
+          example: "M14K"
+        data_nascimento:
+          type: string
+          example: "22-03-2005"
+        email:
+          type: string
+          example: "exemplo@gmail.com"
+        telefone:
+          type: string
+          example: "+5511999999999"
+        pais:
+          type: string
+          example: "Cabo Verde"
+        localidade:
+          type: string
+          example: "Praia"
+        password:
+          type: string
+          example: "senha123"
+        enabled:
+          type: boolean
+          example: true
+        updated_at:
+          type: string
+          format: date-time
+          example: "2023-10-27T10:00:00Z"
+        created_at:
+          type: string
+          format: date-time
+          example: "2023-10-27T09:00:00Z"
+    CreateUser:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: "Serviço de limpeza"
+        numero:
+          type: string
+          example: "M14K"
+        data_nascimento:
+          type: string
+          example: "22-03-2005"
+        email:
+          type: string
+          example: "exemplo@gmail.com"
+        telefone:
+          type: string
+          example: "+5511999999999"
+        pais:
+          type: string
+          example: "Cabo Verde"
+        localidade:
+          type: string
+          example: "Praia"
+        password:
+          type: string
+          example: "senha123"
+        enabled:
+          type: boolean
+          example: true
+    UpdateUser:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: "Serviço de limpeza"
+        numero:
+          type: string
+          example: "M14K"
+        data_nascimento:
+          type: string
+          example: "22-03-2005"
+        email:
+          type: string
+          example: "exemplo@gmail.com"
+        telefone:
+          type: string
+          example: "+5511999999999"
+        pais:
+          type: string
+          example: "Cabo Verde"
+        localidade:
+          type: string
+          example: "Praia"
+        enabled:
+          type: boolean
+          example: true
+    ResponseSucesso:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Utilizador criado com sucesso"
+        status:
+          type: boolean
+          example: true
+        data:
+          $ref: "#/components/schemas/User"
+    ResponseErro:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Erro ao buscar dados"
+        status:
+          type: boolean
+          example: false
+        data:
+          type: object
+          nullable: true

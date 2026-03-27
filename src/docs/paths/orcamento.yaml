@@ -1,94 +1,96 @@
+#paths/orcamento.yaml
+
 paths:
-  /service:
+  /budget:
     get:
-      summary: Listar todos os serviços
+      summary: Listar todos as orçamento
       tags:
-        - Service
-      description: Retorna uma lista de todos os servicos disponiveis
+        - Budget
+      description: Retorna uma lista de todas as orçamento disponiveis
       responses:
         "200":
-          description: Lista de servicos
+          description: Lista de orçamento
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Servico"
+                  $ref: "#/components/schemas/Orcamento"
         "404":
-          description: Serviço não encontrado
+          description: Orcamento Servico não encontrado
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseErroServico"
-  /service/create:
+                $ref: "#/components/schemas/ResponseErroOrcamento"
+  /budget/create:
     post:
-      summary: criar novo serviço
+      summary: criar novo Orcamento Servico
       tags:
-        - Service
-      description: cria um novo serviço
+        - Budget
+      description: cria um novo Orcamento Servico
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              $ref: "#/components/schemas/CreateService"
+              $ref: "#/components/schemas/CreateOrcamento"
       responses:
         "200":
-          description: Serviço criado com sucesso
+          description: Orcamento Servico criado com sucesso
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseSucessoServico"
+                $ref: "#/components/schemas/ResponseSucessoOrcamento"
         "400":
           description: Dados inválidos fornecidos
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseErroServico"
-  /service/get-by-id/{id}:
+                $ref: "#/components/schemas/ResponseErroOrcamento"
+  /budget/get-by-id/{id}:
     get:
-      summary: Buscar um serviço
+      summary: Buscar um Orcamento Servico
       tags:
-        - Service
-      description: Retorna um serviço especifico pelo ID
+        - Budget
+      description: Retorna um Orcamento Servico especifico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do serviço a ser buscado
+          description: ID do Orcamento Servico a ser buscado
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Serviço encontrado
+          description: Orcamento Servico encontrado
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseSucessoServico"
+                $ref: "#/components/schemas/ResponseSucessoOrcamento"
         "404":
-          description: Serviço não encontrado
+          description: Orcamento Servico não encontrado
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseErroServico"
-  /service/update/{id}:
+                $ref: "#/components/schemas/ResponseErroOrcamento"
+  /budget/update/{id}:
     put:
-      summary: atualizar um serviço
+      summary: atualizar um Orcamento Servico
       tags:
-        - Service
-      description: Atualizar serviço pelo id
+        - Budget
+      description: Atualizar Orcamento Servico pelo id
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do serviço a ser atualizado
+          description: ID do Orcamento Servico a ser atualizado
           schema:
             type: integer
             example: 1
@@ -98,55 +100,55 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: "#/components/schemas/CreateService"
+              $ref: "#/components/schemas/CreatePrestador"
       responses:
         "200":
-          description: Serviço atualizado com sucesso
+          description: Orcamento Servico atualizado com sucesso
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseSucessoServico"
+                $ref: "#/components/schemas/ResponseSucessoOrcamento"
         "400":
           description: Dados inválidos fornecidos
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseErroServico"
+                $ref: "#/components/schemas/ResponseErroOrcamento"
         "404":
-          description: Serviço não encontrado
+          description: Orcamento Servico não encontrado
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseErroServico"
-  /service/delete/{id}:
+                $ref: "#/components/schemas/ResponseErroOrcamento"
+  /budget/delete/{id}:
     delete:
-      summary: Deletar um serviço
+      summary: Deletar um Orcamento Servico
       tags:
-        - Service
-      description: Deletar serviço pelo id
+        - Budget
+      description: Deletar Orcamento Servico pelo id
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do serviço a ser deletado
+          description: ID do Orcamento Servico a ser deletado
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Serviço deletado com sucesso
+          description: Orcamento Servico deletado com sucesso
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseSucessoServico"
+                $ref: "#/components/schemas/ResponseSucessoOrcamento"
         "404":
-          description: Serviço não encontrado
+          description: Orcamento Servico não encontrado
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseErroServico"
+                $ref: "#/components/schemas/ResponseErroOrcamento"

@@ -1,31 +1,33 @@
+#paths/proposta.yaml
+
 paths:
-  /service:
+  /proposal:
     get:
-      summary: Listar todos os serviços
+      summary: Listar todos os propostas
       tags:
-        - Service
-      description: Retorna uma lista de todos os servicos disponiveis
+        - Proposal
+      description: Retorna uma lista de todos os propostas disponiveis
       responses:
         "200":
-          description: Lista de servicos
+          description: Lista de propostas
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Servico"
+                  $ref: "#/components/schemas/Proposta"
         "404":
           description: Serviço não encontrado
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseErroServico"
-  /service/create:
+                $ref: "#/components/schemas/ResponseErroProposta"
+  /proposal/create:
     post:
       summary: criar novo serviço
       tags:
-        - Service
+        - Proposal
       description: cria um novo serviço
       requestBody:
         required: true
@@ -33,7 +35,7 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: "#/components/schemas/CreateService"
+              $ref: "#/components/schemas/Createproposal"
       responses:
         "200":
           description: Serviço criado com sucesso
@@ -41,19 +43,19 @@ paths:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseSucessoServico"
+                $ref: "#/components/schemas/ResponseSucessoProposta"
         "400":
           description: Dados inválidos fornecidos
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseErroServico"
-  /service/get-by-id/{id}:
+                $ref: "#/components/schemas/ResponseErroProposta"
+  /proposal/get-by-id/{id}:
     get:
       summary: Buscar um serviço
       tags:
-        - Service
+        - Proposal
       description: Retorna um serviço especifico pelo ID
       parameters:
         - name: id
@@ -70,19 +72,19 @@ paths:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseSucessoServico"
+                $ref: "#/components/schemas/ResponseSucessoProposta"
         "404":
           description: Serviço não encontrado
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseErroServico"
-  /service/update/{id}:
+                $ref: "#/components/schemas/ResponseErroProposta"
+  /proposal/update/{id}:
     put:
       summary: atualizar um serviço
       tags:
-        - Service
+        - Proposal
       description: Atualizar serviço pelo id
       parameters:
         - name: id
@@ -98,7 +100,7 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: "#/components/schemas/CreateService"
+              $ref: "#/components/schemas/CreateProposta"
       responses:
         "200":
           description: Serviço atualizado com sucesso
@@ -106,26 +108,26 @@ paths:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseSucessoServico"
+                $ref: "#/components/schemas/ResponseSucessoProposta"
         "400":
           description: Dados inválidos fornecidos
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseErroServico"
+                $ref: "#/components/schemas/ResponseErroProposta"
         "404":
           description: Serviço não encontrado
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseErroServico"
-  /service/delete/{id}:
+                $ref: "#/components/schemas/ResponseErroProposta"
+  /proposal/delete/{id}:
     delete:
       summary: Deletar um serviço
       tags:
-        - Service
+        - Proposal
       description: Deletar serviço pelo id
       parameters:
         - name: id
@@ -142,11 +144,11 @@ paths:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseSucessoServico"
+                $ref: "#/components/schemas/ResponseSucessoProposta"
         "404":
           description: Serviço não encontrado
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseErroServico"
+                $ref: "#/components/schemas/ResponseErroProposta"

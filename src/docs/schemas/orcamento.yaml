@@ -1,0 +1,77 @@
+# schemas/orcamento.yaml
+
+#id: string
+#tatal: string
+#id_utilizadores: string
+#enabled: boolean
+#created_at: string
+#updated_at: string
+
+components:
+  schemas:
+    Orcamento:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "uuid-orc-001"
+        total:
+          type: number
+          format: float
+          example: 1250.50
+        id_utilizadores:
+          type: string
+          example: "uuid-user-123"
+        enabled:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-03-27T10:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2026-03-27T11:00:00Z"
+
+    CreateOrcamento:
+      type: object
+      required:
+        - id_utilizadores
+      properties:
+        total:
+          type: number
+          format: float
+          example: 0.00
+        id_utilizadores:
+          type: string
+          example: "uuid-user-123"
+        enabled:
+          type: boolean
+          default: true
+          example: true
+
+    ResponseSucessoOrcamento:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Orçamento gerado com sucesso"
+        status:
+          type: boolean
+          example: true
+        data:
+          $ref: "#/components/schemas/Orcamento"
+
+    ResponseErroOrcamento:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Erro ao processar orçamento"
+        status:
+          type: boolean
+          example: false
+        data:
+          type: object
+          nullable: true
