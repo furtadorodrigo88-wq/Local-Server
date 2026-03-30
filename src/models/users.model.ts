@@ -1,3 +1,4 @@
+import type { get } from "node:http";
 import db from "../lib/db.js";
 import { formatDataDDMMYY } from "../utils/data.js";
 import { hashPasseword } from "../utils/passeword.js";
@@ -33,9 +34,28 @@ export const UserModel = {
         return rows
     },
     async get(id: string) {
-        const [rows] = await db.execute("SELECT * FROM tbl_utilizadores WHERE tbl_utilizadores.id = ?", [id])
-        if (Array.isArray(rows) && rows.length === 0) return null
-        return Array.isArray(rows) ? rows[0] : null
+        try {
+            const query = "SELECT * FROM tbl_utilizadores WHERE tbl_utilizadores.id = ?"
+            const value = [id]
+            const [rows] = await db.execute(query, value)
+            if (Array.isArray(rows) && rows.length === 0) return null
+            return Array.isArray(rows) ? rows[0] : null
+        } catch (err) {
+            console.log(err)
+            return null
+        }
+    },
+    async  getByEmail (email: string): Promise<UserType | null> {
+        try {
+            const query = "SELECT * FROM tbl_utilizadores WHERE tbl_utilizadores.id = ?"
+            const value = [email]
+            const [rows] = await db.execute(query, value)
+            if (Array.isArray(rows) && rows.length === 0) return null
+            return Array.isArray(rows) ? rows[0] as UserType : null
+        } catch (err) {
+            console.log(err)
+            return null
+        }
     },
     async update (id: string, newUser: UserType) {
         try {
