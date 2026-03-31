@@ -45,9 +45,9 @@ export const UserModel = {
             return null
         }
     },
-    async  getByEmail (email: string): Promise<UserType | null> {
+    async getByEmail(email: string): Promise<UserType | null> {
         try {
-            const query = "SELECT * FROM tbl_utilizadores WHERE tbl_utilizadores.id = ?"
+            const query = "SELECT * FROM tbl_utilizadores WHERE tbl_utilizadores.email = ?"
             const value = [email]
             const [rows] = await db.execute(query, value)
             if (Array.isArray(rows) && rows.length === 0) return null
@@ -57,35 +57,35 @@ export const UserModel = {
             return null
         }
     },
-    async update (id: string, newUser: UserType) {
+    async update(id: string, newUser: UserType) {
         try {
-        const updatedUser = await db.execute("UPDATE tbl_utilizadores SET nome=?, numero=?, data_nascimento=?, email=?, telefone=?, pais=?, localidade=?, password=?, enabled=?, updated_at=? WHERE id=?", [
-        newUser.nome,
-        newUser.numero,
-        formatDataDDMMYY (newUser.data_nascimento),
-        newUser.email,
-        newUser.telefone,
-        newUser.pais,
-        newUser.localidade,
-        newUser.password,
-        newUser.enabled,
-        new Date(),
-        id
-    ])
-    return updatedUser
-    } catch (err) {
-        console.log(err)
-        return null
-    }
+            const updatedUser = await db.execute("UPDATE tbl_utilizadores SET nome=?, numero=?, data_nascimento=?, email=?, telefone=?, pais=?, localidade=?, password=?, enabled=?, updated_at=? WHERE id=?", [
+                newUser.nome,
+                newUser.numero,
+                formatDataDDMMYY(newUser.data_nascimento),
+                newUser.email,
+                newUser.telefone,
+                newUser.pais,
+                newUser.localidade,
+                newUser.password,
+                newUser.enabled,
+                new Date(),
+                id
+            ])
+            return updatedUser
+        } catch (err) {
+            console.log(err)
+            return null
+        }
     },
-    async delete (id: string) {
+    async delete(id: string) {
         try {
-        const query = "DELETE FROM tbl_utilizadores WHERE id=?"
-        const value = [id]
-        const rows = await db.execute(query, value)
-        return rows
-    } catch (err) {
-        console.log(err)
-    }
+            const query = "DELETE FROM tbl_utilizadores WHERE id=?"
+            const value = [id]
+            const rows = await db.execute(query, value)
+            return rows
+        } catch (err) {
+            console.log(err)
+        }
     }
 }

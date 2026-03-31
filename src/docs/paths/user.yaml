@@ -112,6 +112,37 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseErro"
+  /Users/login:
+    post:
+      summary: Login de utilizador
+      tags:
+        - users
+      description: Login de utilizador
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginUser"
+      responses:
+        "200":
+          description: utilizador logado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSucesso"
+        "400":
+          description: Dados inválidos fornecidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseErro"
+        "404":
+          description: utilizador não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseErro"
   /Users/delete/{id}:
     delete:
       summary: Deletar um utilizador

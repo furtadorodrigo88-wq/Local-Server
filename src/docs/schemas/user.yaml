@@ -21,7 +21,7 @@ components:
           example: 1
         nome:
           type: string
-          example: "Serviço de limpeza"
+          example: "Pedro Paulo"
         numero:
           type: string
           example: "M14K"
@@ -59,7 +59,7 @@ components:
       properties:
         nome:
           type: string
-          example: "Serviço de limpeza"
+          example: "genilsom brito"
         numero:
           type: string
           example: "M14K"
@@ -89,7 +89,7 @@ components:
       properties:
         nome:
           type: string
-          example: "Serviço de limpeza"
+          example: "Bruno Gomes"
         numero:
           type: string
           example: "M14K"
@@ -111,6 +111,15 @@ components:
         enabled:
           type: boolean
           example: true
+    LoginUser:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "exemplo@gmail.com"
+        password:
+          type: string
+          example: "senha123"
     ResponseSucesso:
       type: object
       properties:

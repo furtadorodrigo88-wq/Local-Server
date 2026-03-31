@@ -4,13 +4,16 @@ import { router as UserRouter } from "./routes/users.route.js"
 import { router as ProviderRouter } from "./routes/prestador.route.js"
 import { router as BudgetRouter } from "./routes/orcamento.route.js"
 import { router as SPRouter } from "./routes/prestacao_servic.router.js"
-import { router as ProposalRouter} from "./routes/proposta.route.js"
+import { router as ProposalRouter } from "./routes/proposta.route.js"
 import { swaggerSpec } from "./docs/swagger.js"
-import  swaggerUI  from "swagger-ui-express"
+import swaggerUI from "swagger-ui-express"
+import dotenv from "dotenv"
 
 
 const app = express()
 app.use(express.json())
+
+dotenv.config()
 
 app.use("/service", ServiceRouter)
 app.use("/users", UserRouter)

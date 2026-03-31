@@ -4,7 +4,7 @@ import path from "path"
 
 
 const opitions: swaggerJsdoc.Options = {
-    definition:{
+    definition: {
         openapi: "3.0.0",
         info: {
             title: "API Servidor Local",
@@ -17,6 +17,20 @@ const opitions: swaggerJsdoc.Options = {
                 description: 'dev',
             }
         ],
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: "http",
+                    scheme: "bearer",
+                    bearerFormat: "JWT",
+                }
+            }
+        },
+        security: [
+            {
+                bearerAuth: []
+            }
+        ]
     },
     apis: [
         path.join(process.cwd(), "./src/docs/schemas/*.yaml"),

@@ -7,9 +7,16 @@ import jwt from "jsonwebtoken"
 
 
 export const UserControler = {
-    async createUser(res: Response, req: Request) {
+    async createUser(req: Request, res: Response) {
         const query = req.body
         const insertUserResponse = await UserModel.create(query)
+        if (!insertUserResponse) {
+            return res.status(400).json({
+                status: "error",
+                message: "Erro ao criar utilizador",
+                data: null
+            })
+        }
         res.status(200).json({
             status: "success",
             message: "Utilisador Inserido",
@@ -79,16 +86,16 @@ export const UserControler = {
             data: deleteuserResponse
         })
     },
-    async login(res: Response, req: Request) {
+    async login(req: Request, res: Response) {
         const { email, password } = req.body
-        if (!email || !password){
+        if (!email || !password) {
             return res.status(400).json({
                 status: "error",
                 message: "Cridenciais invalidos",
                 data: null
             })
         }
-        const userData: UserType | null = await UserModel.getByEmail ( email as string )
+        const userData: UserType | null = await UserModel.getByEmail(email as string)
         if (!userData) {
             return res.status(404).json({
                 status: "error",
@@ -96,7 +103,7 @@ export const UserControler = {
                 data: null
             })
         }
-        const isPassworValid = await comparePasseword (password, userData.password as string)
+        const isPassworValid = await comparePasseword(password, userData.password as string)
         if (!isPassworValid) {
             return res.status(401).json({
                 status: "error",
@@ -104,11 +111,19 @@ export const UserControler = {
                 data: null
             })
         }
-        const payLoad ={
+        const payLoad = {
             id: userData.id,
             email: userData.email,
             nome: userData.nome
         }
-        const tuken = jwt.sign (payLoad, process.env.JWT_SECRET as string, {expiresIn: "1h"})
+        const tuken = jwt.sign(payLoad, process.env.JWT_SECRET as string, { expiresIn: "1h" })
+        return res.status(200).json({
+            status: "success",
+            message: "Login realizado com sucesso",
+            data: {
+                user: payLoad,
+                token: tuken
+            }
+        })
     }
-    }
+}
