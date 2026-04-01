@@ -4,7 +4,7 @@ import { budgetModel } from "../models/orcamentos.model.js"
 
 
 export const budgetControler = {
-    async createBudget (res: Response, req: Request) {
+    async createBudget (req: Request, res: Response) {
         const newProvider: BudgetType = req.body
         if (!newProvider) {
             return res.status(400).json({

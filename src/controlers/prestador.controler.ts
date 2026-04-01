@@ -4,7 +4,7 @@ import type { Request, Response } from "express"
 
 
 export const provaiderControler = {
-    async createProvider(res: Response, req: Request) {
+    async createProvider( req: Request, res: Response) {
         const newProvider: ProvaiderType = req.body
         if (!newProvider) {
             return res.status(400).json({

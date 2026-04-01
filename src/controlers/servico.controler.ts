@@ -3,7 +3,7 @@ import type { Servicetype } from "../utils/types.js"
 import type { Request, Response } from "express"
 
 export const servicoControler = {
-    async createService(res: Response, req: Request) {
+    async createService( req: Request, res: Response) {
         const newService: Servicetype = req.body
         if (!newService) {
             return res.status(400).json({

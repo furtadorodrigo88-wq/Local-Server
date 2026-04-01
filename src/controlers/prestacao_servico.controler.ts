@@ -4,7 +4,7 @@ import { proposalModel } from "../models/proposta.models.js"
 
 
 export const SPControler = {
-    async createSP (res: Response, req: Request) {
+    async createSP ( req: Request, res: Response) {
         const newSP: ProposalType = req.body
         if (!newSP) {
             return res.status(400).json({

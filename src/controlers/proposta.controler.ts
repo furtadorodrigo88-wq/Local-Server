@@ -5,7 +5,7 @@ import { proposalModel } from "../models/proposta.models.js"
 
 
 export const proposalControler = {
-    async createProposal (res: Response, req: Request) {
+    async createProposal ( req: Request, res: Response) {
         const newProposal: ProposalType = req.body
         if (!newProposal) {
             return res.status(400).json({
