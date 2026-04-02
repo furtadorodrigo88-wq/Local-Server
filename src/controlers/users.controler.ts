@@ -72,7 +72,7 @@ export const UserControler = {
             })
         }
 
-        const deleteuserResponse = UserModel.delete(id as string)
+        const deleteuserResponse = UserModel.delete (id as string)
         if (!deleteuserResponse) {
             return res.status(400).json({
                 status: "error",
@@ -84,6 +84,39 @@ export const UserControler = {
             status: "success",
             message: "Utilizador apagado",
             data: deleteuserResponse
+        })
+    },
+    async updatePassword(req: Request, res: Response) {
+        const { id } = req.params
+        const { passwordantiga, passwordnova, confirmarpassword } = req.body
+        if (!id || !passwordantiga || !passwordnova || !confirmarpassword) {
+            return res.status(400).json({
+                status: "error",
+                message: "Dados invalidos",
+                data: null
+            })
+        }
+        const userData: UserType | null = await UserModel.get(id as string)
+        if (!userData) {
+            return res.status(404).json({
+                status: "error",
+                message: "Utilizador nao emcontrado",
+                data: null
+            })
+        }
+        const isPassworValid = await comparePasseword(passwordantiga, userData.password as string)
+        if (!isPassworValid) {
+            return res.status(401).json({
+                status: "error",
+                message: "Senha incorreta",
+                data: null
+            })
+        }
+        const updatePasswordResponse = await UserModel.updatePassword(id as string, passwordnova as string)
+        res.status(200).json({
+            status: "success",
+            message: "Senha atualizada com sucesso",
+            data: updatePasswordResponse
         })
     },
     async login(req: Request, res: Response) {

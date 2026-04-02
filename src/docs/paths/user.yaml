@@ -58,7 +58,7 @@ paths:
           required: true
           description: ID do utilizador a ser buscado
           schema:
-            type: integer
+            type: string
             example: 1
       responses:
         "200":
@@ -127,6 +127,45 @@ paths:
       responses:
         "200":
           description: utilizador logado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSucesso"
+        "400":
+          description: Dados inválidos fornecidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseErro"
+        "404":
+          description: utilizador não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseErro"
+  /Users/update-password/{id}:
+    put:
+      summary: atualizar senha de um utilizador
+      tags:
+        - users
+      description: Atualizar senha de utilizador pelo id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do utilizador a ser atualizado
+          schema:
+            type: string
+            example: jkfhgfhjnb
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updatePassword"
+      responses:
+        "200":
+          description: senha do utilizador atualizada com sucesso
           content:
             application/json:
               schema:

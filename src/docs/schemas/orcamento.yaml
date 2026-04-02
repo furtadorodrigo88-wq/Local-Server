@@ -13,8 +13,8 @@ components:
       type: object
       properties:
         id:
-          type: string
-          example: "uuid-orc-001"
+          type: integer
+          example: 1
         total:
           type: number
           format: float
@@ -50,7 +50,14 @@ components:
           type: boolean
           default: true
           example: true
-
+    CalculateBudget:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          example: 1
     ResponseSucessoOrcamento:
       type: object
       properties:

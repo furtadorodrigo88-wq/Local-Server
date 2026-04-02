@@ -8,7 +8,8 @@ const budgetRoute = {
     getById: "/get-by-id/:id",
     getAll: "/",
     update:"/update/:id",
-    delete: "/delete/:id"
+    delete: "/delete/:id",
+    calcular: "/calcular/:id"
 }
 const router = Router()
 router.get(budgetRoute.getAll, budgetControler.getAll)
@@ -16,5 +17,6 @@ router.get(budgetRoute.getById, budgetControler.get)
 router.post(budgetRoute.create, budgetControler.createBudget)
 router.put(budgetRoute.update, budgetControler.update)
 router.delete(budgetRoute.delete, budgetControler.delete)
+router.put(budgetRoute.calcular, budgetControler.calculateBudget)
 
 export { router }

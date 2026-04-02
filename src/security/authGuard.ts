@@ -1,7 +1,8 @@
 import type { Request, Response, NextFunction } from "express"
 import Jwt from "jsonwebtoken"
 
-export default function authMidlewere (req: Request, res: Response, next: NextFunction) {
+
+export default function authGuard (req: Request, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization
     if (!authHeader) {
         return res.status(401).json({
@@ -22,5 +23,4 @@ export default function authMidlewere (req: Request, res: Response, next: NextFu
             data: null
         })
     }
-
 }

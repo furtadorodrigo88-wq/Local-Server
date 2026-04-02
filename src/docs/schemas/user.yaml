@@ -17,7 +17,7 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
           example: 1
         nome:
           type: string
@@ -131,6 +131,18 @@ components:
           example: true
         data:
           $ref: "#/components/schemas/User"
+    updatePassword:
+      type: object
+      properties:
+        passwordantiga: 
+          type: string
+          example: "senha123"
+        passwordnova: 
+          type: string
+          example: "senha123"
+        confirmarpassword: 
+          type: string
+          example: "senha123"
     ResponseErro:
       type: object
       properties:

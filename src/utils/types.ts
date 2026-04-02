@@ -32,7 +32,7 @@ export interface PrestadorType {
 //reformulaçao de type
 
 export interface UserType {
-    id: number
+    id: string
     nome: string
     numero: string
     data_nascimento: string

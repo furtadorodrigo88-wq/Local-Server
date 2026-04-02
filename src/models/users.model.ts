@@ -33,13 +33,13 @@ export const UserModel = {
         const [rows] = await db.execute("SELECT * FROM tbl_utilizadores")
         return rows
     },
-    async get(id: string) {
+    async get(id: string): Promise<UserType | null> {
         try {
             const query = "SELECT * FROM tbl_utilizadores WHERE tbl_utilizadores.id = ?"
             const value = [id]
             const [rows] = await db.execute(query, value)
             if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows[0] : null
+            return Array.isArray(rows) ? rows[0] as UserType : null
         } catch (err) {
             console.log(err)
             return null
@@ -69,6 +69,19 @@ export const UserModel = {
                 newUser.localidade,
                 newUser.password,
                 newUser.enabled,
+                new Date(),
+                id
+            ])
+            return updatedUser
+        } catch (err) {
+            console.log(err)
+            return null
+        }
+    },
+    async updatePassword(id: string, password: string) {
+        try {
+            const updatedUser = await db.execute("UPDATE tbl_utilizadores SET password=?, updated_at=? WHERE id=?", [
+                await hashPasseword(password),
                 new Date(),
                 id
             ])

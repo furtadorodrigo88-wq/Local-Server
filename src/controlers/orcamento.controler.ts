@@ -98,6 +98,29 @@ export const budgetControler = {
             data: updateBudgetResponse
         })
     },
+    async calculateBudget (req: Request, res: Response) {
+        const { id } = req.params
+        if (!id) {
+            return res.status(400).json({
+                status: "error",
+                mensage: "ID obrigatorio",
+                data: null
+            })
+        }
+        const calculateBudgetResponse = await budgetModel.calculateBudget(id as string)
+        if (!calculateBudgetResponse) {
+            return res.status(400).json({
+                status: "error",
+                mensage: "Dados de orcamento invalidos",
+                data: null
+            })
+        }
+        return res.status(200).json({
+            status: "success",
+            message: "orcamento calculado com sucesso",
+            data: calculateBudgetResponse
+        })
+    },
     async delete(req: Request, res: Response) {
         const { id } = req.query
 

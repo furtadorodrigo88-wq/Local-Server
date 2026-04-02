@@ -123,6 +123,42 @@ paths:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseErroOrcamento"
+  /budget/calculate/{id}:
+    put:
+      summary: calcular um Orcamento Servico
+      tags:
+        - Budget
+      description: Calcular Orcamento Servico pelo id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do Orcamento Servico a ser calculado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Orcamento Servico calculado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoOrcamento"
+        "400":
+          description: Dados inválidos fornecidos
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroOrcamento"
+        "404":
+          description: Orcamento Servico não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroOrcamento"
   /budget/delete/{id}:
     delete:
       summary: Deletar um Orcamento Servico

@@ -1,5 +1,5 @@
 import db from "../lib/db.js";
-import type { BudgetType } from "../utils/types.js";
+import type { BudgetType, Servicetype } from "../utils/types.js";
 
 
 export const budgetModel = {
@@ -10,8 +10,8 @@ export const budgetModel = {
                 newBudget.tatal,
                 newBudget.id_utilizadores,
                 newBudget.enabled,
-                new Date (),
-                new Date ()
+                new Date(),
+                new Date()
             ]
             const [result] = await db.execute(query, value);
             return result;
@@ -42,14 +42,14 @@ export const budgetModel = {
             return null
         }
     },
-    async update (id: string, newBudget: BudgetType) {
+    async update(id: string, newBudget: BudgetType) {
         try {
             const query = "UPDATE tbl_orcamento SET tatal=?, id_utilizadores=?, enabled=?, updated_at=? WHERE id=?"
             const value = [
                 newBudget.tatal,
                 newBudget.id_utilizadores,
                 newBudget.enabled,
-                new Date (),
+                new Date(),
                 id
             ]
             const [result] = await db.execute(query, value);
@@ -59,14 +59,47 @@ export const budgetModel = {
             return null
         }
     },
-    async delete (id: string) {
+    async calculateBudget(id: string) {
         try {
-        const query = "DELETE FROM tbl_orcamento WHERE id=?"
-        const value = [id]
-        const rows = await db.execute(query, value)
-        return rows
-    } catch (err) {
-        console.log(err)
-    }
+            const query = "select ps.preco_hora, ps.horas_estimadas, p.taxa_Urgencia, p.percentagem_desconto from tbl_prestacao_servicos ps join tbl_prestadores p on ps.id_prestador where ps.id_orcamento = ?"
+            const value = [id]
+            const [service] = await db.execute(query, value) as [any[], any]
+            if (!service) {
+                return null
+            }
+            let total = 0
+            service.forEach((serviceItem: any) => {
+                total += serviceItem.preco_hora * serviceItem.horas_estimadas
+                if (serviceItem.taxa_Urgencia) {
+                    total += total * serviceItem.taxa_Urgencia
+                }
+                if (serviceItem.percentagem_desconto) {
+                    total -= total * serviceItem.percentagem_desconto
+                }
+                return total
+            })
+            const querynew = "UPDATE tbl_orcamento SET tatal=?, updated_at=? WHERE id=?"
+            const valuenew = [
+                total, 
+                new Date(), 
+                id
+            ]
+            const updateBudget = await db.execute(querynew, valuenew)
+            return updateBudget
+
+        } catch (err) {
+            console.log(err)
+            return null
+        }
+    },
+    async delete(id: string) {
+        try {
+            const query = "DELETE FROM tbl_orcamento WHERE id=?"
+            const value = [id]
+            const rows = await db.execute(query, value)
+            return rows
+        } catch (err) {
+            console.log(err)
+        }
     }
 }
