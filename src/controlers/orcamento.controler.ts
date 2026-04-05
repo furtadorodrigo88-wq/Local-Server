@@ -75,7 +75,6 @@ export const budgetControler = {
                 data: null
             })
         }
-
         if (!newData) {
             return res.status(400).json({
                 status: "error",
@@ -83,7 +82,6 @@ export const budgetControler = {
                 data: null
             })
         }
-
         const updateBudgetResponse = await budgetModel.update(id as string, newData)
         if (!updateBudgetResponse) {
             return res.status(400).json({
@@ -98,32 +96,31 @@ export const budgetControler = {
             data: updateBudgetResponse
         })
     },
-    async calculateBudget (req: Request, res: Response) {
-        const { id } = req.params
-        if (!id) {
-            return res.status(400).json({
-                status: "error",
-                mensage: "ID obrigatorio",
-                data: null
-            })
-        }
-        const calculateBudgetResponse = await budgetModel.calculateBudget(id as string)
-        if (!calculateBudgetResponse) {
-            return res.status(400).json({
-                status: "error",
-                mensage: "Dados de orcamento invalidos",
-                data: null
-            })
-        }
-        return res.status(200).json({
-            status: "success",
-            message: "orcamento calculado com sucesso",
-            data: calculateBudgetResponse
-        })
-    },
+    async calculateBudget(req: Request, res: Response) {
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).json({
+            status: "error",
+            message: "ID obrigatório",
+            data: null
+        });
+    }
+    const result = await budgetModel.calculateBudget(id);
+    if (!result) {
+        return res.status(400).json({
+            status: "error",
+            message: "Dados de orçamento inválidos",
+            data: null
+        });
+    }
+    return res.status(200).json({
+        status: "success",
+        message: "Orçamento calculado com sucesso",
+        data: result
+    });
+},
     async delete(req: Request, res: Response) {
         const { id } = req.query
-
         if (!id) {
             return res.status(400).json({
                 status: "error",
@@ -131,7 +128,6 @@ export const budgetControler = {
                 data: null
             })
         }
-
         const deleteuBudgetResponse = budgetModel.delete(id as string)
         if (!deleteuBudgetResponse) {
             return res.status(400).json({

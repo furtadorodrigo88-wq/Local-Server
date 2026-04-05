@@ -123,6 +123,28 @@ paths:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseErroProposta"
+  /proposal/aceitar/:id:
+    put:
+      summary: Aceita uma proposta
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Proposta aceite com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProposalResponse"
+        "400":
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /proposal/delete/{id}:
     delete:
       summary: Deletar um serviço

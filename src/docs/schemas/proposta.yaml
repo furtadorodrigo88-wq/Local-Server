@@ -85,6 +85,30 @@ components:
         enabled:
           type: boolean
           example: true
+    AceitarPoposta:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Proposta aceite com sucesso
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "15"
+            id_orcamento:
+              type: string
+              example: "3"
+            id_prestacao_servico:
+              type: string
+              example: "7"
+            estado:
+              type: string
+              example: Aceite
 
     ResponseSucessoProposta:
       type: object

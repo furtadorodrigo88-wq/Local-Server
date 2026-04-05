@@ -61,37 +61,37 @@ export const budgetModel = {
     },
     async calculateBudget(id: string) {
         try {
-            const query = "select ps.preco_hora, ps.horas_estimadas, p.taxa_Urgencia, p.percentagem_desconto from tbl_prestacao_servicos ps join tbl_prestadores p on ps.id_prestador where ps.id_orcamento = ?"
-            const value = [id]
-            const [service] = await db.execute(query, value) as [any[], any]
-            if (!service) {
-                return null
+            const query = `
+            SELECT ps.preco_hora, ps.horas_estimadas, 
+            p.taxa_Urgencia, p.percentagem_desconto
+            FROM tbl_prestacao_servicos ps
+            JOIN tbl_prestadores p ON ps.id_prestador = p.id
+            WHERE ps.id_orcamento = ?
+        `;
+            const [services] = await db.execute(query, [id]) as [any[], any];
+            if (!services || services.length === 0) {
+                return null;
             }
-            let total = 0
-            service.forEach((serviceItem: any) => {
-                total += serviceItem.preco_hora * serviceItem.horas_estimadas
-                if (serviceItem.taxa_Urgencia) {
-                    total += total * serviceItem.taxa_Urgencia
+            let total = 0;
+            services.forEach((item: any) => {
+                let subtotal = item.preco_hora * item.horas_estimadas;
+                if (item.taxa_Urgencia) {
+                    subtotal += subtotal * item.taxa_Urgencia;
                 }
-                if (serviceItem.percentagem_desconto) {
-                    total -= total * serviceItem.percentagem_desconto
+                if (item.percentagem_desconto) {
+                    subtotal -= subtotal * item.percentagem_desconto;
                 }
-                return total
-            })
-            const querynew = "UPDATE tbl_orcamento SET tatal=?, updated_at=? WHERE id=?"
-            const valuenew = [
-                total, 
-                new Date(), 
-                id
-            ]
-            const updateBudget = await db.execute(querynew, valuenew)
-            return updateBudget
-
+                total += subtotal;
+            });
+            const updateQuery = "UPDATE tbl_orcamento SET total=?, updated_at=? WHERE id=?";
+            await db.execute(updateQuery, [total, new Date(), id]);
+            return { id, total };
         } catch (err) {
-            console.log(err)
-            return null
+            console.error(err);
+            return null;
         }
-    },
+    }
+    ,
     async delete(id: string) {
         try {
             const query = "DELETE FROM tbl_orcamento WHERE id=?"
