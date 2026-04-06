@@ -61,33 +61,43 @@ export const budgetModel = {
         }
     },
     async calculateBudget(id: string) {
-        try {
-            const query = `SELECT ps.preco_hora, ps.horas_estimadas, p.taxa_Urgencia, p.percentagem_desconto FROM tbl_prestacao_servicos ps JOIN tbl_prestadores p ON ps.id_prestador = p.id WHERE ps.id_orcamento = ?`;
-            const [services] = await db.execute(query, [id]) as [any[], any];
-            console.log(services)
-            if (!services || services.length === 0) {
-                return null;
-            }
-            let total = 0;
-            services.forEach((item: any) => {
-                let subtotal = item.preco_hora * item.horas_estimadas;
-                if (item.taxa_Urgencia) {
-                    subtotal += subtotal * item.taxa_Urgencia;
-                }
-                if (item.percentagem_desconto) {
-                    subtotal -= subtotal * item.percentagem_desconto;
-                }
-                total += subtotal;
-            });
-            const updateQuery = "UPDATE tbl_orcamento SET total=?, updated_at=? WHERE id=?";
-            await db.execute(updateQuery, [total, new Date(), id]);
-            return { id, total };
-        } catch (err) {
-            console.error(err);
+    try {
+        const queryServices = `
+            SELECT preco_hora, horas_estimadas, id_prestador 
+            FROM tbl_prestacao_servicos 
+            WHERE id_orcamento = ?`;
+        const [services] = await db.execute(queryServices, [id]) as [any[], any];
+        if (!services || services.length === 0) {
             return null;
         }
+        let total = 0;
+        for (const item of services) {
+            let subtotal = item.preco_hora * item.horas_estimadas;
+            const queryUrgencia = `
+                SELECT taxa_Urgencia, percentagem_desconto 
+                FROM tbl_prestadores 
+                WHERE id = ?`;
+            const [prestadorData] = await db.execute(queryUrgencia, [item.id_prestador]) as [any[], any];
+            if (prestadorData && prestadorData.length > 0) {
+                const { taxa_Urgencia, percentagem_desconto } = prestadorData[0];
+                if (taxa_Urgencia) {
+                    subtotal += subtotal * taxa_Urgencia;
+                }
+                if (percentagem_desconto) {
+                    subtotal -= subtotal * percentagem_desconto;
+                }
+            }
+            total += subtotal;
+        }
+        const updateQuery = "UPDATE tbl_orcamento SET total=?, updated_at=? WHERE id=?";
+        await db.execute(updateQuery, [total, new Date(), id]);
+
+        return { id, total };
+    } catch (err) {
+        console.error(err);
+        return null;
     }
-    ,
+},
     async delete(id: string) {
         try {
             const query = "DELETE FROM tbl_orcamento WHERE id=?"
