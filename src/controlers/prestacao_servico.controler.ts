@@ -29,7 +29,7 @@ export const SPControler = {
         })
     },
     async getAll(req: Request, res: Response) {
-        const getAllProposalResponce = await proposalModel.getAll()
+        const getAllProposalResponce = await serviceProvModel.getAll()
         if (!getAllProposalResponce) {
             return res.status(500).json({
                 status: "erro",
@@ -52,8 +52,8 @@ export const SPControler = {
                 data: null
             })
         }
-        const getProposalResponce = await proposalModel.get(id as string)
-        if (!getProposalResponce) {
+        const getSPResponse = await serviceProvModel.get(id as string)
+        if (!getSPResponse) {
             return res.status(500).json({
                 status: "erro",
                 message: "Erro ao buscar Prestacao de servico",
@@ -63,7 +63,7 @@ export const SPControler = {
         return res.status(201).json({
             status: "sucesso",
             message: "Prestacao de servico buscado co sucesso",
-            data: getProposalResponce
+            data: getSPResponse
         })
     },
     async update(req: Request, res: Response) {
