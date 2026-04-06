@@ -23,10 +23,6 @@ components:
         nif:
           type: integer
           example: 123456789
-        precoHora:
-          type: number
-          format: float
-          example: 25.50
         profissao:
           type: string
           example: "Eletricista"
@@ -56,16 +52,12 @@ components:
           type: string
           format: date-time
           example: "2023-10-27T10:00:00Z"
-
     CreatePrestador:
       type: object
       properties:
         nif:
           type: integer
           example: 123456789
-        precoHora:
-          type: number
-          example: 30.00
         profissao:
           type: string
           example: "Encanador"

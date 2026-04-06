@@ -66,7 +66,7 @@ export const budgetControler = {
         })
     },
     async update(req: Request, res: Response) {
-        const { id } = req.query
+        const { id } = req.params
         const newData: BudgetType = req.body
         if (!id) {
             return res.status(400).json({
@@ -97,7 +97,7 @@ export const budgetControler = {
         })
     },
     async calculateBudget(req: Request, res: Response) {
-    const { id } = req.params;
+    const { id } = req.params
     if (!id) {
         return res.status(400).json({
             status: "error",
@@ -105,7 +105,7 @@ export const budgetControler = {
             data: null
         });
     }
-    const result = await budgetModel.calculateBudget(id);
+    const result = await budgetModel.calculateBudget(id as string)
     if (!result) {
         return res.status(400).json({
             status: "error",
@@ -120,7 +120,7 @@ export const budgetControler = {
     });
 },
     async delete(req: Request, res: Response) {
-        const { id } = req.query
+        const { id } = req.params
         if (!id) {
             return res.status(400).json({
                 status: "error",

@@ -71,6 +71,10 @@ components:
         disign:
           type: string
           example: "Limpeza de Fachada"
+        subtotal:
+          type: number
+          format: float
+          example: 450.00
         horas_estimadas:
           type: number
           example: 4

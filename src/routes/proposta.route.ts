@@ -16,6 +16,6 @@ router.get(proposalRoute.getById, proposalControler.get)
 router.post(proposalRoute.create, proposalControler.createProposal)
 router.put(proposalRoute.update, proposalControler.update)
 router.delete(proposalRoute.delete, proposalControler.delete)
-router.aceitar(proposalRoute.aceitar, proposalControler.acceptProposal)
+router.put(proposalRoute.aceitar, proposalControler.acceptProposal)
 
 export { router }

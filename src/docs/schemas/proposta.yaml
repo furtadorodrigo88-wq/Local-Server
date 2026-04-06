@@ -42,7 +42,12 @@ components:
           type: string
           format: date-time
           example: "2023-10-27T10:00:00Z"
-
+    GetProposta:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "uuid-1234-5678"
     CreateProposta:
       type: object
       required:
@@ -68,7 +73,9 @@ components:
           type: boolean
           default: true
           example: true
-
+        id_prestador:
+          type: string
+          example: "uuid-1234-5678"
     UpdateProposta:
       type: object
       properties:
@@ -109,7 +116,6 @@ components:
             estado:
               type: string
               example: Aceite
-
     ResponseSucessoProposta:
       type: object
       properties:
@@ -121,7 +127,6 @@ components:
           example: true
         data:
           $ref: "#/components/schemas/Proposta"
-
     ResponseErroProposta:
       type: object
       properties:

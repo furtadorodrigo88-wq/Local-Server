@@ -100,7 +100,7 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: "#/components/schemas/CreatePrestador"
+              $ref: "#/components/schemas/CreatePrestacaoServico"
       responses:
         "200":
           description: Prestacao Servico atualizado com sucesso

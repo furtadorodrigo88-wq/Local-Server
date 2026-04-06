@@ -60,7 +60,6 @@ export interface Servicetype {
 export interface ProvaiderType {
     id: string
     nif: number
-    precoHora: number
     profissao: string
     minimoDesconto: number
     taxaUrgencia: number
@@ -73,7 +72,7 @@ export interface ProvaiderType {
 
 export interface BudgetType {
     id: string
-    tatal: string
+    total: string
     id_utilizadores: string
     enabled: boolean
     created_at: string
@@ -97,11 +96,19 @@ export interface ServiceProvType {
 
 export interface ProposalType {
     id: string
-	id_prestacao_servico: number
-	preco_hora: number
-	horas_estimadas: number
+	id_prestacao_servico: string
+	preco_hora: string
+	horas_estimadas: string
 	estado: string
 	enabled: boolean
 	created_at: string
 	updated_at: string
+	id_prestador: string
+}
+export enum Estado {
+    PENDENTE = "pendente",
+    ACEITE = "aceite",
+    CANCELADO = "cancelado",
+    COMPLETO = "completo",
+    EM_PROGRESSO = "em progresso"
 }

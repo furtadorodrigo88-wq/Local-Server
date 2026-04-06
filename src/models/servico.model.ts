@@ -5,7 +5,7 @@ import type { Servicetype } from "../utils/types.js";
 export const ServiceModel = {
     async create(newService: Servicetype) {
         try {
-            const query = "INSERT INTO tbl_servicos VALUE(?,?,?,?,?,?,?)"
+            const query = "INSERT INTO tbl_servicos (id, nome, descricao, categoria, enabled, created_at, updated_at) VALUE (?,?,?,?,?,?,?)"
             const value = [
                 null,
                 newService.nome,

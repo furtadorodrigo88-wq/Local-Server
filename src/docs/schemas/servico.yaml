@@ -42,7 +42,7 @@ components:
         nome:
           type: string
           example: "Serviço de Limpeza"
-        description:
+        descricao:
           type: string
           example: "Descrição detalhada do serviço de limpeza"
         categoria:

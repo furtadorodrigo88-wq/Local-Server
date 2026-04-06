@@ -20,7 +20,7 @@ app.use("/users", UserRouter)
 app.use("/provider", ProviderRouter)
 app.use("/budget", BudgetRouter)
 app.use("/serviceProv", SPRouter)
-app.use("/Proposal", ProposalRouter)
+app.use("/proposal", ProposalRouter)
 
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec))
 

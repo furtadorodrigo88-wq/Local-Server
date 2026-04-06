@@ -1,13 +1,14 @@
 import db from "../lib/db.js";
-import type { BudgetType, Servicetype } from "../utils/types.js";
+import type { BudgetType } from "../utils/types.js";
 
 
 export const budgetModel = {
     async create(newBudget: BudgetType) {
         try {
-            const query = "INSERT INTO tbl_orcamento (tatal, id_utilizadores, enabled, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            const query = "INSERT INTO tbl_orcamento (id, total, id_utilizadores, enabled, created_at, updated_at) VALUES (?,?, ?, ?, ?, ?)"
             const value = [
-                newBudget.tatal,
+                null,
+                newBudget.total,
                 newBudget.id_utilizadores,
                 newBudget.enabled,
                 new Date(),
@@ -44,9 +45,9 @@ export const budgetModel = {
     },
     async update(id: string, newBudget: BudgetType) {
         try {
-            const query = "UPDATE tbl_orcamento SET tatal=?, id_utilizadores=?, enabled=?, updated_at=? WHERE id=?"
+            const query = "UPDATE tbl_orcamento SET total=?, id_utilizadores=?, enabled=?, updated_at=? WHERE id=?"
             const value = [
-                newBudget.tatal,
+                newBudget.total,
                 newBudget.id_utilizadores,
                 newBudget.enabled,
                 new Date(),
@@ -61,14 +62,9 @@ export const budgetModel = {
     },
     async calculateBudget(id: string) {
         try {
-            const query = `
-            SELECT ps.preco_hora, ps.horas_estimadas, 
-            p.taxa_Urgencia, p.percentagem_desconto
-            FROM tbl_prestacao_servicos ps
-            JOIN tbl_prestadores p ON ps.id_prestador = p.id
-            WHERE ps.id_orcamento = ?
-        `;
+            const query = `SELECT ps.preco_hora, ps.horas_estimadas, p.taxa_Urgencia, p.percentagem_desconto FROM tbl_prestacao_servicos ps JOIN tbl_prestadores p ON ps.id_prestador = p.id WHERE ps.id_orcamento = ?`;
             const [services] = await db.execute(query, [id]) as [any[], any];
+            console.log(services)
             if (!services || services.length === 0) {
                 return null;
             }

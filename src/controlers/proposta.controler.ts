@@ -45,6 +45,7 @@ export const proposalControler = {
     },
     async get(req: Request, res: Response) {
         const id = req.params.id
+        console.log(id)
         if (!id) {
             return res.status(400).json({
                 status: "error",
@@ -67,7 +68,7 @@ export const proposalControler = {
         })
     },
     async update(req: Request, res: Response) {
-        const { id } = req.query
+        const { id } = req.params
         const newData: ProposalType = req.body
         if (!id) {
             return res.status(400).json({
@@ -100,7 +101,7 @@ export const proposalControler = {
         })
     },
     async acceptProposal(req: Request, res: Response) {
-        const { id } = req.params;
+        const { id } = req.params
         if (!id) {
             return res.status(400).json({
                 status: "error",
@@ -108,7 +109,7 @@ export const proposalControler = {
                 data: null
             });
         }
-        const result = await proposalModel.acceptProposal(id);
+        const result = await proposalModel.acceptProposal(id as string);
         if (!result) {
             return res.status(400).json({
                 status: "error",
@@ -123,7 +124,7 @@ export const proposalControler = {
         });
     },
     async delete(req: Request, res: Response) {
-        const { id } = req.query
+        const { id } = req.params
         if (!id) {
             return res.status(400).json({
                 status: "error",

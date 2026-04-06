@@ -5,8 +5,9 @@ import type { ServiceProvType } from "../utils/types.js";
 export const serviceProvModel = {
     async create(newSP: ServiceProvType) {
         try {
-            const query = "INSERT INTO tbl_prestacao_servicos (disign, subtotal, horas_estimadas, id_prestador, id_servico, preco_hora, estado, id_orcamento, enabled, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            const query = "INSERT INTO tbl_prestacao_servicos (id, disign, subtotal, horas_estimadas, id_prestador, id_servico, preco_hora, estado, id_orcamento, enabled, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             const value = [
+                null,
                 newSP.disign,
                 newSP.subtotal,
                 newSP.horas_estimadas,
@@ -19,6 +20,7 @@ export const serviceProvModel = {
                 new Date (),
                 new Date ()
             ]
+            console.log(value)
             const [result] = await db.execute(query, value);
             return result;
         } catch (err) {
@@ -30,7 +32,7 @@ export const serviceProvModel = {
         try {
             const query = "SELECT * FROM tbl_prestacao_servicos"
             const rows = await db.execute(query)
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : []
+            return Array.isArray(rows) && rows.length > 0 ? rows : []
         } catch (err) {
             console.log(err)
             return null
@@ -64,6 +66,7 @@ export const serviceProvModel = {
                 new Date (),
                 id
             ]
+            console.log(value)
             const [result] = await db.execute(query, value);
             return result;
         } catch (err) {

@@ -63,8 +63,8 @@ paths:
           required: true
           description: ID do Prestador a ser buscado
           schema:
-            type: integer
-            example: 1
+            type: string
+            example: "uuid-123-456"
       responses:
         "200":
           description: Prestador encontrado
@@ -92,8 +92,8 @@ paths:
           required: true
           description: ID do Prestador a ser atualizado
           schema:
-            type: integer
-            example: 1
+            type: string
+            example: "uuid-123-456"
       requestBody:
         required: true
         content:
@@ -135,8 +135,8 @@ paths:
           required: true
           description: ID do Prestador a ser deletado
           schema:
-            type: integer
-            example: 1
+            type: string
+            example: "uuid-123-456"
       responses:
         "200":
           description: Prestador deletado com sucesso

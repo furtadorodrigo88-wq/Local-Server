@@ -1,15 +1,16 @@
 import db from "../lib/db.js";
 import type { ProvaiderType } from "../utils/types.js";
+import { generateUUID } from "../utils/uuid.js";
 
 
 
 export const ProviderModel = {
     async create(newPrestador: ProvaiderType) {
         try {
-            const query = "INSERT INTO tbl_prestadores (nif, precoHora, profissao, minimoDesconto, taxaUrgencia, percentagemDesconto, estado, enabled, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            const query = "INSERT INTO tbl_prestadores (id, nif, profissao, minimo_desconto, taxa_urgencia, percentagem_desconto, estado, enabled, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             const value = [
+                generateUUID(),
                 newPrestador.nif,
-                newPrestador.precoHora,
                 newPrestador.profissao,
                 newPrestador.minimoDesconto,
                 newPrestador.taxaUrgencia,
@@ -50,10 +51,9 @@ export const ProviderModel = {
     },
     async update (id: string, newProvider: ProvaiderType) {
         try {
-            const query = "UPDATE tbl_prestadores SET nif=?, precoHora=?, profissao=?, minimoDesconto=?, taxaUrgencia=?, percentagemDesconto=?, estado=?, enabled=?, updated_at=? WHERE id=?"
+            const query = "UPDATE tbl_prestadores SET nif=?, profissao=?, minimo_desconto=?, taxa_urgencia=?, percentagem_desconto=?, estado=?, enabled=?, updated_at=? WHERE id=?"
             const value = [
                 newProvider.nif,
-                newProvider.precoHora,
                 newProvider.profissao,
                 newProvider.minimoDesconto,
                 newProvider.taxaUrgencia,

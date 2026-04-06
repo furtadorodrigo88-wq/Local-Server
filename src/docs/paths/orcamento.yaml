@@ -100,7 +100,7 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: "#/components/schemas/CreatePrestador"
+              $ref: "#/components/schemas/CreateOrcamento"
       responses:
         "200":
           description: Orcamento Servico atualizado com sucesso
@@ -123,7 +123,7 @@ paths:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseErroOrcamento"
-  /budget/calculate/{id}:
+  /budget/calcular/:id:
     put:
       summary: calcular um Orcamento Servico
       tags:

@@ -65,7 +65,7 @@ export const servicoControler = {
         })
     },
     async update(req: Request, res: Response) {
-        const { id } = req.query
+        const { id } = req.params
         const newData: Servicetype = req.body
         if (!id) {
             return res.status(400).json({
@@ -98,7 +98,7 @@ export const servicoControler = {
         })
     },
     async delete(req: Request, res:Response) {
-        const { id } = req.query
+        const { id } = req.params
         
             if (!id) {
                 return res.status(400).json({

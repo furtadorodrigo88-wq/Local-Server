@@ -35,7 +35,7 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: "#/components/schemas/Createproposal"
+              $ref: "#/components/schemas/CreateProposta"
       responses:
         "200":
           description: Serviço criado com sucesso
@@ -72,7 +72,7 @@ paths:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseSucessoProposta"
+                $ref: "#/components/schemas/GetProposta"
         "404":
           description: Serviço não encontrado
           content:
@@ -123,13 +123,17 @@ paths:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseErroProposta"
-  /proposal/aceitar/:id:
+  /proposal/aceitar/{id}:
     put:
       summary: Aceita uma proposta
+      tags:
+        - Proposal
+      description: Aceita uma proposta
       parameters:
         - name: id
           in: path
           required: true
+          description: ID da proposta a ser aceita
           schema:
             type: string
       responses:

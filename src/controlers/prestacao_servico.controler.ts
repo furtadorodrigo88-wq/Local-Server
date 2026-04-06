@@ -1,11 +1,12 @@
 import type { Request, Response } from "express"
-import type { ProposalType } from "../utils/types.js"
+import type { ProposalType, ServiceProvType } from "../utils/types.js"
 import { proposalModel } from "../models/proposta.models.js"
+import { serviceProvModel } from "../models/prestacao_servico.models.js"
 
 
 export const SPControler = {
     async createSP ( req: Request, res: Response) {
-        const newSP: ProposalType = req.body
+        const newSP: ServiceProvType = req.body
         if (!newSP) {
             return res.status(400).json({
                 status: "error",
@@ -13,7 +14,7 @@ export const SPControler = {
                 data: null
             })
         }
-        const createProposalResponce = await proposalModel.create(newSP)
+        const createProposalResponce = await serviceProvModel.create(newSP)
         if (createProposalResponce === null) {
             return res.status(400).json({
                 status: "error",
@@ -66,8 +67,8 @@ export const SPControler = {
         })
     },
     async update(req: Request, res: Response) {
-        const { id } = req.query
-        const newData: ProposalType = req.body
+        const { id } = req.params
+        const newData: ServiceProvType = req.body
         if (!id) {
             return res.status(400).json({
                 status: "error",
@@ -84,7 +85,7 @@ export const SPControler = {
             })
         }
 
-        const updateProposalResponse = await proposalModel.update(id as string, newData)
+        const updateProposalResponse = await serviceProvModel.update(id as string, newData)
         if (!updateProposalResponse) {
             return res.status(400).json({
                 status: "error",
@@ -99,7 +100,7 @@ export const SPControler = {
         })
     },
     async delete(req: Request, res: Response) {
-        const { id } = req.query
+        const { id } = req.params
 
         if (!id) {
             return res.status(400).json({
@@ -108,8 +109,7 @@ export const SPControler = {
                 data: null
             })
         }
-
-        const deleteuProposalResponse = proposalModel.delete(id as string)
+        const deleteuProposalResponse = serviceProvModel.delete(id as string)
         if (!deleteuProposalResponse) {
             return res.status(400).json({
                 status: "error",
