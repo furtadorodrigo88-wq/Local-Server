@@ -66,7 +66,7 @@ export const budgetControler = {
         })
     },
     async update(req: Request, res: Response) {
-        const { id } = req.query
+        const { id } = req.params
         const newData: BudgetType = req.body
         if (!id) {
             return res.status(400).json({
@@ -99,7 +99,7 @@ export const budgetControler = {
         })
     },
     async delete(req: Request, res: Response) {
-        const { id } = req.query
+        const { id } = req.params
 
         if (!id) {
             return res.status(400).json({

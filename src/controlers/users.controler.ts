@@ -52,7 +52,7 @@ export const UserControler = {
         }
     },
     async update(req: Request, res: Response) {
-        const id = req.query.id as string
+        const id = req.params.id as string
         const newData = req.body
         const updateUserResponse = await UserModel.update(id, newData)
         res.status(200).json({
@@ -62,7 +62,7 @@ export const UserControler = {
         })
     },
     async delete(req: Request, res: Response) {
-        const { id } = req.query
+        const { id } = req.params
 
         if (!id) {
             return res.status(400).json({
