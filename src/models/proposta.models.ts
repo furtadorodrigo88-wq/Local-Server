@@ -1,3 +1,4 @@
+import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
 import type { ProposalType } from "../utils/types.js";
 import { generateUUID } from "../utils/uuid.js";
@@ -102,6 +103,18 @@ export const proposalModel = {
             return rows
         } catch (err) {
             console.log(err)
+        }
+    },
+    async getByServceProv (idPrestacaoServico:string): Promise<ProposalType[] | null> {
+        try {
+            const query = "SELECT * FROM tbl_proposta WHERE tbl_proposta.id_prestacao_servico = ?"
+            const value = [idPrestacaoServico]
+            const [rows] = await db.execute<ProposalType[] & RowDataPacket[]>(query, value)
+            if (Array.isArray(rows) && rows.length === 0) return null
+            return Array.isArray(rows) ? rows  : null
+        } catch (err) {
+            console.log(err)
+            return null
         }
     }
 }

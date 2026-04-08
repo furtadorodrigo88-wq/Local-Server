@@ -1,3 +1,4 @@
+import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
 import type { ServiceProvType } from "../utils/types.js";
 
@@ -83,5 +84,17 @@ export const serviceProvModel = {
     } catch (err) {
         console.log(err)
     }
+    },
+    async getByOrcamento(idOrcamento: string): Promise<ServiceProvType | null> {
+        try {
+            const query = "SELECT * FROM tbl_prestacao_servicos WHERE tbl_prestacao_servicos.id_orcamento = ?"
+            const value = [idOrcamento]
+            const [rows] = await db.execute<ServiceProvType[] & RowDataPacket[]>(query, value)
+            if (Array.isArray(rows) && rows.length === 0) return null
+            return Array.isArray(rows) ? rows[0] as ServiceProvType : null
+        } catch (err) {
+            console.log(err)
+            return null
+        }
     }
 }

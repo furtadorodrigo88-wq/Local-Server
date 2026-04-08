@@ -1,10 +1,13 @@
 import type { Request, Response } from "express"
-import type { BudgetType } from "../utils/types.js"
+import { Estadoproposta, type BudgetType, type ProposalType } from "../utils/types.js"
 import { budgetModel } from "../models/orcamentos.model.js"
+import { ProviderModel } from "../models/prestador.model.js"
+import { serviceProvModel } from "../models/prestacao_servico.models.js"
+import { proposalModel } from "../models/proposta.models.js"
 
 
 export const budgetControler = {
-    async createBudget (req: Request, res: Response) {
+    async createBudget(req: Request, res: Response) {
         const newProvider: BudgetType = req.body
         if (!newProvider) {
             return res.status(400).json({
@@ -97,28 +100,72 @@ export const budgetControler = {
         })
     },
     async calculateBudget(req: Request, res: Response) {
-    const { id } = req.params
-    if (!id) {
-        return res.status(400).json({
-            status: "error",
-            message: "ID obrigatório",
-            data: null
-        });
-    }
-    const result = await budgetModel.calculateBudget(id as string)
-    if (!result) {
-        return res.status(400).json({
-            status: "error",
-            message: "Dados de orçamento inválidos",
-            data: null
-        });
-    }
-    return res.status(200).json({
-        status: "success",
-        message: "Orçamento calculado com sucesso",
-        data: result
-    });
-},
+        const { id } = req.params
+        if (!id) {
+            return res.status(400).json({
+                status: "error",
+                mensage: "ID obrigatorio",
+                data: null
+            })
+        }
+        const prestacaoDeServico = await serviceProvModel.getByOrcamento(id as string)
+        if (!prestacaoDeServico) {
+            return res.status(400).json({
+                status: "error",
+                mensage: "Prestaçao de servico nao encontrada",
+                data: null
+            })
+        }
+        const proposta = await proposalModel.getByServceProv(prestacaoDeServico.id)
+        if (!proposta) {
+            return res.status(400).json({
+                status: "error",
+                mensage: "Proposta nao encontrada",
+                data: null
+            })
+        }
+        const acceptedproposal: ProposalType | undefined = proposta.find((proposta:ProposalType) => proposta.estado === Estadoproposta.ACEITE)
+        if (!acceptedproposal) {
+            return res.status(400).json({
+                status: "error",
+                mensage: "ainda nenhuma proposta foi aceite",
+                data: null
+            })
+        }
+        const precoHora = acceptedproposal.preco_hora
+        const horasEstimadas = acceptedproposal.horas_estimadas
+        const prestador = await ProviderModel.get(acceptedproposal.id_prestador)
+        if (!prestador) {
+            return res.status(400).json({
+                status: "error",
+                mensage: "Prestador nao encontrado",
+                data: null
+            })
+        }
+        const taxaUrgencia = prestador.taxaUrgencia
+        const minimoDesconto = prestador.minimoDesconto
+        const percentagemDesconto = prestador.percentagemDesconto
+        let subtotal = precoHora * horasEstimadas
+        if (subtotal > minimoDesconto){
+            subtotal =subtotal * (1 - percentagemDesconto)
+        }
+        if (taxaUrgencia){
+            subtotal = subtotal * (1 + percentagemDesconto)
+        }
+        const updateBudgetResponse = await budgetModel.updateBudget (id as string, subtotal)
+        if (!updateBudgetResponse) {
+            return res.status(400).json({
+                status: "error",
+                mensage: "Erro ao calcular orcamento",
+                data: null
+            })
+        }
+        return res.status(200).json({
+            status: "success",
+            message: "orcamento calculado e atualizado com sucesso",
+            data: updateBudgetResponse
+        })
+    },
     async delete(req: Request, res: Response) {
         const { id } = req.params
         if (!id) {

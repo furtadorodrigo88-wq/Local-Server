@@ -105,10 +105,15 @@ export interface ProposalType {
 	updated_at: string
 	id_prestador: string
 }
-export enum Estado {
+export enum Estadoproposta {
     PENDENTE = "pendente",
     ACEITE = "aceite",
-    CANCELADO = "cancelado",
-    COMPLETO = "completo",
-    EM_PROGRESSO = "em progresso"
+    CANCELADO = "cancelado"
+}
+
+export enum Estadoprestacao {
+    PENDENTE = "pendente",
+    EM_PROGRESSO = "em progresso",
+    FINALIZADO = "finalizado",
+    CANCELADO = "cancelado"
 }

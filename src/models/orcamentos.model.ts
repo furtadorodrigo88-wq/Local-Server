@@ -1,5 +1,5 @@
 import db from "../lib/db.js";
-import type { BudgetType } from "../utils/types.js";
+import type { BudgetType, ServiceProvType } from "../utils/types.js";
 
 
 export const budgetModel = {
@@ -66,7 +66,7 @@ export const budgetModel = {
             SELECT preco_hora, horas_estimadas, id_prestador 
             FROM tbl_prestacao_servicos 
             WHERE id_orcamento = ?`;
-        const [services] = await db.execute(queryServices, [id]) as [any[], any];
+        const [services] = await db.execute(queryServices, [id]) as [ServiceProvType[], any];
         if (!services || services.length === 0) {
             return null;
         }
