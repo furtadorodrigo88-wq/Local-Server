@@ -1,12 +1,12 @@
 import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
-import type { ServiceProvType } from "../utils/types.js";
+import type { serviceProvDetailsType, ServiceProvType } from "../utils/types.js";
 
 
 export const serviceProvModel = {
     async create(newSP: ServiceProvType) {
         try {
-            const query = "INSERT INTO tbl_prestacao_servicos (id, disign, subtotal, horas_estimadas, id_prestador, id_servico, preco_hora, estado, id_orcamento, enabled, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            const query = "INSERT INTO tbl_prestacao_servicos (id, disign, subtotal, horas_estimadas, id_prestador, id_servico, preco_hora, estado, id_orcamento, id_utilizador, urgente, enabled, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             const value = [
                 null,
                 newSP.disign,
@@ -17,6 +17,8 @@ export const serviceProvModel = {
                 newSP.preco_hora,
                 newSP.estado,
                 newSP.id_orcamento,
+                newSP.id_utilizador,
+                newSP.urgente,
                 newSP.enabled,
                 new Date (),
                 new Date ()
@@ -53,7 +55,7 @@ export const serviceProvModel = {
     },
     async update (id: string, newSP: ServiceProvType) {
         try {
-            const query = "UPDATE tbl_prestacao_servicos SET disign=?, subtotal=?, horas_estimadas=?, id_prestador=?, id_servico=?, preco_hora=?, estado=?, id_orcamento=?, enabled=?, updated_at=?  WHERE id=?"
+            const query = "UPDATE tbl_prestacao_servicos SET disign=?, subtotal=?, horas_estimadas=?, id_prestador=?, id_servico=?, preco_hora=?, estado=?, id_orcamento=?, id_utilizador=?, urgente=?, enabled=?, updated_at=?  WHERE id=?"
             const value = [
                 newSP.disign,
                 newSP.subtotal,
@@ -63,6 +65,8 @@ export const serviceProvModel = {
                 newSP.preco_hora,
                 newSP.estado,
                 newSP.id_orcamento,
+                newSP.id_utilizador,
+                newSP.urgente,
                 newSP.enabled,
                 new Date (),
                 id
@@ -92,6 +96,32 @@ export const serviceProvModel = {
             const [rows] = await db.execute<ServiceProvType[] & RowDataPacket[]>(query, value)
             if (Array.isArray(rows) && rows.length === 0) return null
             return Array.isArray(rows) ? rows[0] as ServiceProvType : null
+        } catch (err) {
+            console.log(err)
+            return null
+        }
+    },
+    async getAllserviceProvDetails(limit: number, offset: number) {
+        try {
+            const query = `
+            SELECT 
+                ps.id as id_prestacao_servico,
+                ps.designaçao as descricao,
+                u.nome as nome_utilizador.
+                u.email as email_utilizador,
+                s.nome as nome_servico,
+                ps.created_at as data_pedido,
+                ps.urgencia
+            FROM tbl_prestacao_servicos ps
+            INNER JOIN tbl_utilizadores u ON ps.id_utilizador = u.id
+            INNER JOIN tbl_servico s ON ps.id_servico = s.id
+            ORDER BY ps.created_at DESC
+            LIMIT ? OFFSET ?
+            `
+            const values = [limit.toString(), offset.toString()]
+            const [ rows ] = await db.execute<(serviceProvDetailsType[] & RowDataPacket[])>(query, values)
+            if (Array.isArray(rows) && rows.length === 0) return null
+            return Array.isArray(rows) ? rows as serviceProvDetailsType[] : null
         } catch (err) {
             console.log(err)
             return null

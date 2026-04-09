@@ -60,42 +60,19 @@ export const budgetModel = {
             return null
         }
     },
-    async calculateBudget(id: string) {
+    async updateBudget(id: string, total: number) {
     try {
-        const queryServices = `
-            SELECT preco_hora, horas_estimadas, id_prestador 
-            FROM tbl_prestacao_servicos 
-            WHERE id_orcamento = ?`;
-        const [services] = await db.execute(queryServices, [id]) as [ServiceProvType[], any];
-        if (!services || services.length === 0) {
-            return null;
-        }
-        let total = 0;
-        for (const item of services) {
-            let subtotal = item.preco_hora * item.horas_estimadas;
-            const queryUrgencia = `
-                SELECT taxa_Urgencia, percentagem_desconto 
-                FROM tbl_prestadores 
-                WHERE id = ?`;
-            const [prestadorData] = await db.execute(queryUrgencia, [item.id_prestador]) as [any[], any];
-            if (prestadorData && prestadorData.length > 0) {
-                const { taxa_Urgencia, percentagem_desconto } = prestadorData[0];
-                if (taxa_Urgencia) {
-                    subtotal += subtotal * taxa_Urgencia;
-                }
-                if (percentagem_desconto) {
-                    subtotal -= subtotal * percentagem_desconto;
-                }
-            }
-            total += subtotal;
-        }
-        const updateQuery = "UPDATE tbl_orcamento SET total=?, updated_at=? WHERE id=?";
-        await db.execute(updateQuery, [total, new Date(), id]);
-
-        return { id, total };
+        const query = "UPDATE tbl_orcamento SET total=?, updated_at=? WHERE id=?"
+        const value = [
+            total,
+            new Date(),
+            id
+        ]
+        const rows: any = await db.execute(query, value);
+        return rows[0].affectedRows === 0 ? null : rows[0];
     } catch (err) {
-        console.error(err);
-        return null;
+        console.log(err)
+        return null
     }
 },
     async delete(id: string) {

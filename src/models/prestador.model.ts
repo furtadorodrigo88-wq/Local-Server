@@ -1,3 +1,4 @@
+import type { promises } from "node:dns";
 import db from "../lib/db.js";
 import type { ProvaiderType } from "../utils/types.js";
 import { generateUUID } from "../utils/uuid.js";
@@ -37,13 +38,13 @@ export const ProviderModel = {
             return null
         }
     },
-    async get(id: string) {
+    async get(id: string): Promise<ProvaiderType | null> {
         try {
             const query = "SELECT * FROM tbl_prestadores WHERE tbl_prestadores.id = ?"
             const value = [id]
             const [rows] = await db.execute(query, value)
             if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows[0] : null
+            return Array.isArray(rows) ? rows[0] as ProvaiderType : null
         } catch (err) {
             console.log(err)
             return null

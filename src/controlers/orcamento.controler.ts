@@ -1,5 +1,5 @@
 import type { Request, Response } from "express"
-import { Estadoproposta, type BudgetType, type ProposalType } from "../utils/types.js"
+import { Estadoproposta, type BudgetType, type ProposalType, type ResponseType } from "../utils/types.js"
 import { budgetModel } from "../models/orcamentos.model.js"
 import { ProviderModel } from "../models/prestador.model.js"
 import { serviceProvModel } from "../models/prestacao_servico.models.js"
@@ -10,20 +10,23 @@ export const budgetControler = {
     async createBudget(req: Request, res: Response) {
         const newProvider: BudgetType = req.body
         if (!newProvider) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Dados Orcamento invalido",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
         const createBudgetResponce = await budgetModel.create(newProvider)
         if (createBudgetResponce === null) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao criar orcamento",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
+        
         return res.status(201).json({
             status: "success",
             message: "orcamento criado com sucesso",
@@ -102,45 +105,50 @@ export const budgetControler = {
     async calculateBudget(req: Request, res: Response) {
         const { id } = req.params
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                mensage: "ID obrigatorio",
+                message: "id obrigatorio",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
         const prestacaoDeServico = await serviceProvModel.getByOrcamento(id as string)
         if (!prestacaoDeServico) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                mensage: "Prestaçao de servico nao encontrada",
+                message: "Prestaçao de servico nao encontrada",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
         const proposta = await proposalModel.getByServceProv(prestacaoDeServico.id)
         if (!proposta) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                mensage: "Proposta nao encontrada",
+                message: "Proposta nao encontrada",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
         const acceptedproposal: ProposalType | undefined = proposta.find((proposta:ProposalType) => proposta.estado === Estadoproposta.ACEITE)
         if (!acceptedproposal) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                mensage: "ainda nenhuma proposta foi aceite",
+                message: "ainda nenhuma proposta foi aceite",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
-        const precoHora = acceptedproposal.preco_hora
-        const horasEstimadas = acceptedproposal.horas_estimadas
+        const precoHora = parseFloat(acceptedproposal.preco_hora)
+        const horasEstimadas = parseFloat(acceptedproposal.horas_estimadas)
         const prestador = await ProviderModel.get(acceptedproposal.id_prestador)
         if (!prestador) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                mensage: "Prestador nao encontrado",
+                message: "Prestador nao encontrado",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
         const taxaUrgencia = prestador.taxaUrgencia
         const minimoDesconto = prestador.minimoDesconto
@@ -149,22 +157,24 @@ export const budgetControler = {
         if (subtotal > minimoDesconto){
             subtotal =subtotal * (1 - percentagemDesconto)
         }
-        if (taxaUrgencia){
-            subtotal = subtotal * (1 + percentagemDesconto)
+        if (prestacaoDeServico.urgente){
+            subtotal = subtotal * (1 + taxaUrgencia)
         }
         const updateBudgetResponse = await budgetModel.updateBudget (id as string, subtotal)
         if (!updateBudgetResponse) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                mensage: "Erro ao calcular orcamento",
+                message: "Erro ao calcular orcamento",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
-        return res.status(200).json({
+        const response: ResponseType<BudgetType> ={
             status: "success",
             message: "orcamento calculado e atualizado com sucesso",
             data: updateBudgetResponse
-        })
+        }
+        return res.status(200).json(response)
     },
     async delete(req: Request, res: Response) {
         const { id } = req.params
