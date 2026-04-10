@@ -130,3 +130,10 @@ export interface serviceProvDetailsType {
     data_pedido: string
     urgente: boolean
 }
+
+export interface AcceptProposalType {
+    id: string;
+    id_orcamento: string;
+    id_prestacao_servico: string;
+    estado: string;
+}

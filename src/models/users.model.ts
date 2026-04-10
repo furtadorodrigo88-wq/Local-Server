@@ -7,9 +7,10 @@ import { generateUUID } from "../utils/uuid.js";
 
 
 export const UserModel = {
-    async create(newUser: UserType) {
+    async create(newUser: UserType): Promise<UserType | null> {
         try {
-            const user = await db.execute("INSERT INTO tbl_utilizadores VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", [
+            const query = "INSERT INTO tbl_utilizadores VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
+            const value =[
                 generateUUID(),
                 newUser.nome,
                 newUser.numero,
@@ -22,16 +23,22 @@ export const UserModel = {
                 newUser.enabled,
                 new Date(),
                 new Date()
-            ])
-            return user
+            ]
+            const [user] = await db.execute(query, value)
+            return (Array.isArray(user) ? user[0] : user) as UserType
         } catch (err) {
             console.error("Erro ao inserir utilizador:", err);
             return null;
         }
     },
-    async getAll() {
-        const [rows] = await db.execute("SELECT * FROM tbl_utilizadores")
-        return rows
+    async getAll(): Promise<UserType[] | null> {
+        try {
+            const [rows] = await db.execute("SELECT * FROM tbl_utilizadores")
+            return rows as UserType[]
+        } catch (err) {
+            console.log(err)
+            return null
+        }
     },
     async get(id: string): Promise<UserType | null> {
         try {
@@ -57,9 +64,10 @@ export const UserModel = {
             return null
         }
     },
-    async update(id: string, newUser: UserType) {
+    async update(id: string, newUser: UserType): Promise<UserType | null> {
         try {
-            const updatedUser = await db.execute("UPDATE tbl_utilizadores SET nome=?, numero=?, data_nascimento=?, email=?, telefone=?, pais=?, localidade=?, password=?, enabled=?, updated_at=? WHERE id=?", [
+            const query = "UPDATE tbl_utilizadores SET nome=?, numero=?, data_nascimento=?, email=?, telefone=?, pais=?, localidade=?, password=?, enabled=?, updated_at=? WHERE id=?"
+            const value =[
                 newUser.nome,
                 newUser.numero,
                 formatDataDDMMYY(newUser.data_nascimento),
@@ -71,34 +79,39 @@ export const UserModel = {
                 newUser.enabled,
                 new Date(),
                 id
-            ])
-            return updatedUser
+            ]
+            const [updatedUser] = await db.execute(query, value)
+            return (Array.isArray(updatedUser) ? updatedUser[0] : updatedUser) as UserType
         } catch (err) {
             console.log(err)
             return null
         }
     },
-    async updatePassword(id: string, password: string) {
+    async updatePassword(id: string, password: string): Promise<UserType | null> {
         try {
-            const updatedUser = await db.execute("UPDATE tbl_utilizadores SET password=?, updated_at=? WHERE id=?", [
+            const query ="UPDATE tbl_utilizadores SET password=?, updated_at=? WHERE id=?"
+            const value =[
                 await hashPasseword(password),
                 new Date(),
                 id
-            ])
-            return updatedUser
+            ]
+            const [updatedUser] = await db.execute(query, value)
+            return (Array.isArray(updatedUser) ? updatedUser[0] : updatedUser) as UserType
         } catch (err) {
             console.log(err)
             return null
         }
     },
-    async delete(id: string) {
+    async delete(id: string): Promise<UserType   | null> {
         try {
             const query = "DELETE FROM tbl_utilizadores WHERE id=?"
             const value = [id]
-            const rows = await db.execute(query, value)
-            return rows
+            const [rows] = await db.execute(query, value)
+            if (Array.isArray(rows) && rows.length === 0) return null
+            return (Array.isArray(rows) ? rows[0] : rows) as UserType
         } catch (err) {
             console.log(err)
+            return null
         }
     }
 }

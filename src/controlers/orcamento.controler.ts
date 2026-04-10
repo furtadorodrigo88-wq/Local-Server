@@ -17,7 +17,7 @@ export const budgetControler = {
             }
             return res.status(400).json(response)
         }
-        const createBudgetResponce = await budgetModel.create(newProvider)
+        const createBudgetResponce: BudgetType | null = await budgetModel.create(newProvider)
         if (createBudgetResponce === null) {
             const response: ResponseType<null> = {
                 status: "error",
@@ -26,81 +26,90 @@ export const budgetControler = {
             }
             return res.status(400).json(response)
         }
-        
-        return res.status(201).json({
+        const response: ResponseType<BudgetType> = {
             status: "success",
             message: "orcamento criado com sucesso",
             data: createBudgetResponce
-        })
+        }
+        return res.status(201).json(response)
     },
     async getAll(req: Request, res: Response) {
-        const getAllBudgetResponce = await budgetModel.getAll()
+        const getAllBudgetResponce: BudgetType[] | null = await budgetModel.getAll()
         if (!getAllBudgetResponce) {
-            return res.status(500).json({
-                status: "erro",
+            const response: ResponseType<null> = {
+                status: "error",
                 message: "Erro ao buscar orcamento",
                 data: null
-            })
+            }
+            return res.status(500).json(response)
         }
-        return res.status(201).json({
-            status: "sucesso",
+        const response: ResponseType<BudgetType[]> = {
+            status: "success",
             message: "orcamento buscado co sucesso",
             data: getAllBudgetResponce
-        })
+        }
+        return res.status(201).json(response)
     },
     async get(req: Request, res: Response) {
         const id = req.params.id
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "id do orcamento nao fornecido",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
         const getBudgetResponce = await budgetModel.get(id as string)
         if (!getBudgetResponce) {
-            return res.status(500).json({
-                status: "erro",
+            const response: ResponseType<null> = {
+                status: "error",
                 message: "Erro ao buscar orcamento",
                 data: null
-            })
+            }
+            return res.status(500).json(response)
         }
-        return res.status(201).json({
-            status: "sucesso",
+        const response: ResponseType<BudgetType> = {
+            status: "success",
             message: "orcamento buscado co sucesso",
             data: getBudgetResponce
-        })
+        }
+        return res.status(201).json(response)
     },
     async update(req: Request, res: Response) {
         const { id } = req.params
         const newData: BudgetType = req.body
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                mensage: "ID obrigatorio",
+                message: "ID obrigatorio",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
         if (!newData) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                mensage: "Dados de orcamento invalidos",
+                message: "Dados de orcamento invalidos",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
         const updateBudgetResponse = await budgetModel.update(id as string, newData)
         if (!updateBudgetResponse) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                mensage: "Dados de orcamento invalidos",
+                message: "Dados de orcamento invalidos",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
-        return res.status(200).json({
+        const response: ResponseType<BudgetType> = {
             status: "success",
             message: "orcamento atualizado",
             data: updateBudgetResponse
-        })
+        }
+        return res.status(200).json(response)
     },
     async calculateBudget(req: Request, res: Response) {
         const { id } = req.params
@@ -179,24 +188,27 @@ export const budgetControler = {
     async delete(req: Request, res: Response) {
         const { id } = req.params
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                mensage: "ID obrigatorio",
+                message: "ID obrigatorio",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
-        const deleteuBudgetResponse = budgetModel.delete(id as string)
+        const deleteuBudgetResponse = await budgetModel.delete(id as string)
         if (!deleteuBudgetResponse) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                mensage: "ID obrigatorio",
+                message: "ID obrigatorio",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
-        return res.status(200).json({
+        const response: ResponseType<BudgetType[]> = {
             status: "success",
             message: "orcamento apagado",
             data: deleteuBudgetResponse
-        })
+        }
+        return res.status(200).json(response)
     }
 }

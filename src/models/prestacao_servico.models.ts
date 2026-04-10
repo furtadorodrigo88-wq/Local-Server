@@ -4,7 +4,7 @@ import type { serviceProvDetailsType, ServiceProvType } from "../utils/types.js"
 
 
 export const serviceProvModel = {
-    async create(newSP: ServiceProvType) {
+    async create(newSP: ServiceProvType): Promise<ServiceProvType | null> {
         try {
             const query = "INSERT INTO tbl_prestacao_servicos (id, disign, subtotal, horas_estimadas, id_prestador, id_servico, preco_hora, estado, id_orcamento, id_utilizador, urgente, enabled, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             const value = [
@@ -24,36 +24,38 @@ export const serviceProvModel = {
                 new Date ()
             ]
             console.log(value)
-            const [result] = await db.execute(query, value);
-            return result;
+            const [result] = await db.execute<ServiceProvType[] & RowDataPacket[]>(query, value);
+            if (Array.isArray(result) && result.length === 0) return null
+            return Array.isArray(result) ? result[0] as ServiceProvType : null
         } catch (err) {
             console.log(err)
             return null
         }
     },
-    async getAll() {
+    async getAll(): Promise<ServiceProvType[] | null> {
         try {
             const query = "SELECT * FROM tbl_prestacao_servicos"
-            const rows = await db.execute(query)
-            return Array.isArray(rows) && rows.length > 0 ? rows : []
+            const [rows] = await db.execute<ServiceProvType[] & RowDataPacket[]>(query)
+            if (Array.isArray(rows) && rows.length === 0) return null
+            return Array.isArray(rows) ? rows as ServiceProvType[] : null
         } catch (err) {
             console.log(err)
             return null
         }
     },
-    async get(id: string) {
+    async get(id: string): Promise<ServiceProvType | null> {
         try {
             const query = "SELECT * FROM tbl_prestacao_servicos WHERE tbl_prestacao_servicos.id = ?"
             const value = [id]
-            const [rows] = await db.execute(query, value)
+            const [rows] = await db.execute<ServiceProvType[] & RowDataPacket[]>(query, value)
             if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows[0] : null
+            return Array.isArray(rows) ? rows[0] as ServiceProvType : null
         } catch (err) {
             console.log(err)
             return null
         }
     },
-    async update (id: string, newSP: ServiceProvType) {
+    async update (id: string, newSP: ServiceProvType): Promise<ServiceProvType | null> {
         try {
             const query = "UPDATE tbl_prestacao_servicos SET disign=?, subtotal=?, horas_estimadas=?, id_prestador=?, id_servico=?, preco_hora=?, estado=?, id_orcamento=?, id_utilizador=?, urgente=?, enabled=?, updated_at=?  WHERE id=?"
             const value = [
@@ -72,21 +74,24 @@ export const serviceProvModel = {
                 id
             ]
             console.log(value)
-            const [result] = await db.execute(query, value);
-            return result;
+            const [result] = await db.execute<ServiceProvType[] & RowDataPacket[]>(query, value);
+            if (Array.isArray(result) && result.length === 0) return null
+            return Array.isArray(result) ? result[0] as ServiceProvType : null
         } catch (err) {
             console.log(err)
             return null
         }
     },
-    async delete (id: string) {
+    async delete (id: string): Promise<ServiceProvType | null> {
         try {
         const query = "DELETE FROM tbl_prestacao_servicos WHERE id=?"
         const value = [id]
-        const rows = await db.execute(query, value)
-        return rows
+        const [rows] = await db.execute<ServiceProvType[] & RowDataPacket[]>(query, value)
+        if (Array.isArray(rows) && rows.length === 0) return null
+        return Array.isArray(rows) ? rows[0] as ServiceProvType : null
     } catch (err) {
         console.log(err)
+        return null
     }
     },
     async getByOrcamento(idOrcamento: string): Promise<ServiceProvType | null> {

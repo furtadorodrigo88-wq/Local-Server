@@ -1,126 +1,141 @@
 import { ServiceModel } from "../models/servico.model.js"
-import type { Servicetype } from "../utils/types.js"
+import type { ResponseType, Servicetype } from "../utils/types.js"
 import type { Request, Response } from "express"
 
 export const servicoControler = {
     async createService( req: Request, res: Response) {
         const newService: Servicetype = req.body
         if (!newService) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Dados servico invalido",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
         const createServeceResponse = await ServiceModel.create(newService)
         if (createServeceResponse === null) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao criar servico",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
-        return res.status(201).json({
+        const response: ResponseType<Servicetype> = {
             status: "success",
             message: "Servico criado com sucesso",
             data: createServeceResponse
-        })
+        }
+        return res.status(201).json(response)
     },
     async getAll(req: Request, res: Response) {
         const getAllServiceResponce = await ServiceModel.getAll()
         if (!getAllServiceResponce) {
-            return res.status(500).json({
-                status: "erro",
+            const response: ResponseType<null> = {
+                status: "error",
                 message: "Erro ao buscar servico",
                 data: null
-            })
+            }
+            return res.status(500).json(response)
         }
-        return res.status(201).json({
-            status: "sucesso",
+        const response: ResponseType<Servicetype[]> = {
+            status: "success",
             message: "Servico buscado co sucesso",
             data: getAllServiceResponce
-        })
+        }
+        return res.status(201).json(response)
     },
     async get(req: Request, res: Response) {
         const id = req.params.id
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "id do servico nao fornecido",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
         const getServiceResponse = await ServiceModel.get(id as string)
         if (!getServiceResponse) {
-            return res.status(500).json({
-                status: "erro",
+            const response: ResponseType<null> = {
+                status: "error",
                 message: "Erro ao buscar servico",
                 data: null
-            })
+            }
+            return res.status(500).json(response)
         }
-        return res.status(201).json({
-            status: "sucesso",
+        const response: ResponseType<Servicetype> = {
+            status: "success",
             message: "Servico buscado co sucesso",
             data: getServiceResponse
-        })
+        }
+        return res.status(201).json(response)
     },
     async update(req: Request, res: Response) {
         const { id } = req.params
         const newData: Servicetype = req.body
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                mensage: "ID obrigatorio",
+                message: "ID obrigatorio",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
 
         if (!newData) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                mensage: "Dados de servico invalidos",
+                message: "Dados de servico invalidos",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
 
         const updateServiceResponse = await ServiceModel.update(id as string, newData)
         if (!updateServiceResponse) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                mensage: "Dados de servico invalidos",
+                message: "Dados de servico invalidos",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
-        return res.status(200).json({
+        const response: ResponseType<Servicetype> = {
             status: "success",
             message: "Servico atualizado",
             data: updateServiceResponse
-        })
+        }
+        return res.status(200).json(response)
     },
     async delete(req: Request, res:Response) {
         const { id } = req.params
         
             if (!id) {
-                return res.status(400).json({
+                const response: ResponseType<null> = {
                     status: "error",
-                    mensage: "ID obrigatorio",
+                    message: "ID obrigatorio",
                     data: null
-                })
+                }
+                return res.status(400).json(response)
             }
         
-            const deleteuserviceResponse = ServiceModel.delete (id as string)
+            const deleteuserviceResponse: Servicetype | null = await ServiceModel.delete (id as string)
             if (!deleteuserviceResponse) {
-                return res.status(400).json({
+                const response: ResponseType<null> = {
                     status: "error",
-                    mensage: "ID obrigatorio",
+                    message: "ID obrigatorio",
                     data: null
-                })
+                }
+                return res.status(400).json(response)
             }
-            return res.status(200).json({
+            const response: ResponseType<Servicetype> = {
                 status: "success",
                 message: "Servico apagado",
                 data: deleteuserviceResponse
-        })
+            }
+            return res.status(200).json(response)
     }
 }
 

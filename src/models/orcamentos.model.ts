@@ -1,9 +1,10 @@
+import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
 import type { BudgetType, ServiceProvType } from "../utils/types.js";
 
 
 export const budgetModel = {
-    async create(newBudget: BudgetType) {
+    async create(newBudget: BudgetType): Promise<BudgetType | null> {
         try {
             const query = "INSERT INTO tbl_orcamento (id, total, id_utilizadores, enabled, created_at, updated_at) VALUES (?,?, ?, ?, ?, ?)"
             const value = [
@@ -14,36 +15,36 @@ export const budgetModel = {
                 new Date(),
                 new Date()
             ]
-            const [result] = await db.execute(query, value);
-            return result;
+            const [result] = await db.execute <BudgetType & RowDataPacket[]>(query, value);
+            return result as BudgetType;
         } catch (err) {
             console.log(err)
             return null
         }
     },
-    async getAll() {
+    async getAll(): Promise<BudgetType[] | null> {
         try {
             const query = "SELECT * FROM tbl_orcamento"
-            const rows = await db.execute(query)
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : []
+            const rows = await db.execute<BudgetType[] & RowDataPacket[]>(query)
+            return Array.isArray(rows) && rows.length > 0 ? rows[0] as BudgetType[] : []
         } catch (err) {
             console.log(err)
             return null
         }
     },
-    async get(id: string) {
+    async get(id: string): Promise<BudgetType | null> {
         try {
             const query = "SELECT * FROM tbl_orcamento WHERE tbl_orcamento.id = ?"
             const value = [id]
-            const [rows] = await db.execute(query, value)
+            const [rows] = await db.execute<BudgetType & RowDataPacket[]>(query, value)
             if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows[0] : null
+            return Array.isArray(rows) ? rows[0] as BudgetType : null
         } catch (err) {
             console.log(err)
             return null
         }
     },
-    async update(id: string, newBudget: BudgetType) {
+    async update(id: string, newBudget: BudgetType): Promise<BudgetType | null> {
         try {
             const query = "UPDATE tbl_orcamento SET total=?, id_utilizadores=?, enabled=?, updated_at=? WHERE id=?"
             const value = [
@@ -53,8 +54,8 @@ export const budgetModel = {
                 new Date(),
                 id
             ]
-            const [result] = await db.execute(query, value);
-            return result;
+            const [result] = await db.execute<BudgetType & RowDataPacket[]>(query, value);
+            return result as BudgetType;
         } catch (err) {
             console.log(err)
             return null
@@ -75,14 +76,16 @@ export const budgetModel = {
         return null
     }
 },
-    async delete(id: string) {
+    async delete(id: string): Promise<BudgetType[] | null> {
         try {
             const query = "DELETE FROM tbl_orcamento WHERE id=?"
             const value = [id]
-            const rows = await db.execute(query, value)
-            return rows
+            const [rows] = await db.execute<BudgetType[] & RowDataPacket[]>(query, value)
+            if (Array.isArray(rows) && rows.length === 0) return null
+            return Array.isArray(rows) ? rows as BudgetType[] : null
         } catch (err) {
             console.log(err)
+            return null
         }
     }
 }
