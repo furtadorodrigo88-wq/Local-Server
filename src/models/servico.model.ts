@@ -1,6 +1,6 @@
 import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
-import type { Servicetype } from "../utils/types.js";
+import type { ServiceDetaltype, Servicetype } from "../utils/types.js";
 
 
 export const ServiceModel = {
@@ -74,6 +74,33 @@ export const ServiceModel = {
         console.log(err)
         return null
     }
-    
+    },
+    async getALLServicesDetailed(limit: number, offset: number){
+        try {
+            const query = `
+            SELECT DISTINCT
+                s.id as id_servico
+                s.nome as servico_nome
+                s.descricao as servico_descricao
+                c.disignacao as designacao_categoria
+                c.icone as icone_categoria
+                e.id as id_empresa
+                e.disignacao as designacao_empresa
+                e.icone as icone_empresa
+                s.enabled
+            FROM tbl_servico s
+            INNER JOIN tbl_categoria c ON c.id = s.id_categoria
+            INNER JOIN tbl_prestacao_servico ps ON  s.id = ps.id_servico
+            INNER JOIN tbl_empresa e ON e.id = ps.id_prestador
+            WHERE s.enabled = true
+            LIMIT ? OFFSET ?
+            `
+            const value = [limit, offset]
+            const [rows] = await db.execute<ServiceDetaltype[] & RowDataPacket[]>(query, value)
+            return Array.isArray(rows) && rows.length > 0 ? rows as ServiceDetaltype[] : null
+        } catch (err) {
+            console.log(err)
+            return null
+        }
     }
 }

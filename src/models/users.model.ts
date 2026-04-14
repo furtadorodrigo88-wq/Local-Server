@@ -102,7 +102,7 @@ export const UserModel = {
             return null
         }
     },
-    async delete(id: string): Promise<UserType   | null> {
+    async delete(id: string): Promise<UserType | null> {
         try {
             const query = "DELETE FROM tbl_utilizadores WHERE id=?"
             const value = [id]

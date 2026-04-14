@@ -97,3 +97,43 @@ ADD CONSTRAINT fk_servico_prestacao_servico
 FOREIGN KEY (id_servico)
 REFERENCES tbl_servicos(id)
 ;
+
+ALTER TABLE tbl_proposta
+ADD COLUMN id_prestador VARCHAR(255) NOT NULL,
+ADD CONSTRAINT fk_tbl_prestadores_proposta
+FOREIGN KEY (id_prestador)
+REFERENCES tbl_prestadores(id)
+;
+
+CREATE TABLE IF NOT EXISTS tbl_empresa (
+	id INTEGER PRIMARY KEY NOT NULL,
+	designacao VARCHAR(255) NOT NULL,
+	descricao VARCHAR(255),
+	localizacao varchar(255),
+	nif DOUBLE NOT NULL UNIQUE,
+	icone VARCHAR(255),
+	id_utilizador VARCHAR(255) NOT NULL,
+	enabled BOOLEAN,
+	created_at DATETIME,
+	updated_at DATETIME
+);
+
+CREATE TABLE IF NOT EXISTS tbl_categoria (
+	id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
+    designacao varchar(255) NOT NULL,
+    icone VARCHAR(255),
+    created_at DATETIME,
+	updated_at DATETIME
+);
+
+ALTER TABLE tbl_empresa
+ADD CONSTRAINT fk_utilizador_empresa
+foreign key(id_utilizador)
+references tbl_utilizadores(id)
+;
+alter table tbl_servicos
+drop column categoria,
+add column id_categoria integer after descricao,
+add constraint fk_categoria_servico
+foreign key (id_categoria)
+references tbl_categoria(id);

@@ -192,7 +192,8 @@ export const UserControler = {
         const payLoad = {
             id: userData.id,
             email: userData.email,
-            nome: userData.nome
+            nome: userData.nome,
+            role: userData.role
         }
         const tuken = jwt.sign(payLoad, process.env.JWT_SECRET as string, { expiresIn: "1h" })
         const response: ResponseType<{user: typeof payLoad, token: string}> = {

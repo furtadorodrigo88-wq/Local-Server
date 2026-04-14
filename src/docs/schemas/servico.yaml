@@ -51,6 +51,38 @@ components:
         enabled:
           type: boolean
           example: true
+    
+    ServiceDetaled:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: "Serviço de limpeza"
+        descricao:
+          type: string
+          example: "Descrição detalhada do serviço"
+        designacao_categoria:
+          type: string
+          example: "Designação do serviço"
+        icone_categoria:
+          type: string
+          example: "Icone do serviço"
+        id_empresa:
+          type: integer
+          example: 1
+        designacao_empresa:
+          type: string
+          example: "Designação da empresa"
+        icone_empresa:
+          type: string
+          example: "Icone da empresa"
+        enabled:
+          type: boolean
+          example: true
+        
           
     ResponseSucessoServico:
       type: object

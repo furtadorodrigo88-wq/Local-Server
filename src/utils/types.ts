@@ -1,3 +1,28 @@
+export enum Role{
+    CLIENTE = "cliente",
+    PRESTADOR = "prestador",
+    ADMIN = "administrador",
+    EMPRESA = "empresa"
+}
+
+export enum Estadoproposta {
+    PENDENTE = "pendente",
+    ACEITE = "aceite",
+    CANCELADO = "cancelado"
+}
+
+export enum EstadoPrestacao {
+    PENDENTE = "pendente",
+    EM_PROGRESSO = "em progresso",
+    FINALIZADO = "finalizado",
+    CANCELADO = "cancelado"
+}
+export enum TipoPrestador {
+    PARTICULAR = "particular",
+    EMPRESA = "empresa"
+}
+
+
 
 export interface PedidoServicoType {
     cliente: string;
@@ -36,10 +61,12 @@ export interface UserType {
     pais: string
     localidade: string
     password: string
+    role: string
     enabled: boolean
     updated_et: string
     created_at: string
 }
+
 
 
 export interface Servicetype {
@@ -102,18 +129,7 @@ export interface ProposalType {
 	updated_at: string
 	id_prestador: string
 }
-export enum Estadoproposta {
-    PENDENTE = "pendente",
-    ACEITE = "aceite",
-    CANCELADO = "cancelado"
-}
 
-export enum Estadoprestacao {
-    PENDENTE = "pendente",
-    EM_PROGRESSO = "em progresso",
-    FINALIZADO = "finalizado",
-    CANCELADO = "cancelado"
-}
 
 export interface ResponseType <T> {
     status: "success" | "error",
@@ -136,4 +152,37 @@ export interface AcceptProposalType {
     id_orcamento: string;
     id_prestacao_servico: string;
     estado: string;
+}
+
+export interface ServiceDetaltype {
+    id: string
+    nome: string
+    descricao: string
+    designacao_categoria: string
+    icone_categoria: string
+    id_empresa: string
+    designacao_empresa: string
+    icone_empresa: string
+    enabled: boolean
+}
+
+export interface categoryType {
+    id: string
+    designacao: string
+    icone: string
+    created_at: string
+    updated_at: string
+}
+
+export interface companyType {
+    id: string
+    designacao: string
+    descricao: string
+    nif: number
+    icone: string
+    id_utilizador: string
+    localizacao: string
+    enabled: boolean
+    updated_et: string
+    created_at: string
 }
