@@ -1,5 +1,7 @@
 import { Router } from "express"
 import { proposalControler } from "../controlers/proposta.controler.js" 
+import authMidlewere, { authorize } from "../security/auth.midlewere.js"
+import { Role } from "../utils/types.js"
 
 
 const proposalRoute = {
@@ -11,11 +13,12 @@ const proposalRoute = {
     aceitar: "/aceitar/:id"
 }
 const router = Router()
-router.get(proposalRoute.getAll, proposalControler.getAll)
-router.get(proposalRoute.getById, proposalControler.get)
-router.post(proposalRoute.create, proposalControler.createProposal)
-router.put(proposalRoute.update, proposalControler.update)
-router.delete(proposalRoute.delete, proposalControler.delete)
-router.put(proposalRoute.aceitar, proposalControler.acceptProposal)
+router.use(authMidlewere)
+router.get(proposalRoute.getAll, authorize([Role.ADMIN]), proposalControler.getAll)
+router.get(proposalRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]), proposalControler.get)
+router.post(proposalRoute.create, authorize([Role.ADMIN, Role.EMPRESA, Role.PRESTADOR]), proposalControler.createProposal)
+router.put(proposalRoute.update, authorize([Role.ADMIN, Role.EMPRESA, Role.PRESTADOR]), proposalControler.update)
+router.delete(proposalRoute.delete, authorize([Role.ADMIN]), proposalControler.delete)
+router.put(proposalRoute.aceitar, authorize([Role.ADMIN, Role.CLIENTE]), proposalControler.acceptProposal)
 
 export { router }

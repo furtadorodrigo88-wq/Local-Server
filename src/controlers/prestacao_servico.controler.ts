@@ -1,6 +1,5 @@
 import type { Request, Response } from "express"
 import type { ProposalType, ResponseType, serviceProvDetailsType, ServiceProvType } from "../utils/types.js"
-import { proposalModel } from "../models/proposta.models.js"
 import { serviceProvModel } from "../models/prestacao_servico.models.js"
 
 
@@ -157,6 +156,29 @@ export const SPControler = {
             status: "success",
             message: "Prestacao de servico buscado co sucesso",
             data: getAllServiceProvDetailsResponse
+        }
+        return res.status(201).json(response)
+    },
+    async getAllServiceProvByCategoria (req: Request, res: Response) {
+        const { id_categoria } = req.params
+        const { limit, offset } = req.query as { limit: string, offset: string }
+        let LIMIT = 10
+        let OFFSET = 0
+        if (limit && parseInt(limit) > 10) LIMIT = parseInt(limit)
+        if (offset && parseInt(offset) > 0) OFFSET = parseInt(offset)
+        const getAllServiceProvByCategoriaResponse = await serviceProvModel.getAllServiceProvByCategoria(id_categoria as string, LIMIT, OFFSET)
+        if (!getAllServiceProvByCategoriaResponse) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao buscar Prestacao de servico",
+                data: null
+            }
+            return res.status(500).json(response)
+        }
+        const response: ResponseType<serviceProvDetailsType[]> = {
+            status: "success",
+            message: "Prestacao de servico buscado co sucesso",
+            data: getAllServiceProvByCategoriaResponse
         }
         return res.status(201).json(response)
     }

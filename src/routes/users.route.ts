@@ -15,8 +15,8 @@ const UserRoute = {
     updatePassword: "/update-password/:id"
 }
 const router = Router()
-router.post(UserRoute.create, UserControler.createUser)
-router.post(UserRoute.login, UserControler.login)
+router.post(UserRoute.create, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]),UserControler.createUser)
+router.post(UserRoute.login, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]),UserControler.login)
 router.use(authMidlewere)
 router.get(UserRoute.getAll,authorize([Role.ADMIN]), UserControler.getAll)
 router.get(UserRoute.getById,authorize([Role.ADMIN, Role.PRESTADOR, Role.CLIENTE, Role.EMPRESA]), UserControler.get)

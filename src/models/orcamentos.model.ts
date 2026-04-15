@@ -1,6 +1,6 @@
 import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
-import type { BudgetType, ServiceProvType } from "../utils/types.js";
+import type { BudgetType } from "../utils/types.js";
 
 
 export const budgetModel = {

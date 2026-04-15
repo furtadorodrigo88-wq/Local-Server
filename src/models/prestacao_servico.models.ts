@@ -131,5 +131,35 @@ export const serviceProvModel = {
             console.log(err)
             return null
         }
+    },
+    async getAllServiceProvByCategoria (id_categoria: string, limit: number, offset: number) {
+        try {
+            const query = `
+            SELECT 
+                ps.id as id_prestacao_servico,
+                ps.designaçao as descricao,
+                u.nome as nome_utilizador.
+                u.email as email_utilizador,
+                s.nome as nome_servico,
+                ps.created_at as data_pedido,
+                ps.urgencia
+                c.designacao as categoria
+                c.id as id_categoria
+                c.icone as icone_categoria
+            FROM tbl_prestacao_servicos ps
+            INNER JOIN tbl_utilizadores u ON ps.id_utilizador = u.id
+            INNER JOIN tbl_servico s ON ps.id_servico = s.id
+            INNER JOIN tbl_categoria c ON s.id_categoria = c.id AND c.id = ?
+            ORDER BY ps.created_at DESC
+            LIMIT ? OFFSET ?
+            `
+            const values = [id_categoria, limit.toString(), offset.toString()]
+            const [ rows ] = await db.execute<(serviceProvDetailsType[] & RowDataPacket[])>(query, values)
+            if (Array.isArray(rows) && rows.length === 0) return null
+            return Array.isArray(rows) ? rows as serviceProvDetailsType[] : null
+        } catch (err) {
+            console.log(err)
+            return null
+        }
     }
 }

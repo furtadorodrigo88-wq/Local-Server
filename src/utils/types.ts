@@ -166,7 +166,7 @@ export interface ServiceDetaltype {
     enabled: boolean
 }
 
-export interface categoryType {
+export interface CategoryType {
     id: string
     designacao: string
     icone: string

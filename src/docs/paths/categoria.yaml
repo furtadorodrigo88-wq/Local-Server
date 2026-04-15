@@ -1,0 +1,190 @@
+#paths/orcamento.yaml
+
+paths:
+  /category:
+    get:
+      summary: Listar todos as categorias
+      tags:
+        - Category
+      description: Retorna uma lista de todas as categorias disponiveis
+      responses:
+        "200":
+          description: Lista de categorias
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Categoria"
+        "404":
+          description: Categoria não encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroCategoria"
+  /category/create:
+    post:
+      summary: criar nova Categoria
+      tags:
+        - Category
+      description: cria uma nova Categoria
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/CreateCategoria"
+      responses:
+        "200":
+          description: Categoria criada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoCategoria"
+        "400":
+          description: Dados inválidos fornecidos
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroCategoria"
+  /category/get-by-id/{id}:
+    get:
+      summary: Buscar uma Categoria
+      tags:
+        - Category
+      description: Retorna uma Categoria especifica pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da Categoria a ser buscada
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Categoria encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoCategoria"
+        "404":
+          description: Categoria não encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroCategoria"
+  /category/update/{id}:
+    put:
+      summary: atualizar uma Categoria
+      tags:
+        - Category
+      description: Atualizar Categoria pelo id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da Categoria a ser atualizada
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/CreateCategoria"
+      responses:
+        "200":
+          description: Categoria atualizada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoCategoria"
+        "400":
+          description: Dados inválidos fornecidos
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroCategoria"
+        "404":
+          description: Categoria não encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroCategoria"
+  /category/calcular/:id:
+    put:
+      summary: calcular uma Categoria
+      tags:
+        - Category
+      description: Calcular Orcamento Servico pelo id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do Orcamento Servico a ser calculado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Categoria calculada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoCategoria"
+        "400":
+          description: Dados inválidos fornecidos
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroCategoria"
+        "404":
+          description: Categoria não encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroCategoria"
+  /category/delete/{id}:
+    delete:
+      summary: Deletar uma Categoria
+      tags:
+        - Category
+      description: Deletar Categoria pelo id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da Categoria a ser deletada
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Categoria deletada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoCategoria"
+        "404":
+          description: Categoria não encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroCategoria"

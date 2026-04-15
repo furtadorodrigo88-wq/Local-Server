@@ -1,21 +1,26 @@
 import { Router } from "express"
 import { SPControler } from "../controlers/prestacao_servico.controler.js" 
+import authMidlewere, { authorize } from "../security/auth.midlewere.js"
+import { Role } from "../utils/types.js"
 
 
-const proposelRoute = {
+const serviceProvRoute = {
     create: "/create",
     getById: "/get-by-id/:id",
     getAll: "/",
     update:"/update/:id",
     delete: "/delete/:id",
-    getAllServiceProvDetails: "/get-all-details"
+    getAllServiceProvDetails: "/get-all-details",
+    getAllServiceProvByCategoria: "/get-all-by-categoria/:id_categoria"
 }
 const router = Router()
-router.get(proposelRoute.getAll, SPControler.getAll)
-router.get(proposelRoute.getById, SPControler.get)
-router.post(proposelRoute.create, SPControler.createSP)
-router.put(proposelRoute.update, SPControler.update)
-router.delete(proposelRoute.delete, SPControler.delete)
-router.get(proposelRoute.getAllServiceProvDetails, SPControler.getAllServiceProvDetails)
+router.use(authMidlewere)
+router.get(serviceProvRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]), SPControler.getAll)
+router.get(serviceProvRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]), SPControler.get)
+router.post(serviceProvRoute.create, authorize([Role.ADMIN, Role.EMPRESA, Role.PRESTADOR]),SPControler.createSP)
+router.put(serviceProvRoute.update, authorize([Role.ADMIN, Role.EMPRESA, Role.PRESTADOR]), SPControler.update)
+router.delete(serviceProvRoute.delete, authorize([Role.ADMIN, Role.EMPRESA, Role.PRESTADOR]), SPControler.delete)
+router.get(serviceProvRoute.getAllServiceProvDetails,authorize([Role.ADMIN]), SPControler.getAllServiceProvDetails)
+router.get(serviceProvRoute.getAllServiceProvByCategoria,authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]), SPControler.getAllServiceProvByCategoria) 
 
 export { router }
