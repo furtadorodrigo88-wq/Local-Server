@@ -126,14 +126,3 @@ CREATE TABLE IF NOT EXISTS tbl_categoria (
 	updated_at DATETIME
 );
 
-ALTER TABLE tbl_empresa
-ADD CONSTRAINT fk_utilizador_empresa
-foreign key(id_utilizador)
-references tbl_utilizadores(id)
-;
-alter table tbl_servicos
-drop column categoria,
-add column id_categoria integer after descricao,
-add constraint fk_categoria_servico
-foreign key (id_categoria)
-references tbl_categoria(id);

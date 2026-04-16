@@ -35,7 +35,7 @@ paths:
           application/json:
             schema:
               type: object
-              $ref: "#/components/schemas/CreateCategoria"
+              $ref: "#/components/schemas/CategoriaCreate"
       responses:
         "200":
           description: Categoria criada com sucesso
@@ -104,42 +104,6 @@ paths:
       responses:
         "200":
           description: Categoria atualizada com sucesso
-          content:
-            application/json:
-              schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSucessoCategoria"
-        "400":
-          description: Dados inválidos fornecidos
-          content:
-            application/json:
-              schema:
-                type: object
-                $ref: "#/components/schemas/ResponseErroCategoria"
-        "404":
-          description: Categoria não encontrada
-          content:
-            application/json:
-              schema:
-                type: object
-                $ref: "#/components/schemas/ResponseErroCategoria"
-  /category/calcular/:id:
-    put:
-      summary: calcular uma Categoria
-      tags:
-        - Category
-      description: Calcular Orcamento Servico pelo id
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: ID do Orcamento Servico a ser calculado
-          schema:
-            type: integer
-            example: 1
-      responses:
-        "200":
-          description: Categoria calculada com sucesso
           content:
             application/json:
               schema:

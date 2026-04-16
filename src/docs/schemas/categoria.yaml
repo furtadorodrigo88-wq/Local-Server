@@ -8,32 +8,40 @@ components:
         id:
           type: string
           description: ID da categoria
+          example: 1
         nome:
           type: string
           description: Nome da categoria
+          example: "Categoria 1"
         descricao:
           type: string
           description: Descrição da categoria
+          example: "Descrição da categoria 1"
         enabled:
           type: boolean
           description: Status da categoria
+          example: true
         created_at:
           type: string
           format: date-time
           description: Data de criação da categoria
+          example: "2022-01-01T00:00:00.000Z"
         updated_at:
           type: string
           format: date-time
           description: Data de atualização da categoria
+          example: "2022-01-01T00:00:00.000Z"
     CategoriaCreate:
       type: object
       properties:
         designacao:
           type: string
           description: Designação da categoria
+          example: "Categoria 1"
         icone:
           type: string
           description: Icone da categoria
+          example: "Categoria 1"
     ResponseSucessoCategoria:
       type: object
       properties:

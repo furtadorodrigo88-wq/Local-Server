@@ -114,6 +114,7 @@ export const proposalControler = {
     },
     async acceptProposal(req: Request, res: Response) {
         const { id } = req.params
+        try {
         if (!id) {
             const response: ResponseType<null> = {
                 status: "error",
@@ -137,6 +138,9 @@ export const proposalControler = {
             data: result
         }
         return res.status(200).json(response);
+    } catch (error) {
+        console.log(error)
+    }
     },
     async delete(req: Request, res: Response) {
         const { id } = req.params

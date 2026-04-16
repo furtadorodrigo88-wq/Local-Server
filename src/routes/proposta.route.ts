@@ -1,7 +1,9 @@
 import { Router } from "express"
 import { proposalControler } from "../controlers/proposta.controler.js" 
-import authMidlewere, { authorize } from "../security/auth.midlewere.js"
+import authMidlewere, { authorize, isOwner } from "../security/auth.midlewere.js"
 import { Role } from "../utils/types.js"
+import { proposalModel } from "../models/proposta.models.js"
+import { serviceProvModel } from "../models/prestacao_servico.models.js"
 
 
 const proposalRoute = {
@@ -17,8 +19,8 @@ router.use(authMidlewere)
 router.get(proposalRoute.getAll, authorize([Role.ADMIN]), proposalControler.getAll)
 router.get(proposalRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]), proposalControler.get)
 router.post(proposalRoute.create, authorize([Role.ADMIN, Role.EMPRESA, Role.PRESTADOR]), proposalControler.createProposal)
-router.put(proposalRoute.update, authorize([Role.ADMIN, Role.EMPRESA, Role.PRESTADOR]), proposalControler.update)
-router.delete(proposalRoute.delete, authorize([Role.ADMIN]), proposalControler.delete)
+router.put(proposalRoute.update, authorize([Role.ADMIN, Role.EMPRESA, Role.PRESTADOR]), isOwner(proposalModel,"owner"),proposalControler.update)
+router.delete(proposalRoute.delete, authorize([Role.ADMIN, Role.EMPRESA, Role.PRESTADOR]), isOwner(proposalModel,"owner"),proposalControler.delete)
 router.put(proposalRoute.aceitar, authorize([Role.ADMIN, Role.CLIENTE]), proposalControler.acceptProposal)
 
 export { router }
