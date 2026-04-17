@@ -45,7 +45,15 @@ export const serviceProvModel = {
     },
     async get(id: string): Promise<ServiceProvType | null> {
         try {
-            const query = "SELECT * FROM tbl_prestacao_servicos WHERE tbl_prestacao_servicos.id = ?"
+            const query = `
+            SELECT DISTINCT 
+                ps.*,
+                u.id as owner
+            FROM tbl_prestacao_servicos ps
+            INNER JOIN tbl_prestadores pr ON ps.id_prestador = pr.id
+            INNER JOIN tbl_utilizadores u ON pr.id_utilizador = u.id
+            WHERE ps.id = ?
+            `
             const value = [id]
             const [rows] = await db.execute<ServiceProvType[] & RowDataPacket[]>(query, value)
             if (Array.isArray(rows) && rows.length === 0) return null

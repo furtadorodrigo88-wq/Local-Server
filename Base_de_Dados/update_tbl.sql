@@ -30,3 +30,11 @@ ALTER TABLE tbl_utilizadores
 ADD COLUMN `role` ENUM ("cliente","adimin","prestador","empresa") default "cliente"
 ;
 
+ALTER TABLE tbl_prestadores
+ADD COLUMN id_empresa INTEGER AFTER percentagem_desconto,
+ADD COLUMN id_utilizador VARCHAR(255) NOT NULL DEFAULT "9b0e1bb6-854f-4553-a892-d5d5630b579f" AFTER id_empresa,
+ADD CONSTRAINT fk_utilizadores_prestadores
+FOREIGN KEY (id_utilizador)
+REFERENCES tbl_utilizadores(id);
+
+

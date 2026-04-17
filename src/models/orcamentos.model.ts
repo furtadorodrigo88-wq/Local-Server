@@ -34,7 +34,14 @@ export const budgetModel = {
     },
     async get(id: string): Promise<BudgetType | null> {
         try {
-            const query = "SELECT * FROM tbl_orcamento WHERE tbl_orcamento.id = ?"
+            const query = `
+            SELECT DISTINCT 
+                o.*,
+                u.id as owner
+            FROM tbl_orcamento o
+            INNER JOIN tbl_utilizadores u ON o.id_utilizador = u.id
+            WHERE o.id = ?
+            `
             const value = [id]
             const [rows] = await db.execute<BudgetType & RowDataPacket[]>(query, value)
             if (Array.isArray(rows) && rows.length === 0) return null

@@ -3,7 +3,6 @@ import { proposalControler } from "../controlers/proposta.controler.js"
 import authMidlewere, { authorize, isOwner } from "../security/auth.midlewere.js"
 import { Role } from "../utils/types.js"
 import { proposalModel } from "../models/proposta.models.js"
-import { serviceProvModel } from "../models/prestacao_servico.models.js"
 
 
 const proposalRoute = {

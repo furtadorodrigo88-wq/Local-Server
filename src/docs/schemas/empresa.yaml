@@ -1,0 +1,112 @@
+# schemas/empresa.yaml
+
+#export interface CompanyType {
+ #   id: string
+ #   designacao: string
+ #   descricao: string
+ #   nif: number
+ #   icone: string
+ #   id_utilizador: string
+ #   localizacao: string
+ #   enabled: boolean
+ #   updated_et: string
+ #   created_at: string
+#}
+
+components:
+  schemas:
+    Empresa:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID da empresa
+          example: 1
+        designacao:
+          type: string
+          description: designacao da empresa
+          example: "Empresa 1"
+        descricao:
+          type: string
+          description: Descrição da empresa
+          example: "Descrição da empresa 1"
+        nif:
+          type: number
+          description: nif da empresa
+          example: 123456789
+        icone:
+          type: string
+          description: icone da empresa
+          example: "icone da empresa 1"
+        id_utilizador:
+          type: string
+          description: id do utilizador
+          example: 1
+        localizacao:
+          type: string
+          description: localizacao da empresa
+          example: "localizacao da empresa 1"
+        enabled:
+          type: boolean
+          description: Status da categoria
+          example: true
+        created_at:
+          type: string
+          format: date-time
+          description: Data de criação da categoria
+          example: "2022-01-01T00:00:00.000Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: Data de atualização da categoria
+          example: "2022-01-01T00:00:00.000Z"
+    EmpresaCreate:
+      type: object
+      properties:
+        designacao:
+          type: string
+          description: designacao da empresa
+          example: "Empresa 1"
+        descricao:
+          type: string
+          description: Descrição da empresa
+          example: "Descrição da empresa 1"
+        nif:
+          type: number
+          description: nif da empresa
+          example: 123456789
+        icone:
+          type: string
+          description: icone da empresa
+          example: "icone da empresa 1"
+        id_utilizador:
+          type: string
+          description: id do utilizador
+          example: 1
+        localizacao:
+          type: string
+          description: localizacao da empresa
+          example: "localizacao da empresa 1"
+    ResponseSucessoEmpresa:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Empresa criada com sucesso"
+        status:
+          type: boolean
+          example: true
+        data:
+          $ref: "#/components/schemas/Empresa"
+    ResponseErroEmpresa:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Erro ao processar empresa"
+        status:
+          type: boolean
+          example: false
+        data:
+          type: object
+          nullable: true

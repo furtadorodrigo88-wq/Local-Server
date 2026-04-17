@@ -42,7 +42,14 @@ export const ProviderModel = {
     },
     async get(id: string): Promise<ProvaiderType | null> {
         try {
-            const query = "SELECT * FROM tbl_prestadores WHERE tbl_prestadores.id = ?"
+            const query = `
+            SELECT DISTINCT 
+                p.*
+                u.id as owner
+            FROM tbl_prestadores p
+            INNER JOIN tbl_utilizadores u ON p.id_utilizador = u.id
+            WHERE p.id = ?
+            `
             const value = [id]
             const [rows] = await db.execute(query, value)
             if (Array.isArray(rows) && rows.length === 0) return null

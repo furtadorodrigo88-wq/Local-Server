@@ -2,6 +2,13 @@ import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
 import type { CategoryType } from "../utils/types.js";
 
+/*export interface CategoryType {
+    id: string
+    designacao: string
+    icone: string
+    created_at: string
+    updated_at: string
+}*/
 
 
 
@@ -45,12 +52,12 @@ export const CategoryModel = {
             return null
         }
     },
-    async update(id: string, newBudget: CategoryType): Promise<CategoryType | null> {
+    async update(id: string, newcategory: CategoryType): Promise<CategoryType | null> {
         try {
             const query = "UPDATE tbl_categoria SET designacao=?, icone=?, updated_at=? WHERE id=?"
             const value = [
-                newBudget.designacao,
-                newBudget.icone,
+                newcategory.designacao,
+                newcategory.icone,
                 new Date(),
                 id
             ]

@@ -1,90 +1,90 @@
-#paths/categoria.yaml
+#paths/empresa.yaml
 
 paths:
-  /category:
+  /empresa:
     get:
-      summary: Listar todos as categorias
+      summary: Listar todos as empresas
       tags:
-        - Category
-      description: Retorna uma lista de todas as categorias disponiveis
+        - Empresa
+      description: Retorna uma lista de todas as empresas disponiveis
       responses:
         "200":
-          description: Lista de categorias
+          description: Lista de empresas
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Categoria"
+                  $ref: "#/components/schemas/Empresa"
         "404":
-          description: Categoria não encontrada
+          description: Empresa não encontrada
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseErroCategoria"
-  /category/create:
+                $ref: "#/components/schemas/ResponseErroEmpresa"
+  /empresa/create:
     post:
-      summary: criar nova Categoria
+      summary: criar nova Empresa
       tags:
-        - Category
-      description: cria uma nova Categoria
+        - Empresa
+      description: cria uma nova Empresa
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              $ref: "#/components/schemas/CategoriaCreate"
+              $ref: "#/components/schemas/EmpresaCreate"
       responses:
         "200":
-          description: Categoria criada com sucesso
+          description: Empresa criada com sucesso
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseSucessoCategoria"
+                $ref: "#/components/schemas/ResponseSucessoEmpresa"
         "400":
           description: Dados inválidos fornecidos
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseErroCategoria"
-  /category/get-by-id/{id}:
+                $ref: "#/components/schemas/ResponseErroEmpresa"
+  /empresa/get-by-id/{id}:
     get:
-      summary: Buscar uma Categoria
+      summary: Buscar uma Empresa
       tags:
-        - Category
-      description: Retorna uma Categoria especifica pelo ID
+        - Empresa
+      description: Retorna uma Empresa especifica pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID da Categoria a ser buscada
+          description: ID da Empresa a ser buscada
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Categoria encontrada
+          description: Empresa encontrada
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseSucessoCategoria"
+                $ref: "#/components/schemas/ResponseSucessoEmpresa"
         "404":
-          description: Categoria não encontrada
+          description: Empresa não encontrada
           content:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/ResponseErroCategoria"
-  /category/update/{id}:
+                $ref: "#/components/schemas/ResponseErroEmpresa"
+  /empresa/update/{id}:
     put:
-      summary: atualizar uma Categoria
+      summary: atualizar uma Empresa
       tags:
-        - Category
+        - Empresa
       description: Atualizar Categoria pelo id
       parameters:
         - name: id

@@ -126,3 +126,4 @@ CREATE TABLE IF NOT EXISTS tbl_categoria (
 	updated_at DATETIME
 );
 
+

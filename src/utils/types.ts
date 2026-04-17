@@ -174,7 +174,7 @@ export interface CategoryType {
     updated_at: string
 }
 
-export interface companyType {
+export interface CompanyType {
     id: string
     designacao: string
     descricao: string
