@@ -44,7 +44,7 @@ export const ProviderModel = {
         try {
             const query = `
             SELECT DISTINCT 
-                p.*
+                p.*,
                 u.id as owner
             FROM tbl_prestadores p
             INNER JOIN tbl_utilizadores u ON p.id_utilizador = u.id
