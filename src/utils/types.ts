@@ -124,6 +124,7 @@ export interface ProposalType {
 	preco_hora: string
 	horas_estimadas: string
 	estado: string
+    owner: string
 	enabled: boolean
 	created_at: string
 	updated_at: string
