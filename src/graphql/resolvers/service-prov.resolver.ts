@@ -17,11 +17,11 @@ export const ServiceProvResolver = {
         }
     },
     Mutation: {
-        createServiceProv: async (_: any, args: {newUser: ServiceProvType}) => {
-            return await serviceProvModel.create(args.newUser);
+        createServiceProv: async (_: any, args: {serviceProv: ServiceProvType}) => {
+            return await serviceProvModel.create(args.serviceProv);
         },
-        updateServiceProv: async (_: any, args: {id: string, newUser: ServiceProvType}) => {
-            return await serviceProvModel.update(args.id, args.newUser);
+        updateServiceProv: async (_: any, args: {id: string, newServiceProv: ServiceProvType}) => {
+            return await serviceProvModel.update(args.id, args.newServiceProv);
         },
         deleteServiceProv: async (_: any, args: {id: string}) => {
             return await serviceProvModel.delete(args.id);

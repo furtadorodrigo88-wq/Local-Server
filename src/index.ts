@@ -1,3 +1,4 @@
+import "dotenv/config"
 import express, { type Request, type Response } from "express"
 import { router as ServiceRouter } from "./routes/servico.route.js"
 import { router as UserRouter } from "./routes/users.route.js"
@@ -9,7 +10,6 @@ import { router as CategoryRouter } from "./routes/categoria.route.js"
 import { router as CompanyRouter } from "./routes/empresa.route.js"
 import { swaggerSpec } from "./docs/swagger.js"
 import swaggerUI from "swagger-ui-express"
-import dotenv from "dotenv"
 import { ApolloServer } from "@apollo/server"
 import { typeDefs,  resolvers } from "./graphql/index.js"
 import { expressMiddleware } from "@as-integrations/express5"
@@ -18,7 +18,7 @@ import { expressMiddleware } from "@as-integrations/express5"
 const app = express()
 app.use(express.json())
 
-dotenv.config()
+
 
 app.use("/service", ServiceRouter)
 app.use("/users", UserRouter)
@@ -39,7 +39,11 @@ await graphqlServer.start();
 app.use("/graphql", 
     expressMiddleware(graphqlServer, {
         context: async ({req}) => ({
-            token: req.headers.authorization
+            token: req.headers.authorization,
+            DB_HOST: process.env.DB_HOST,
+            DB_USER: process.env.DB_USER,
+            DB_PASSWORD: process.env.DB_PASSWORD,
+            DB_NAME: process.env.DB_NAME
         })
     })
 )

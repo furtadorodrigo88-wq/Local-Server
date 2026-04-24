@@ -14,11 +14,29 @@ export const ServiceResolver = {
         }
     },
     Mutation: {
-        createService: async (_: any, args: {newUser: Servicetype}) => {
-            return await ServiceModel.create(args.newUser);
+        createService: async (_: any, args: {nome: string, descricao: string, categoria: string, enabled: boolean}) => {
+            const newService: Servicetype = {
+                id: "",
+                nome: args.nome,
+                descricao: args.descricao,
+                categoria: args.categoria,
+                enabled: args.enabled,
+                updated_et: "",
+                created_at: ""
+            }
+            return await ServiceModel.create(newService);
         },
-        updateService: async (_: any, args: {id: string, newUser: Servicetype}) => {
-            return await ServiceModel.update(args.id, args.newUser);
+        updateService: async (_: any, args: {id: string, nome: string, descricao: string, categoria: string, enabled: boolean}) => {
+            const newService: Servicetype = {
+                id: args.id,
+                nome: args.nome,
+                descricao: args.descricao,
+                categoria: args.categoria,
+                enabled: args.enabled,
+                updated_et: "",
+                created_at: ""
+            }
+            return await ServiceModel.update(args.id, newService);
         },
         deleteService: async (_: any, args: {id: string}) => {
             return await ServiceModel.delete(args.id);

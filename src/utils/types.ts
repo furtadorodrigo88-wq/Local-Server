@@ -107,10 +107,10 @@ export interface ServiceProvType {
 	subtotal: number
 	horas_estimadas: number
 	id_prestador: string
-	id_servico: number
+	id_servico: string
 	preco_hora: number
 	estado: string
-	id_orcamento: number
+	id_orcamento: string
     id_utilizador: string
     urgente: boolean
 	enabled: boolean

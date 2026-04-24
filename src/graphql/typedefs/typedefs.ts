@@ -114,6 +114,36 @@ export const typeDefs = gql`
         updated_et: String!
         created_at: String!
     }
+
+    input serviceprovImputcreate{
+        disign: String!
+        subtotal: Float!
+        horas_estimadas: Float!
+        id_prestador: String!
+        id_servico: String!
+        preco_hora: Float!
+        estado: String!
+        id_orcamento: String!
+        id_utilizador: String!
+        urgente: Boolean!
+        enabled: Boolean!
+        created_at: String!
+        updated_at: String!
+    }
+    input serviceprovImputupdate{
+        id: ID!
+        disign: String!
+        subtotal: Float!
+        horas_estimadas: Float!
+        id_prestador: ID!
+        id_servico: Float!
+        preco_hora: Float!
+        estado: String!
+        id_orcamento: Float!
+        id_utilizador: String!
+        urgente: Boolean!
+        enabled: Boolean!
+    }
     type Query {
         getAllUsers: [User]
         getUserById(id: ID!): User
@@ -175,35 +205,8 @@ export const typeDefs = gql`
             enabled: Boolean!
         ): Service
         deleteService(id: ID!): Service
-        createServiceProv(
-            disign: String!
-            subtotal: Float!
-            horas_estimadas: Float!
-            id_prestador: ID!
-            id_servico: Float!
-            preco_hora: Float!
-            estado: String!
-            id_orcamento: Float!
-            id_utilizador: String!
-            urgente: Boolean!
-            enabled: Boolean!
-            created_at: String!
-            updated_at: String!
-        ): ServiceProv
-        updateServiceProv(
-            id: ID!
-            disign: String!
-            subtotal: Float!
-            horas_estimadas: Float!
-            id_prestador: ID!
-            id_servico: Float!
-            preco_hora: Float!
-            estado: String!
-            id_orcamento: Float!
-            id_utilizador: String!
-            urgente: Boolean!
-            enabled: Boolean!
-        ): ServiceProv
+        createServiceProv(serviceProv: serviceprovImputcreate!): ServiceProv
+        updateServiceProv(serviceProv: serviceprovImputupdate!): ServiceProv
         deleteServiceProv(id: ID!): ServiceProv
         createProvider(
             nif: Int!
