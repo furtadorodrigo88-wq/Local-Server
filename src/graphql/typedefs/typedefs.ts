@@ -144,6 +144,118 @@ export const typeDefs = gql`
         urgente: Boolean!
         enabled: Boolean!
     }
+    input userImputcreate{
+        nome: String!
+        numero: String!
+        data_nascimento: String!
+        email: String!
+        telefone: String!
+        pais: String!
+        localidade: String!
+        password: String!
+        role: Role!
+        enabled: Boolean!
+        updated_et: String!
+        created_at: String!
+    }
+    input userImputupdate{
+        id: ID!
+        nome: String!
+        numero: String!
+        data_nascimento: String!
+        email: String!
+        telefone: String!
+        pais: String!
+        localidade: String!
+        password: String!
+        role: Role!
+        enabled: Boolean!
+    }
+    input providerImputcreate{
+        nif: Int!
+        profissao: String!
+        minimoDesconto: Float!
+        taxaUrgencia: Float!
+        percentagemDesconto: Float!
+        estado: Boolean!
+        enabled: Boolean!
+        created_at: String!
+        updated_at: String!
+    }
+    input providerImputupdate{
+        id: ID!
+        nif: Int!
+        profissao: String!
+        minimoDesconto: Float!
+        taxaUrgencia: Float!
+        percentagemDesconto: Float!
+        estado: Boolean!
+        enabled: Boolean!
+    }
+    input categoryImputcreate{
+        designacao: String!
+        icone: String!
+        created_at: String!
+        updated_at: String!
+    }
+    input categoryImputupdate{
+        id: ID!
+        designacao: String!
+        icone: String!
+    }
+    input companyImputcreate{
+        designacao: String!
+        descricao: String!
+        nif: Int!
+        icone: String!
+        id_utilizador: ID!
+        localizacao: String!
+        enabled: Boolean!
+        updated_et: String!
+        created_at: String!
+    }
+    input companyImputupdate{
+        id: ID!
+        designacao: String!
+        descricao: String!
+        nif: Int!
+        icone: String!
+        localizacao: String!
+        enabled: Boolean!
+    }
+    input budgetImputcreate{
+        total: String!
+        id_utilizadores: ID!
+        enabled: Boolean!
+        created_at: String!
+        updated_at: String!
+    }
+    input budgetImputupdate{
+        id: ID!
+        total: String!
+        id_utilizadores: ID!
+        enabled: Boolean!
+    }
+    input proposalImputcreate{
+        id_prestacao_servico: ID!
+        preco_hora: String!
+        horas_estimadas: String!
+        owner: String!
+        estado: String!
+        enabled: Boolean!
+        created_at: String!
+        updated_at: String!
+        id_prestador: ID!
+    }
+    input proposalImputupdate{
+        id: ID!
+        id_prestacao_servico: ID!
+        preco_hora: String!
+        horas_estimadas: String!
+        owner: String
+        estado: String!
+        enabled: Boolean!
+    }
     type Query {
         getAllUsers: [User]
         getUserById(id: ID!): User
@@ -163,33 +275,8 @@ export const typeDefs = gql`
         getServiceProvById(id: ID!): ServiceProv
     }
     type Mutation {
-        createUser(
-            nome: String!
-            numero: String!
-            data_nascimento: String!
-            email: String!
-            telefone: String!
-            pais: String!
-            localidade: String!
-            password: String!
-            role: Role!
-            enabled: Boolean!
-            updated_et: String!
-            created_at: String!
-        ): User
-        updateUser(
-            id: ID!
-            nome: String!
-            numero: String!
-            data_nascimento: String!
-            email: String!
-            telefone: String!
-            pais: String!
-            localidade: String!
-            password: String!
-            role: Role!
-            enabled: Boolean!
-        ): User
+        createUser(user: userImputcreate!): User
+        updateUser(user: userImputupdate!): User
         deleteUser(id: ID!): User
         createService(
             nome: String!
@@ -208,95 +295,20 @@ export const typeDefs = gql`
         createServiceProv(serviceProv: serviceprovImputcreate!): ServiceProv
         updateServiceProv(serviceProv: serviceprovImputupdate!): ServiceProv
         deleteServiceProv(id: ID!): ServiceProv
-        createProvider(
-            nif: Int!
-            profissao: String!
-            minimoDesconto: Float!
-            taxaUrgencia: Float!
-            percentagemDesconto: Float!
-            estado: Boolean!
-            enabled: Boolean!
-            created_at: String!
-            updated_at: String!
-        ): Provaider
-        updateProvider(
-            id: ID!
-            nif: Int!
-            profissao: String!
-            minimoDesconto: Float!
-            taxaUrgencia: Float!
-            percentagemDesconto: Float!
-            estado: Boolean!
-            enabled: Boolean!
-        ): Provaider
+        createProvider(provider: providerImputcreate!): Provaider
+        updateProvider(provider: providerImputupdate!): Provaider
         deleteProvider(id: ID!): Provaider
-        createCategory(
-            designacao: String!
-            icone: String!
-            created_at: String!
-            updated_at: String!
-        ): Category
-        updateCategory(
-            id: ID!
-            designacao: String!
-            icone: String!
-        ): Category
+        createCategory(category: categoryImputcreate!): Category
+        updateCategory(category: categoryImputupdate!): Category
         deleteCategory(id: ID!): Category
-        createCompany(
-            designacao: String!
-            descricao: String!
-            nif: Int!
-            icone: String!
-            id_utilizador: ID!
-            localizacao: String!
-            enabled: Boolean!
-            updated_et: String!
-            created_at: String!
-        ): Company
-        updateCompany(
-            id: ID!
-            designacao: String!
-            descricao: String!
-            nif: Int!
-            icone: String!
-            localizacao: String!
-            enabled: Boolean!
-        ): Company
+        createCompany(company: companyImputcreate!): Company
+        updateCompany(company: companyImputupdate!): Company
         deleteCompany(id: ID!): Company
-        createBudget(
-            total: String!
-            id_utilizadores: ID!
-            enabled: Boolean!
-            created_at: String!
-            updated_at: String!
-        ): Budget
-        updateBudget(
-            id: ID!
-            total: String!
-            id_utilizadores: ID!
-            enabled: Boolean!
-        ): Budget
+        createBudget(budget: budgetImputcreate!): Budget
+        updateBudget(budget: budgetImputupdate!): Budget
         deleteBudget(id: ID!): Budget
-        createProposal(
-            id_prestacao_servico: ID!
-            preco_hora: String!
-            horas_estimadas: String!
-            owner: String!
-            estado: String!
-            enabled: Boolean!
-            created_at: String!
-            updated_at: String!
-            id_prestador: ID!
-        ): Proposal
-        updateProposal(
-            id: ID!
-            id_prestacao_servico: ID!
-            preco_hora: String!
-            horas_estimadas: String!
-            owner: String
-            estado: String!
-            enabled: Boolean!
-        ): Proposal
+        createProposal(proposal: proposalImputcreate!): Proposal
+        updateProposal(proposal: proposalImputupdate!): Proposal
         deleteProposal(id: ID!): Proposal
     }
 `
