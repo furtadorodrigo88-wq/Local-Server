@@ -11,12 +11,16 @@ import { router as CompanyRouter } from "./routes/empresa.route.js"
 import { swaggerSpec } from "./docs/swagger.js"
 import swaggerUI from "swagger-ui-express"
 import { ApolloServer } from "@apollo/server"
-import { typeDefs,  resolvers } from "./graphql/index.js"
+import { typeDefs, resolvers } from "./graphql/index.js"
 import { expressMiddleware } from "@as-integrations/express5"
-
+import cors from "cors"
 
 const app = express()
 app.use(express.json())
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}))
 
 
 
