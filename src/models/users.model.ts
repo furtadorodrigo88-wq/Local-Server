@@ -9,7 +9,7 @@ import { generateUUID } from "../utils/uuid.js";
 export const UserModel = {
     async create(newUser: UserType): Promise<UserType | null> {
         try {
-            const query = "INSERT INTO tbl_utilizadores VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
+            const query = "INSERT INTO tbl_utilizadores VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"
             const value =[
                 generateUUID(),
                 newUser.nome,
@@ -22,7 +22,8 @@ export const UserModel = {
                 await hashPasseword(newUser.password),
                 newUser.enabled,
                 new Date(),
-                new Date()
+                new Date(),
+                newUser.role
             ]
             const [user] = await db.execute(query, value)
             return (Array.isArray(user) ? user[0] : user) as UserType
