@@ -116,6 +116,37 @@ components:
             estado:
               type: string
               example: Aceite
+    getProposalByUserId:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "uuid-1234-5678"
+        id_prestacao_servico:
+          type: integer
+          example: 10
+        preco_hora:
+          type: number
+          format: float
+          example: 50.5
+        horas_estimadas:
+          type: integer
+          example: 8
+        estado:
+          type: string
+          enum: [pendente, aceito, recusado, concluido]
+          example: "pendente"
+        enabled:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          format: date-time
+          example: "2023-10-27T09:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2023-10-27T10:00:00Z"
     ResponseSucessoProposta:
       type: object
       properties:

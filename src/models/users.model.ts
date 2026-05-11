@@ -25,6 +25,7 @@ export const UserModel = {
                 new Date(),
                 newUser.role
             ]
+            console.log(value)
             const [user] = await db.execute(query, value)
             return (Array.isArray(user) ? user[0] : user) as UserType
         } catch (err) {

@@ -168,5 +168,31 @@ export const proposalControler = {
             data: deleteuProposaltResponse
         }
         return res.status(200).json(response)
+    },
+    async getByUserId(req: Request, res: Response) {
+        const { idUser } = req.params
+        if (!idUser) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "ID obrigatorio",
+                data: null
+            }
+            return res.status(400).json(response)
+        }
+        const getProposalResponce = await proposalModel.getByUserId(idUser as string)
+        if (!getProposalResponce) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao buscar Proposta",
+                data: null
+            }
+            return res.status(500).json(response)
+        }
+        const response: ResponseType<ProposalType[]> = {
+            status: "success",
+            message: "Proposta buscado com sucesso",
+            data: getProposalResponce
+        }
+        return res.status(201).json(response)
     }
 }

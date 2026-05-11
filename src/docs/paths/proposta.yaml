@@ -178,3 +178,32 @@ paths:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseErroProposta"
+  /proposal/get-by-user-id/{idUser}:
+    get:
+      summary: Buscar propostas de um utilizador
+      tags:
+        - Proposal
+      description: Retorna as propostas de um utilizador especifico pelo ID
+      parameters:
+        - name: idUser
+          in: path
+          required: true
+          description: ID do utilizador a ser buscado
+          schema:
+            type: string
+            example: 1
+      responses:
+        "200":
+          description: Propostas encontradas
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/GetProposta"
+        "404":
+          description: Serviço não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroProposta"
