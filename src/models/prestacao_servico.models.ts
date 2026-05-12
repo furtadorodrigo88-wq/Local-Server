@@ -23,7 +23,6 @@ export const serviceProvModel = {
                 new Date (),
                 new Date ()
             ]
-            console.log(value)
             const [result] = await db.execute<ServiceProvType[] & RowDataPacket[]>(query, value);
             if (Array.isArray(result) && result.length === 0) return null
             return Array.isArray(result) ? result[0] as ServiceProvType : null
@@ -81,7 +80,6 @@ export const serviceProvModel = {
                 new Date (),
                 id
             ]
-            console.log(value)
             const [result] = await db.execute<ServiceProvType[] & RowDataPacket[]>(query, value);
             if (Array.isArray(result) && result.length === 0) return null
             return Array.isArray(result) ? result[0] as ServiceProvType : null

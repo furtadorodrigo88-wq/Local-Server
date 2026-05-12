@@ -20,7 +20,6 @@ export const proposalModel = {
                 new Date(),
                 newProposal.id_prestador
             ]
-            console.log(value)
             const [result] = await db.execute<ProposalType[] & RowDataPacket[]>(query, value);
             return result[0] as ProposalType;
         } catch (err) {
@@ -32,7 +31,6 @@ export const proposalModel = {
         try {
             const query = "SELECT * FROM tbl_proposta"
             const rows = await db.execute(query)
-            console.log(rows[0])
             return Array.isArray(rows) && rows.length > 0 ? rows[0] as ProposalType[] : []
         } catch (err) {
             console.log(err)
@@ -134,7 +132,6 @@ export const proposalModel = {
             const query = "SELECT * FROM tbl_proposta WHERE id_prestador IN (SELECT id FROM tbl_prestadores WHERE id_utilizador = ?)"
             const value = [idUser]
             const [rows] = await db.execute<ProposalType[] & RowDataPacket[]>(query, value)
-            console.log(rows)
             if (Array.isArray(rows) && rows.length === 0) return null
             return Array.isArray(rows) ? rows : null
         } catch (err) {
