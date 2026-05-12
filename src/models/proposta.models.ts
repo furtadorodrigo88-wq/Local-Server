@@ -131,11 +131,21 @@ export const proposalModel = {
     },
     async getByUserId(idUser: string): Promise<ProposalType[] | null> {
         try {
-            const query = "SELECT * FROM tbl_proposta WHERE id_prestador IN (SELECT id FROM tbl_prestadores WHERE id_utilizador = ?)"
+            const query = `
+            SELECT
+                p.*,
+                ps.urgente,
+                pr.taxa_urgencia
+            FROM tbl_proposta p
+            INNER JOIN tbl_prestacao_servicos ps ON p.id_prestacao_servico = ps.id
+            INNER JOIN tbl_prestadores pr ON p.id_prestador = pr.id
+            WHERE p.id_prestador IN (
+                SELECT id FROM tbl_prestadores WHERE id_utilizador = ?
+            )
+            `
             const value = [idUser]
             const [rows] = await db.execute<ProposalType[] & RowDataPacket[]>(query, value)
             console.log(rows)
-            if (Array.isArray(rows) && rows.length === 0) return null
             return Array.isArray(rows) ? rows : null
         } catch (err) {
             console.log(err)
