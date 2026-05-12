@@ -171,8 +171,6 @@ export const proposalControler = {
     },
     async getByUserId(req: Request, res: Response) {
         const { idUser } = req.params
-        const requesterId = req.user?.id
-        const requesterRole = req.user?.role
         if (!idUser) {
             const response: ResponseType<null> = {
                 status: "error",
@@ -181,24 +179,8 @@ export const proposalControler = {
             }
             return res.status(400).json(response)
         }
-        if (!requesterId) {
-            const response: ResponseType<null> = {
-                status: "error",
-                message: "Utilizador nao autenticado",
-                data: null
-            }
-            return res.status(401).json(response)
-        }
-        if (requesterRole !== "administrador" && requesterId !== idUser) {
-            const response: ResponseType<null> = {
-                status: "error",
-                message: "Nao autorizado",
-                data: null
-            }
-            return res.status(403).json(response)
-        }
         const getProposalResponce = await proposalModel.getByUserId(idUser as string)
-        if (getProposalResponce === null) {
+        if (!getProposalResponce) {
             const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao buscar Proposta",
