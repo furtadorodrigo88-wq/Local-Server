@@ -10,7 +10,8 @@ const ProviderRoute = {
     getById: "/get-by-id/:id",
     getAll: "/",
     update:"/update/:id",
-    delete: "/delete/:id"
+    delete: "/delete/:id",
+    getPrecoHora: "/get-preco-hora/:id"
 }
 const router = Router()
 router.get(ProviderRoute.getAll, authorize ([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]), provaiderControler.getAll)
@@ -19,5 +20,5 @@ router.use(authMidlewere)
 router.post(ProviderRoute.create, authorize ([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]),provaiderControler.createProvider)
 router.put(ProviderRoute.update, authorize([Role.ADMIN, Role.EMPRESA, Role.PRESTADOR]), isOwner(ProviderModel, "owner"), provaiderControler.update)
 router.delete(ProviderRoute.delete, authorize([Role.ADMIN, Role.PRESTADOR]), isOwner(ProviderModel, "owner"), provaiderControler.delete)
-
+router.get(ProviderRoute.getPrecoHora, authorize([Role.ADMIN, Role.EMPRESA, Role.PRESTADOR]), provaiderControler.getPrecoHora)
 export { router }

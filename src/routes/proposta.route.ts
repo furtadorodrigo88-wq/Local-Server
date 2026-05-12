@@ -22,6 +22,6 @@ router.post(proposalRoute.create, authorize([Role.ADMIN, Role.EMPRESA, Role.PRES
 router.put(proposalRoute.update, authorize([Role.ADMIN, Role.EMPRESA, Role.PRESTADOR]), isOwner(proposalModel,"owner"),proposalControler.update)
 router.delete(proposalRoute.delete, authorize([Role.ADMIN, Role.EMPRESA, Role.PRESTADOR]), isOwner(proposalModel,"owner"),proposalControler.delete)
 router.put(proposalRoute.aceitar, authorize([Role.ADMIN, Role.CLIENTE]), proposalControler.acceptProposal)
-router.get(proposalRoute.getByUserId, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]), isOwner(proposalModel,"owner"),proposalControler.getByUserId)
+router.get(proposalRoute.getByUserId, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]),proposalControler.getByUserId)
 
 export { router }
