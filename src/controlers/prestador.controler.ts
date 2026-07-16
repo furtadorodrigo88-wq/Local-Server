@@ -136,5 +136,33 @@ export const provaiderControler = {
             data: deleteuProviderResponse
         }
         return res.status(200).json(response)
+    },
+
+    async getPrecoHora(req: Request, res: Response) {
+        const { id } = req.params
+        if (!id) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "ID obrigatorio",
+                data: null
+            }
+            return res.status(400).json(response)
+        }
+
+        const getPrecoHoraResponse = await ProviderModel.getPrecoHora(id as string)
+        if (!getPrecoHoraResponse) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao buscar preco hora",
+                data: null
+            }
+            return res.status(500).json(response)
+        }
+        const response: ResponseType<ProvaiderType> = {
+            status: "success",
+            message: "preco hora buscado co sucesso",
+            data: getPrecoHoraResponse
+        }
+        return res.status(201).json(response)
     }
 }
