@@ -1,4 +1,9 @@
 # schemas/categoria.yaml
+#id: string;
+#designacao: string;
+#icone: string;
+#created_at: string;
+#updated_at: string;
 
 components:
   schemas:
@@ -6,62 +11,53 @@ components:
       type: object
       properties:
         id:
-          type: string
-          description: ID da categoria
+          type: integer
           example: 1
-        nome:
+        designacao:
           type: string
-          description: Nome da categoria
-          example: "Categoria 1"
-        descricao:
+          example: "Limpeza"
+        icone:
           type: string
-          description: Descrição da categoria
-          example: "Descrição da categoria 1"
-        enabled:
-          type: boolean
-          description: Status da categoria
-          example: true
+          example: "https://example.com/icon-categoria.png"
         created_at:
           type: string
-          format: date-time
-          description: Data de criação da categoria
-          example: "2022-01-01T00:00:00.000Z"
+          example: "2026-04-17T12:00:00.000Z"
         updated_at:
           type: string
-          format: date-time
-          description: Data de atualização da categoria
-          example: "2022-01-01T00:00:00.000Z"
-    CategoriaCreate:
+          example: "2026-04-17T12:00:00.000Z"
+
+    CreateCategoria:
       type: object
       properties:
         designacao:
           type: string
-          description: Designação da categoria
-          example: "Categoria 1"
+          example: "Limpeza"
         icone:
           type: string
-          description: Icone da categoria
-          example: "Categoria 1"
-    ResponseSucessoCategoria:
+          example: "https://example.com/icon-categoria.png"
+
+    CategoriaResponseSucess:
       type: object
       properties:
-        message:
-          type: string
-          example: "Categoria criada com sucesso"
         status:
           type: boolean
           example: true
-        data:
-          $ref: "#/components/schemas/Categoria"
-    ResponseErroCategoria:
-      type: object
-      properties:
         message:
           type: string
-          example: "Erro ao processar categoria"
+          example: "Categoria processada com sucesso"
+        data:
+          $ref: "#/components/schemas/Categoria"
+
+    CategoriaResponseError:
+      type: object
+      properties:
         status:
           type: boolean
           example: false
+        message:
+          type: string
+          example: "Erro ao processar a categoria"
         data:
           type: object
-          nullable: true
+          properties:
+            null: {}

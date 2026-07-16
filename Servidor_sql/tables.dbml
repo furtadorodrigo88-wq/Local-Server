@@ -1,0 +1,107 @@
+enum estado_pendente_em_progresso_finalizado_cancelado_t {
+	pendente
+	em_progresso
+	finalizado
+	cancelado
+}
+
+enum estados_aceito_recusado_t {
+	aceito
+	recusado
+}
+
+Table table_prestadores [headercolor: #175e7a] {
+	id varchar(255) [ pk, not null, unique ]
+	id_utilizadores varchar(255)
+	taxa_Urgencia decimal(10, 3)
+	percentagem_desconto decimal(10, 3)
+	minimo_desconto decimal(10, 2)
+	nif numeric [ not null ]
+	profissao varchar(100) [ not null ]
+	enabled boolean [ not null ]
+	created_at datetime [ not null ]
+	updated_at datetime [ not null ]
+}
+
+Table table_utilizadores [headercolor: #175e7a] {
+	id varchar(255) [ pk, not null, unique ]
+	nome varchar(50) [ not null ]
+	numero_identificacao varchar(100) [ not null ]
+	data_nascimento date [ not null ]
+	email varchar(100) [ not null ]
+	password varchar(255) [ not null ]
+	telefone varchar(20)
+	pais varchar(100) [ not null ]
+	localidade varchar(100) [ not null ]
+	enabled boolean [ not null ]
+	created_at datetime [ not null ]
+	update_at datetime [ not null ]
+}
+
+Table table_servicos [headercolor: #175e7a] {
+	id integer [ pk, increment, not null, unique ]
+	nome varchar(50) [ not null ]
+	descricao varchar(255)
+	categoria varchar(20) [ not null ]
+	created_at datetime [ not null ]
+	updated_at datetime [ not null ]
+}
+
+Table table_orcamento [headercolor: #175e7a] {
+	id integer [ pk, increment, not null, unique ]
+	valor_total double [ not null ]
+	id_utilizadores varchar(255) [ not null ]
+	id_prestadores varchar(255) [ not null ]
+	created_at datetime [ not null ]
+	updated_at datetime [ not null ]
+}
+
+Table table_prestacao_servico [headercolor: #249418] {
+	id integer [ pk, increment, not null, unique ]
+	id_prestador varchar(255) [ not null ]
+	id_orcamento integer
+	id_servicos integer [ not null ]
+	designacao varchar(100) [ not null ]
+	sub_total double [ not null ]
+	horas_estimadas integer
+	preco_hora double
+	estado estado_pendente_em_progresso_finalizado_cancelado_t [ not null ]
+}
+
+Table table_proposta [headercolor: #175e7a] {
+	id integer [ pk, increment, not null, unique ]
+	id_prestacao_servico integer [ not null ]
+	preco_hora double [ not null ]
+	horas_estimadas integer [ not null ]
+	estados estados_aceito_recusado_t [ not null ]
+	created_at datetime [ not null ]
+	updated_at datetime [ not null ]
+}
+
+Ref fk_table_utilizadores_id_table_orcamento {
+	table_utilizadores.id < table_orcamento.id_utilizadores [ delete: no action, update: no action ]
+}
+
+Ref fk_table_prestadores_id_table_orcamento {
+	table_prestadores.id < table_orcamento.id_prestadores [ delete: no action, update: no action ]
+}
+
+Ref fk_table_servicos_id_table_proposta {
+	table_servicos.id < table_proposta.id_prestacao_servico [ delete: no action, update: no action ]
+}
+
+Ref fk_table_prestadores_id_table_prestacao_servico {
+	table_prestadores.id < table_prestacao_servico.id_prestador [ delete: no action, update: no action ]
+}
+
+Ref fk_table_orcamento_id_table_prestacao_servico {
+	table_orcamento.id < table_prestacao_servico.id_orcamento [ delete: no action, update: no action ]
+}
+
+Ref fk_table_servicos_id_table_prestacao_servico {
+	table_servicos.id < table_prestacao_servico.id_servicos [ delete: no action, update: no action ]
+}
+
+Ref fk_table_utilizadores_id_table_prestadores {
+	table_utilizadores.id < table_prestadores.id_utilizadores [ delete: no action, update: no action ]
+}

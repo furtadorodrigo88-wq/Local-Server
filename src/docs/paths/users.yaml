@@ -1,0 +1,241 @@
+# paths/users.yaml
+
+paths:
+  /users:
+    get:
+      summary: Listar todos os utilizadores
+      tags:
+        - users
+      description: Retorna uma Lista de Todos os utilizadores disponiveis
+      responses:
+        "200":
+          description: Lista de utilizadores
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Users"
+
+        "404":
+          description: "Nenhum utilizador Encontrado"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UsersResponseError"
+                
+  /users/create:
+    post:
+      summary: criar um novo utilizador
+      tags:
+        - users
+      description: Criar um novo utilizador
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUsers"
+      responses:
+        "200":
+          description: utilizador criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseSucess"
+        "400":
+          description: Dados invalidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseError"
+
+  /users/get-by-id/{id}:
+    get:
+      summary: Buscar um utilizador por ID
+      tags:
+        - users
+      description: Retorna um utilizador especifico pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do utilizador
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: utilizador encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseSucess"
+        "404":
+          description: utilizador nao encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseError"
+
+  /users/update/{id}:
+    put:
+      summary: Atualizar um utilizador
+      tags:
+        - users
+      description: Atualizar um utilizador especifico pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do utilizador
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUsers"
+      responses:
+        "200":
+          description: utilizador atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseSucess"
+        "400":
+          description: Dados invalidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseError"
+        "404":
+          description: utilizador nao encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseError"
+
+  /users/delete/{id}:
+    delete:
+      summary: Apagar um utilizador
+      tags:
+        - users
+      description: Apagar um utilizador especifico pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do utilizador
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: utilizador apagado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseSucess"
+        "404":
+          description: utilizador nao encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseError"
+
+  /users/login:
+    post:
+      summary: Login de um utilizador
+      tags:
+        - users
+      description: Realizar o login de um utilizador
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginUsers"
+      responses:
+        "200":
+          description: Login realizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseSucess"
+        "400":
+          description: Dados invalidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseError"
+        "404":
+          description: Erro ao logar utilizador
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseError"
+
+  /users/update-password/{id}:
+    put:
+      summary: Atualizar password
+      tags:
+        - users
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePassword"
+      responses:
+        "200":
+          description: Password atualizada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseSuccess"
+        "400":
+          description: Dados inválidos
+
+  /users/reset-password:
+    put:
+      summary: Resetar a senha de um utilizador
+      tags:
+        - users
+      description: Resetar a senha de um utilizador especifico pelo ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetPasswordById"
+      responses:
+        "200":
+          description: Senha resetada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseSucess"
+        "400":
+          description: Dados invalidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseError"
+        "404":
+          description: utilizador nao encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseError"

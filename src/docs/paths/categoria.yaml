@@ -1,12 +1,12 @@
-#paths/categoria.yaml
+# paths/categoria.yaml
 
 paths:
-  /category:
+  /categoria:
     get:
-      summary: Listar todos as categorias
+      summary: Listar todas as categorias
       tags:
-        - Category
-      description: Retorna uma lista de todas as categorias disponiveis
+        - categoria
+      description: Retorna uma lista de todas as categorias
       responses:
         "200":
           description: Lista de categorias
@@ -17,51 +17,49 @@ paths:
                 items:
                   $ref: "#/components/schemas/Categoria"
         "404":
-          description: Categoria não encontrada
+          description: Nenhuma categoria encontrada
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseErroCategoria"
-  /category/create:
+                $ref: "#/components/schemas/CategoriaResponseError"
+
+  /categoria/create:
     post:
-      summary: criar nova Categoria
+      summary: Criar uma nova categoria
       tags:
-        - Category
-      description: cria uma nova Categoria
+        - categoria
+      description: Cadastrar nova categoria
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              $ref: "#/components/schemas/CategoriaCreate"
+              $ref: "#/components/schemas/CreateCategoria"
       responses:
         "200":
           description: Categoria criada com sucesso
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSucessoCategoria"
+                $ref: "#/components/schemas/CategoriaResponseSucess"
         "400":
-          description: Dados inválidos fornecidos
+          description: Dados invalidos
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseErroCategoria"
-  /category/get-by-id/{id}:
+                $ref: "#/components/schemas/CategoriaResponseError"
+
+  /categoria/get-by-id/{id}:
     get:
-      summary: Buscar uma Categoria
+      summary: Buscar categoria por ID
       tags:
-        - Category
-      description: Retorna uma Categoria especifica pelo ID
+        - categoria
+      description: Retorna uma categoria especifica pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID da Categoria a ser buscada
+          description: ID da categoria
           schema:
             type: integer
             example: 1
@@ -71,26 +69,25 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSucessoCategoria"
+                $ref: "#/components/schemas/CategoriaResponseSucess"
         "404":
-          description: Categoria não encontrada
+          description: Categoria nao encontrada
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseErroCategoria"
-  /category/update/{id}:
+                $ref: "#/components/schemas/CategoriaResponseError"
+
+  /categoria/update/{id}:
     put:
-      summary: atualizar uma Categoria
+      summary: Atualizar uma categoria
       tags:
-        - Category
-      description: Atualizar Categoria pelo id
+        - categoria
+      description: Atualizar os dados de uma categoria especifica pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID da Categoria a ser atualizada
+          description: ID da categoria
           schema:
             type: integer
             example: 1
@@ -99,7 +96,6 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               $ref: "#/components/schemas/CreateCategoria"
       responses:
         "200":
@@ -107,48 +103,44 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSucessoCategoria"
+                $ref: "#/components/schemas/CategoriaResponseSucess"
         "400":
-          description: Dados inválidos fornecidos
+          description: Dados invalidos
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseErroCategoria"
+                $ref: "#/components/schemas/CategoriaResponseError"
         "404":
-          description: Categoria não encontrada
+          description: Categoria nao encontrada
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseErroCategoria"
-  /category/delete/{id}:
+                $ref: "#/components/schemas/CategoriaResponseError"
+
+  /categoria/delete/{id}:
     delete:
-      summary: Deletar uma Categoria
+      summary: Apagar uma categoria
       tags:
-        - Category
-      description: Deletar Categoria pelo id
+        - categoria
+      description: Apagar uma categoria pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID da Categoria a ser deletada
+          description: ID da categoria
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Categoria deletada com sucesso
+          description: Categoria apagada com sucesso
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSucessoCategoria"
+                $ref: "#/components/schemas/CategoriaResponseSucess"
         "404":
-          description: Categoria não encontrada
+          description: Categoria nao encontrada
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseErroCategoria"
+                $ref: "#/components/schemas/CategoriaResponseError"

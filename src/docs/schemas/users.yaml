@@ -1,0 +1,170 @@
+  # schemas/users.yaml
+#id: string;
+#nome: string;
+#numero_identidade: string;
+#data_nascimento: string;
+#email: string;
+#password: string;
+#telefone: string;
+#pais: string;
+#localidade: string;
+#enebled: boolean;
+#created_at: Date;
+#update_at: Date;
+
+components:
+  schemas:
+    # schema principal de uilizador
+    Users:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 1
+        nome:
+          type: string
+          example: "Djeison Santos"
+        numero_identidade:
+          type: string
+          example: "M001X"
+        data_nascimento:
+          type: string
+          example: "1996-02-18"
+        email:
+          type: string
+          example: "djeison.adventista@gmail.com"
+        password:
+          type: string
+          example: "$2a5125j.pn.Zt9gCshBcT8J.QIxO6N995ZnqG/PVD:PVGrkpKt5PB4HCOK"
+        telefone:
+          type: string
+          example: "9580703"
+        pais:
+          type: string
+          example: "Cabo Verde"
+        localidade:
+          type: string
+          example: "Monte Grande"
+        enebled_at:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          example: "2012-09-12T00:00:00.000Z"
+        updated_at:
+          type: string
+          example: "2012-09-12T00:00:00.000Z"
+
+    # schemas para criar um novo utilizador
+    CreateUsers:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: "Djeison Santos"
+        numero_identidade:
+          type: string
+          example: "M001X"
+        data_nascimento:
+          type: string
+          example: "1996-02-18"
+        email:
+          type: string
+          example: "djeison.adventista@gmail.com"
+        password:
+          type: string
+          example: "$2a5125j.pn.Zt9gCshBcT8J.QIxO6N995ZnqG/PVD:PVGrkpKt5PB4HCOK"
+        telefone:
+          type: string
+          example: "9580703"
+        pais:
+          type: string
+          example: "Cabo Verde"
+        localidade:
+          type: string
+          example: "Monte Grande"
+        enebled_at:
+          type: boolean
+          example: true
+
+    LoginUsers:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "eu.strong@gmail.com"
+        password:
+          type: string
+          example: "rambo123"    
+
+    UpdatePassword:
+      type: object
+      required:
+        - oldPassword
+        - newPassword
+      properties:
+        oldPassword:
+          type: string
+          format: password
+        newPassword:
+          type: string
+          example: "novaSenha123"
+
+    ResetPasswordById:
+      type: object
+      required:
+        - id
+        - newPassword
+      properties:
+        id:
+          type: string
+          example: "1"
+          description: "ID do usuário cuja senha será redefinida"
+        newPassword:
+          type: string
+          format: password
+          example: "novaSenha123"
+          description: "Nova senha do usuário"
+
+              # schemas generico para sucesso
+    UsersResponseSucess:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Utilizadores criado com sucess"
+        status:
+          type: boolean
+          example: true
+        data:
+          type: object
+          $ref: "#/components/schemas/Users"
+
+    UsersResponseSuccess:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Password atualizada com sucesso
+        data:
+          type: object
+          nullable: true
+          example: null
+
+    # schemas generico de resposta de erro
+    UsersResponseError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Erro ao buscar Utilizadores"
+        status:
+          type: boolean
+          example: false
+        data:
+          type: object
+          properties:
+            null

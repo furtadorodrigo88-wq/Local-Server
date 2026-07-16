@@ -1,92 +1,97 @@
-import type { RowDataPacket } from "mysql2";
-import type { CompanyType } from "../utils/types.js";
-import db from "../lib/db.js";
 
+import db from "../lib/db-pg.js";
+import type { EmpresaDBType } from "../utils/types.js";
+import { generateUUID } from "../utils/uuid.js";
 
+export const EmpresaModel = {
+    async create(empresa: EmpresaDBType): Promise<EmpresaDBType | null> {
+        try {
+            const result = await db.query<EmpresaDBType>(
+                `INSERT INTO tbl_empresa
+                (id, designacao, descricao, localizacao, nif, icone, id_utilizador, enabled, created_at, updated_at)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
+                [
+                    generateUUID(),
+                    empresa.designacao,
+                    empresa.descricao,
+                    empresa.localizacao,
+                    empresa.nif,
+                    empresa.icone,
+                    empresa.id_utilizador,
+                    empresa.enabled ?? true,
+                    new Date(),
+                    new Date(),
+                ]
+            );
+            return result.rows[0] || null;
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    },
 
-export const CompanyModel = {
-    async create(newcompany: CompanyType): Promise<CompanyType | null> {
+    async getAll(): Promise<EmpresaDBType[]> {
         try {
-            const query = "INSERT INTO tbl_empresa (id, designacao, descricao, nif, icone, id_utilizador, localizacao, enabled, created_at, updated_at) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?)"
-            const value = [
-                null,
-                newcompany.designacao,
-                newcompany.descricao,
-                newcompany.nif,
-                newcompany.icone,
-                newcompany.id_utilizador,
-                newcompany.localizacao,
-                newcompany.enabled,
-                new Date(),
-                new Date()
-            ]
-            const [result] = await db.execute <CompanyType & RowDataPacket[]>(query, value);
-            return result as CompanyType;
-        } catch (err) {
-            console.log(err)
-            return null
+            const result = await db.query<EmpresaDBType>(
+                `SELECT * FROM tbl_empresa`
+            );
+            return result.rows;
+        } catch (error) {
+            console.error(error);
+            return [];
         }
     },
-    async getAll(): Promise<CompanyType[] | null> {
+
+    async get(id: string): Promise<EmpresaDBType | null> {
         try {
-            const query = "SELECT * FROM tbl_empresa"
-            const rows = await db.execute<CompanyType[] & RowDataPacket[]>(query)
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] as CompanyType[] : []
-        } catch (err) {
-            console.log(err)
-            return null
+            const result = await db.query<EmpresaDBType>(
+                `SELECT * FROM tbl_empresa WHERE id = $1`,
+                [id]
+            );
+
+            return result.rows[0] || null;
+        } catch (error) {
+            console.error(error);
+            return null;
         }
     },
-    async get(id: string): Promise<CompanyType | null> {
+
+    async update(id: string, empresa: EmpresaDBType): Promise<EmpresaDBType | null> {
         try {
-            const query = `
-            SELECT DISTINCT
-                e.*,
-                u.id as owner
-            FROM tbl_empresa e
-            INNER JOIN tbl_utilizadores u ON e.id_utilizador = u.id
-            WHERE e.id = ?
-            `
-            const value = [id]
-            const [rows] = await db.execute<CompanyType & RowDataPacket[]>(query, value)
-            if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows[0] as CompanyType : null
-        } catch (err) {
-            console.log(err)
-            return null
+            const result = await db.query<EmpresaDBType>(
+                `UPDATE tbl_empresa
+                SET designacao = $1, descricao = $2, localizacao = $3, nif = $4, icone = $5, id_utilizador = $6, enabled = $7, updated_at = $8
+                WHERE id = $9 RETURNING *`,
+                [
+                    empresa.designacao,
+                    empresa.descricao,
+                    empresa.localizacao,
+                    empresa.nif,
+                    empresa.icone,
+                    empresa.id_utilizador,
+                    empresa.enabled,
+                    new Date(),
+                    id,
+                ]
+            );
+            return result.rows[0] || null;
+        } catch (error) {
+            console.error(error);
+            return null;
         }
     },
-    async update(id: string, newcompany: CompanyType): Promise<CompanyType | null> {
+
+    async delete(id: string): Promise<EmpresaDBType | null> {
         try {
-            const query = "UPDATE tbl_empresa SET designacao=?, descricao=?, nif=?, icone=?, id_utilizador=?, localizacao=?, enabled=?, updated_at=? WHERE id=?"
-            const value = [
-                newcompany.designacao,
-                newcompany.descricao,
-                newcompany.nif,
-                newcompany.icone,
-                newcompany.id_utilizador,
-                newcompany.localizacao,
-                newcompany.enabled,
-                new Date(),
-                id
-            ]
-            const [result] = await db.execute<CompanyType & RowDataPacket[]>(query, value);
-            return result as CompanyType;
-        } catch (err) {
-            console.log(err)
-            return null
+            const result = await db.query<EmpresaDBType>(
+                `DELETE FROM tbl_empresa WHERE id = $1 RETURNING *`,
+                [id]
+            );
+
+            return result.rows[0] || null;
+        } catch (error) {
+            console.error(error);
+            return null;
         }
     },
-    async delete(id: string): Promise<CompanyType | null> {
-        try {
-            const query = "DELETE FROM tbl_empresa WHERE id=?"
-            const value = [id]
-            const [rows] = await db.execute(query, value)
-            if (Array.isArray(rows) && rows.length === 0) return null
-            return (Array.isArray(rows) ? rows[0] : rows) as CompanyType
-        } catch (err) {
-            console.log(err)
-            return null
-        }
-    }
-}
+};

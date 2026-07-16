@@ -1,22 +1,27 @@
-import { Router } from "express"
-import authMidlewere, { authorize } from "../security/auth.midlewere.js"
-import { Role } from "../utils/types.js"
-import { CategoryControler } from "../controlers/categoria.controler.js"
+import { Router } from "express";
+import { CategoriaController } from "../controllers/categoria.controller.js";
+import AuthMiddleware, { authorize } from "../security/auth.middleware.js";
+import { Role } from "../utils/types.js";
 
 
 
-const CategoryRoute = {
+const CategoriaRoute = {
     create: "/create",
     getById: "/get-by-id/:id",
     getAll: "/",
-    update:"/update/:id",
-    delete: "/delete/:id"
-}
-const router = Router()
-router.get(CategoryRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]),CategoryControler.getAll)
-router.get(CategoryRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]), CategoryControler.get)
-router.use(authMidlewere)
-router.post(CategoryRoute.create, authorize([Role.ADMIN]), CategoryControler.createCategory)
-router.put(CategoryRoute.update, authorize([Role.ADMIN]), CategoryControler.update)
-router.delete(CategoryRoute.delete, authorize([Role.ADMIN]), CategoryControler.delete)
-export { router }
+    update: "/update/:id",
+    delete: "/delete/:id",
+};
+
+const router = Router();
+
+router.get(CategoriaRoute.getAll, CategoriaController.getAll);
+router.get(CategoriaRoute.getById, CategoriaController.get);
+
+router.use(AuthMiddleware);
+
+router.post(CategoriaRoute.create, authorize([Role.ADMIN]), CategoriaController.create);
+router.put(CategoriaRoute.update, authorize([Role.ADMIN]), CategoriaController.update);
+router.delete(CategoriaRoute.delete, authorize([Role.ADMIN]), CategoriaController.delete);
+
+export { router };

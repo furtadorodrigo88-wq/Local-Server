@@ -1,20 +1,18 @@
-import { url } from "node:inspector"
-import swaggerJsdoc from "swagger-jsdoc"
-import path from "path"
+import swaggerJsdoc from "swagger-jsdoc";
+import path from "path";
 
-
-const opitions: swaggerJsdoc.Options = {
+const options: swaggerJsdoc.Options = {
     definition: {
-        openapi: "3.0.0",
+        openapi: `3.0.0`,
         info: {
             title: "API Servidor Local",
-            description: "Plataforma de Gestão de Prestação de Serviços",
-            version: "1.0.0"
+            description: "Plataforma de Gestao de Prestadores e Servicos",
+            version: "1.0.0",
         },
         servers: [
             {
-                url: 'http://localhost:8080',
-                description: 'dev',
+                url: process.env.API_URL || `http://localhost:8081`,
+                description: `dev`,
             }
         ],
         components: {
@@ -36,6 +34,6 @@ const opitions: swaggerJsdoc.Options = {
         path.join(process.cwd(), "./src/docs/schemas/*.yaml"),
         path.join(process.cwd(), "./src/docs/paths/*.yaml"),
     ]
-}
+};
 
-export const swaggerSpec = swaggerJsdoc(opitions);
+export const swaggerSpec = swaggerJsdoc(options);

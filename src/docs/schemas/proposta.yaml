@@ -1,16 +1,17 @@
 # schemas/proposta.yaml
-
-#id: string
-#id_prestacao_servico: number
-#preco_hora: number
-#horas_estimadas: number
-#estado: string
-#enabled: boolean
-#created_at: string
-#updated_at: string
+#id: string,
+#id_prestacao_servico: string,
+#id_prestador: string,
+#preco_hora: number,
+#horas_estimadas: number,
+#estado: string,
+#enabled: boolean,
+#created_at: string,
+#updated_at: string,
 
 components:
   schemas:
+    # schema principal de proposta
     Proposta:
       type: object
       properties:
@@ -18,155 +19,108 @@ components:
           type: string
           example: "uuid-1234-5678"
         id_prestacao_servico:
+          type: string
+          example: "f9dad001-a0da-4081-ac59-e82886b290a1"
+        id_prestador:
           type: integer
-          example: 10
+          example: 1
         preco_hora:
-          type: number
-          format: float
-          example: 50.5
+          type: string
+          example: "200"
         horas_estimadas:
-          type: integer
-          example: 8
+          type: string
+          example: "8"
         estado:
           type: string
-          enum: [pendente, aceito, recusado, concluido]
-          example: "pendente"
-        enabled:
+          example: "Finalizado"
+        enabled_at:
           type: boolean
           example: true
         created_at:
           type: string
-          format: date-time
-          example: "2023-10-27T09:00:00Z"
+          example: "2025-12-10T00:00:00.000Z"
         updated_at:
           type: string
-          format: date-time
-          example: "2023-10-27T10:00:00Z"
-    GetProposta:
+          example: "2025-12-10T00:00:00.000Z"
+
+    # schema para criar uma nova proposta
+    CreateProposta:
       type: object
       properties:
         id:
+          type: integer
+          example: 1
+        id_prestacao_servico:
           type: string
-          example: "uuid-1234-5678"
-    CreateProposta:
+          example: "f9dad001-a0da-4081-ac59-e82886b290a1"
+        preco_hora:
+          type: string
+          example: "200"
+        horas_estimadas:
+          type: string
+          example: "8"
+        estado:
+          type: string
+          example: "Finalizado"
+        enabled_at:
+          type: boolean
+          example: true
+
+    PropostaAceite:
       type: object
-      required:
-        - id_prestacao_servico
-        - preco_hora
-        - horas_estimadas
+      description: Representa uma proposta que foi aceite
       properties:
+        id:
+          type: integer
+          description: ID da proposta
+          example: 10
         id_prestacao_servico:
           type: integer
-          example: 10
-        preco_hora:
-          type: number
-          format: float
-          example: 50.0
-        horas_estimadas:
-          type: integer
+          description: ID da prestação de serviço associada
           example: 5
         estado:
           type: string
-          default: "pendente"
-          example: "pendente"
-        enabled:
-          type: boolean
-          default: true
-          example: true
-        id_prestador:
+          description: Estado atual da proposta
+          enum:
+            - Pendente
+            - Aceite
+            - Rejeitada
+          example: Aceite
+        data_aceite:
           type: string
-          example: "uuid-1234-5678"
-    UpdateProposta:
+          format: date-time
+          description: Data em que a proposta foi aceite
+          example: "2026-04-04T15:30:00Z"
+        mensagem:
+          type: string
+          description: Mensagem de confirmação
+          example: "Proposta aceite com sucesso"      
+
+    # schemas generico para sucesso
+    PropostaResponseSucess:
       type: object
       properties:
-        preco_hora:
-          type: number
-          format: float
-          example: 55.0
-        horas_estimadas:
-          type: integer
-          example: 6
-        estado:
-          type: string
-          example: "aceito"
-        enabled:
-          type: boolean
-          example: true
-    AceitarPoposta:
-      type: object
-      properties:
-        status:
-          type: string
-          example: success
         message:
           type: string
-          example: Proposta aceite com sucesso
+          example: "Proposta criado com sucess"
+        status:
+          type: boolean
+          example: true
         data:
           type: object
-          properties:
-            id:
-              type: string
-              example: "15"
-            id_orcamento:
-              type: string
-              example: "3"
-            id_prestacao_servico:
-              type: string
-              example: "7"
-            estado:
-              type: string
-              example: Aceite
-    getProposalByUserId:
-      type: object
-      properties:
-        id:
-          type: string
-          example: "uuid-1234-5678"
-        id_prestacao_servico:
-          type: integer
-          example: 10
-        preco_hora:
-          type: number
-          format: float
-          example: 50.5
-        horas_estimadas:
-          type: integer
-          example: 8
-        estado:
-          type: string
-          enum: [pendente, aceito, recusado, concluido]
-          example: "pendente"
-        enabled:
-          type: boolean
-          example: true
-        created_at:
-          type: string
-          format: date-time
-          example: "2023-10-27T09:00:00Z"
-        updated_at:
-          type: string
-          format: date-time
-          example: "2023-10-27T10:00:00Z"
-    ResponseSucessoProposta:
-      type: object
-      properties:
-        message:
-          type: string
-          example: "Operação realizada com sucesso"
-        status:
-          type: boolean
-          example: true
-        data:
           $ref: "#/components/schemas/Proposta"
-    ResponseErroProposta:
+
+    # schemas generico de resposta de erro
+    PropostaResponseError:
       type: object
       properties:
         message:
           type: string
-          example: "Erro ao processar proposta"
+          exemple: "Erro ao buscar proposta"
         status:
           type: boolean
           example: false
         data:
           type: object
-          nullable: true
+          properties:
+            null

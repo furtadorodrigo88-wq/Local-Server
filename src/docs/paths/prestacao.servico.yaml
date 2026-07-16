@@ -1,0 +1,215 @@
+paths:
+  /prestacao-servico:
+    get:
+      tags:
+        - PrestacaoServico
+      summary: Listar prestacoes de servico
+      description: Retorna todas as prestacoes de servico cadastradas.
+      responses:
+        "200":
+          description: Lista de prestacoes de servico retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccessPrestacaoServico"
+        "500":
+          description: Erro ao buscar prestacoes de servico.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseErrorPrestacaoServico"
+
+  /prestacao-servico/create:
+    post:
+      tags:
+        - PrestacaoServico
+      summary: Criar prestacao de servico
+      description: Cria uma nova prestacao de servico.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePrestacaoServico"
+      responses:
+        "200":
+          description: Prestacao de servico criada com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccessPrestacaoServico"
+        "400":
+          description: Dados invalidos para criar prestacao de servico.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseErrorPrestacaoServico"
+
+  /prestacao-servico/get-by-id/{id}:
+    get:
+      tags:
+        - PrestacaoServico
+      summary: Buscar prestacao de servico por ID
+      description: Retorna uma prestacao de servico especifica pelo seu identificador.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID da prestacao de servico.
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Prestacao de servico encontrada.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccessPrestacaoServico"
+        "400":
+          description: ID da prestacao de servico invalido ou ausente.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseErrorPrestacaoServico"
+        "404":
+          description: Prestacao de servico nao encontrada.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseErrorPrestacaoServico"
+
+  /prestacao-servico/update/{id}:
+    put:
+      tags:
+        - PrestacaoServico
+      summary: Atualizar prestacao de servico
+      description: Atualiza as informacoes de uma prestacao de servico existente pelo seu ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID da prestacao de servico a ser atualizada.
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePrestacaoServico"
+      responses:
+        "200":
+          description: Prestacao de servico atualizada com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccessPrestacaoServico"
+        "400":
+          description: Dados invalidos para atualizar prestacao de servico.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseErrorPrestacaoServico"
+
+  /prestacao-servico/delete/{id}:
+    delete:
+      tags:
+        - PrestacaoServico
+      summary: Apagar prestacao de servico
+      description: Apaga uma prestacao de servico especificada pelo seu ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID da prestacao de servico a ser apagada.
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Prestacao de servico apagada com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccessPrestacaoServico"
+        "400":
+          description: Erro ao apagar prestacao de servico.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseErrorPrestacaoServico"
+
+  /prsetacao-servico/get-all-detalhado:
+    get:
+      summry: Buscar todas prestacoes de servico detalhadas
+      tags: -Prestacao nde servico
+      description: Retorna uma lista de todas as prestacoes de servico detalhadas
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: string
+            example: "10"
+
+        - name: offset
+          in: query
+          required: false
+          schema:
+          type: string
+          example: "0"
+    responses:
+      "200":
+        description: Prestação de serviço detalhada encontrada com sucesso
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseSucess"
+      "500":
+        description: Erro ao buscar prestação de serviço detalhada
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
+
+/prestacao-servico/get-all-detalhado-by-categoria/{categoria}:
+  get:
+    summary: Buscar todas prestacoes de servico detalhadas por categoria
+    tags: 
+      -Prestacao nde servico
+    description: Retorna uma lista de todas as prestacoes de servico detalhadas por categoria
+    parameters:
+      - name: categoria
+        in: path
+        required: true
+        schema:
+          type: string
+          example: "1"
+      - name: "limit"
+        in: query
+        required: false
+        schema:
+          type: string
+          example: "10"
+      - name: "offset"
+        in: query
+        required: false
+        schema:
+          type: string
+          example: "0"
+    responses:
+      "200":
+        description: Prestação de serviço detalhada encontrada com sucesso
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseSucess"
+      "500":
+        description: Erro ao buscar prestação de serviço detalhada
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
+          

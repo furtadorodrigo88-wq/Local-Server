@@ -1,33 +1,34 @@
-import { CompanyModel } from "../../models/empresa.model.js";
-import { UserModel } from "../../models/users.model.js";
-import type { UserType } from "../../utils/types.js";
+import { UsersModel } from "../../models/users.model.js";
+import { EmpresaModel } from "../../models/empresa.model.js";
+import { PrestadorModel } from "../../models/prestador.model.js";
+import type { UserDBType, userType } from "../../utils/types.js";
 
-
-
-export const userResolver = {
+export const UsersResolver = {
     Query: {
         getAllUsers: async () => {
-            return await UserModel.getAll();
+            return await UsersModel.getAll();
         },
-        getUserById: async (_: any, args: {id: string}) => {
-            return await UserModel.get(args.id);
+        getUserById: async (_: any, args: { id: string }) => {
+            return await UsersModel.get(args.id);
         }
     },
     Mutation: {
-        createUser: async (_: any, args: {newUser: UserType}) => {
-            return await UserModel.create(args.newUser);
+        createUser: async (_: any, args: { user: userType }) => {
+            return await UsersModel.create(args.user);
         },
-        updateUser: async (_: any, args: {id: string, newUser: UserType}) => {
-            return await UserModel.update(args.id, args.newUser);
+        updateUser: async (_: any, args: { id: string, user: userType }) => {
+            return await UsersModel.update(args.id, args.user);
         },
-        deleteUser: async (_: any, args: {id: string}) => {
-            return await UserModel.delete(args.id);
+        deleteUser: async (_: any, args: { id: string }) => {
+            return await UsersModel.delete(args.id);
         }
     },
-    // Relacionamentos de tabelas
-    user: {
-        company: async (parent: {id: string}) => {
-            return await CompanyModel.get(parent.id);
+    User: {
+        empresa: async (parent: UserDBType) => {
+            return await EmpresaModel.get(parent.id!);
+        },
+        prestador: async (parent: UserDBType) => {
+            return await PrestadorModel.get(parent.id!);
         }
     }
 }

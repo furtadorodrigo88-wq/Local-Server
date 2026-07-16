@@ -1,12 +1,12 @@
-#paths/empresa.yaml
+# paths/empresa.yaml
 
 paths:
   /empresa:
     get:
-      summary: Listar todos as empresas
+      summary: Listar todas as empresas
       tags:
-        - Empresa
-      description: Retorna uma lista de todas as empresas disponiveis
+        - empresa
+      description: Retorna uma lista de todas as empresas cadastradas
       responses:
         "200":
           description: Lista de empresas
@@ -17,51 +17,49 @@ paths:
                 items:
                   $ref: "#/components/schemas/Empresa"
         "404":
-          description: Empresa não encontrada
+          description: Nenhuma empresa encontrada
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseErroEmpresa"
+                $ref: "#/components/schemas/EmpresaResponseError"
+
   /empresa/create:
     post:
-      summary: criar nova Empresa
+      summary: Criar uma nova empresa
       tags:
-        - Empresa
-      description: cria uma nova Empresa
+        - empresa
+      description: Cadastrar uma nova empresa
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              $ref: "#/components/schemas/EmpresaCreate"
+              $ref: "#/components/schemas/CreateEmpresa"
       responses:
         "200":
           description: Empresa criada com sucesso
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSucessoEmpresa"
+                $ref: "#/components/schemas/EmpresaResponseSucess"
         "400":
-          description: Dados inválidos fornecidos
+          description: Dados invalidos
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseErroEmpresa"
+                $ref: "#/components/schemas/EmpresaResponseError"
+
   /empresa/get-by-id/{id}:
     get:
-      summary: Buscar uma Empresa
+      summary: Buscar empresa por ID
       tags:
-        - Empresa
-      description: Retorna uma Empresa especifica pelo ID
+        - empresa
+      description: Retorna os dados de uma empresa específica pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID da Empresa a ser buscada
+          description: ID da empresa
           schema:
             type: integer
             example: 1
@@ -71,26 +69,25 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSucessoEmpresa"
+                $ref: "#/components/schemas/EmpresaResponseSucess"
         "404":
-          description: Empresa não encontrada
+          description: Empresa nao encontrada
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseErroEmpresa"
+                $ref: "#/components/schemas/EmpresaResponseError"
+
   /empresa/update/{id}:
     put:
-      summary: atualizar uma Empresa
+      summary: Atualizar uma empresa
       tags:
-        - Empresa
-      description: Atualizar Categoria pelo id
+        - empresa
+      description: Atualizar os dados de uma empresa pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID da Categoria a ser atualizada
+          description: ID da empresa
           schema:
             type: integer
             example: 1
@@ -99,56 +96,51 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              $ref: "#/components/schemas/CreateCategoria"
+              $ref: "#/components/schemas/CreateEmpresa"
       responses:
         "200":
-          description: Categoria atualizada com sucesso
+          description: Empresa atualizada com sucesso
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSucessoCategoria"
+                $ref: "#/components/schemas/EmpresaResponseSucess"
         "400":
-          description: Dados inválidos fornecidos
+          description: Dados invalidos
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseErroCategoria"
+                $ref: "#/components/schemas/EmpresaResponseError"
         "404":
-          description: Categoria não encontrada
+          description: Empresa nao encontrada
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseErroCategoria"
-  /category/delete/{id}:
+                $ref: "#/components/schemas/EmpresaResponseError"
+
+  /empresa/delete/{id}:
     delete:
-      summary: Deletar uma Categoria
+      summary: Apagar uma empresa
       tags:
-        - Category
-      description: Deletar Categoria pelo id
+        - empresa
+      description: Apagar uma empresa pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID da Categoria a ser deletada
+          description: ID da empresa
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Categoria deletada com sucesso
+          description: Empresa apagada com sucesso
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSucessoCategoria"
+                $ref: "#/components/schemas/EmpresaResponseSucess"
         "404":
-          description: Categoria não encontrada
+          description: Empresa nao encontrada
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseErroCategoria"
+                $ref: "#/components/schemas/EmpresaResponseError"

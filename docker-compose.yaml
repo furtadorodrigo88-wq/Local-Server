@@ -1,0 +1,37 @@
+services:
+  db-2:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=Webpass2334!
+      - POSTGRES_DB=servidor_local
+    ports:
+      - "5432:5432"
+
+  api-2:
+    build: .
+    environment:
+      - DATABASE_URL=postgresql://root:Webpass2334!@db-2:5432/servidor_local
+      - DB_PG_HOST=db-2
+      - DB_PG_PORT=5432
+      - DB_PG_USER=root
+      - DB_PG_PASSWORD=Webpass2334!
+      - DB_PG_NAME=servidor_local
+      - PORT=8080
+      - JWT_SECRET="fsjkfvhsduihjkcgdfjghdfghdcjkvhdfjkhcvnbjfghdfkjgnldfbjdfhguhfbjncvbhfghcvkjbnfdhgdhfçjvkjdhdfuhguidfhgcvjnbcvhbjfcngfjckbhdfughcjkbncvjkbhdkghcvkbncjkgfbhdvbcbvhcv.jvlkdfuvj"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src:/app/src
+
+  k6_attack-2:
+    image: grafana/k6:latest
+    volumes:
+      - ./src:/app/src
+    command: [ "sleep", "infinity" ]
+    depends_on:
+      - api-2
+    ports:
+      - "5665:5665"
+    environment:
+      - K6_WEB_DASHBOARD=true

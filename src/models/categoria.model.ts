@@ -1,83 +1,103 @@
-import type { RowDataPacket } from "mysql2";
-import db from "../lib/db.js";
-import type { CategoryType } from "../utils/types.js";
 
-/*export interface CategoryType {
-    id: string
-    designacao: string
-    icone: string
-    created_at: string
-    updated_at: string
-}*/
+import db from "../lib/db-pg.js";
+import type { CategoriaDBType } from "../utils/types.js";
+import { generateUUID } from "../utils/uuid.js";
 
-
-
-export const CategoryModel = {
-    async create(newcategory: CategoryType): Promise<CategoryType | null> {
+export const CategoriaModel = {
+    async create(categoria: CategoriaDBType): Promise<CategoriaDBType | null> {
         try {
-            const query = "INSERT INTO tbl_categoria (id, designacao, icone, created_at, updated_at) VALUES (?,?, ?, ?, ?)"
-            const value = [
-                null,
-                newcategory.designacao,
-                newcategory.icone,
-                new Date(),
-                new Date()
-            ]
-            const [result] = await db.execute <CategoryType & RowDataPacket[]>(query, value);
-            return result as CategoryType;
-        } catch (err) {
-            console.log(err)
-            return null
+            const id = generateUUID();
+            await db.query(
+                `INSERT INTO tbl_categoria (id, designacao, icone, created_at, updated_at)
+                VALUES ($1, $2, $3, $4, $5)`,
+                [
+                    id,
+                    categoria.designacao,
+                    categoria.icone,
+                    new Date(),
+                    new Date(),
+                ]
+            );
+
+            return {
+                id,
+                designacao: categoria.designacao,
+                icone: categoria.icone,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+            } as CategoriaDBType;
+        } catch (error) {
+            console.log(error);
+            return null;
         }
     },
-    async getAll(): Promise<CategoryType[] | null> {
+
+    async getAll(): Promise<CategoriaDBType[] | null> {
         try {
-            const query = "SELECT * FROM tbl_categoria"
-            const rows = await db.execute<CategoryType[] & RowDataPacket[]>(query)
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] as CategoryType[] : []
-        } catch (err) {
-            console.log(err)
-            return null
+            const result = await db.query<CategoriaDBType[]>(
+                `SELECT * FROM tbl_categoria`
+            );
+            return result.rows[0] as CategoriaDBType[];
+        } catch (error) {
+            console.log(error);
+            return null;
         }
     },
-    async get(id: string): Promise<CategoryType | null> {
+
+    async get(id: string): Promise<CategoriaDBType | null> {
         try {
-            const query = "SELECT * FROM tbl_categoria WHERE tbl_categoria.id = ?"
-            const value = [id]
-            const [rows] = await db.execute<CategoryType & RowDataPacket[]>(query, value)
-            if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows[0] as CategoryType : null
-        } catch (err) {
-            console.log(err)
-            return null
+            const result = await db.query<CategoriaDBType>(
+                `SELECT * FROM tbl_categoria WHERE id = $1`,
+                [id]
+            );
+
+            if (Array.isArray(result.rows) && result.rows.length === 0) return null;
+            return Array.isArray(result.rows) ? result.rows[0] as CategoriaDBType : null;
+        } catch (error) {
+            console.log(error);
+            return null;
         }
     },
-    async update(id: string, newcategory: CategoryType): Promise<CategoryType | null> {
+
+    async update(id: string, categoria: CategoriaDBType): Promise<CategoriaDBType | null> {
         try {
-            const query = "UPDATE tbl_categoria SET designacao=?, icone=?, updated_at=? WHERE id=?"
-            const value = [
-                newcategory.designacao,
-                newcategory.icone,
-                new Date(),
-                id
-            ]
-            const [result] = await db.execute<CategoryType & RowDataPacket[]>(query, value);
-            return result as CategoryType;
-        } catch (err) {
-            console.log(err)
-            return null
+            await db.query(
+                `UPDATE tbl_categoria
+                SET designacao = $1, icone = $2, updated_at = $3
+                WHERE id = $4
+                 RETURNING *`,
+                [
+                    categoria.designacao,
+                    categoria.icone,
+                    new Date(),
+                    id,
+                ]
+            );
+
+            return {
+                id,
+                designacao: categoria.designacao,
+                icone: categoria.icone,
+                created_at: categoria.created_at,
+                updated_at: new Date().toISOString(),
+            } as CategoriaDBType;
+        } catch (error) {
+            console.log(error);
+            return null;
         }
     },
-    async delete(id: string): Promise<CategoryType | null> {
+
+    async delete(id: string): Promise<CategoriaDBType | null> {
         try {
-            const query = "DELETE FROM tbl_categoria WHERE id=?"
-            const value = [id]
-            const [rows] = await db.execute(query, value)
-            if (Array.isArray(rows) && rows.length === 0) return null
-            return (Array.isArray(rows) ? rows[0] : rows) as CategoryType
-        } catch (err) {
-            console.log(err)
-            return null
+            const result = await db.query(
+                `DELETE FROM tbl_categoria WHERE id = $1`,
+                [id]
+            );
+
+            return result.rows[0] as CategoriaDBType;
+        } catch (error) {
+            console.log(error);
+            return null;
         }
-    }
-}
+    },
+};

@@ -1,0 +1,1 @@
+DELETE tabela_servicos 

@@ -1,14 +1,15 @@
 # schemas/servico.yaml
-#    id: string
-#   nome: string
-#   descricao: string
-#    categoria: string
-#   enabled: boolean
-#    updated_et: string
-#   created_at: string
+#id: string;
+#nome: string;
+#descricao: string;
+#categoria: string;
+#enabled_at: boolean;
+#created_at: string;
+#updated_at: string;
 
 components:
   schemas:
+    # schema principal de servico
     Servico:
       type: object
       properties:
@@ -17,42 +18,42 @@ components:
           example: 1
         nome:
           type: string
-          example: "Serviço de limpeza"
+          example: "Servico de limpeza"
         descricao:
           type: string
-          example: "Descrição detalhada do serviço"
+          example: " Servico de Limpeza Profissional para residentes e empresa"
         categoria:
           type: string
           example: "Limpeza"
-        enabled:
+        enabled_at:
           type: boolean
           example: true
-        updated_at:
-          type: string
-          format: date-time
-          example: "2023-10-27T10:00:00Z"
         created_at:
           type: string
-          format: date-time
-          example: "2023-10-27T09:00:00Z"
-          
+          example: "2010-12-10T00:00:00.000Z"
+        updated_at:
+          type: string
+          example: "2010-12-10T00:00:00.000Z"
+
+    # schemas para criar um novo servico
     CreateService:
       type: object
       properties:
         nome:
           type: string
-          example: "Serviço de Limpeza"
+          example: "Servico de Limpeza"
         descricao:
           type: string
-          example: "Descrição detalhada do serviço de limpeza"
+          example: "Servico de Limpeza Profissional para residentes e empresa"
         categoria:
           type: string
-          example: "Limpeza"
-        enabled:
+          example: Limpeza
+        enabled_at:
           type: boolean
           example: true
-    
-    ServiceDetaled:
+
+    # schemas  buscar servico detalhado    
+    ServicoDetalhado:
       type: object
       properties:
         id:
@@ -60,10 +61,10 @@ components:
           example: 1
         nome:
           type: string
-          example: "Serviço de limpeza"
+          example: "Servico de limpeza"
         descricao:
           type: string
-          example: "Descrição detalhada do serviço"
+          example: " Servico de Limpeza Profissional para residentes e empresa"
         designacao_categoria:
           type: string
           example: "Designação do serviço"
@@ -75,36 +76,36 @@ components:
           example: 1
         designacao_empresa:
           type: string
-          example: "Designação da empresa"
-        icone_empresa:
-          type: string
-          example: "Icone da empresa"
+          example: "Empresa de Limpeza"
         enabled:
           type: boolean
           example: true
-        
-          
-    ResponseSucessoServico:
+
+    # schemas generico para sucesso
+    ServiceResponseSucess:
       type: object
       properties:
-        message: 
+        message:
           type: string
-          example: "serviço criado com sucesso"
+          example: "Servico criado com sucess"
         status:
           type: boolean
           example: true
         data:
+          type: object
           $ref: "#/components/schemas/Servico"
-          
-    ResponseErroServico:
+
+    # schemas generico de resposta de erro
+    ServiceResponseError:
       type: object
-      properties: 
-        message: 
+      properties:
+        message:
           type: string
           example: "Erro ao buscar servicos"
-        status: 
+        status:
           type: boolean
           example: false
         data:
           type: object
-          nullable: true
+          properties:
+            null

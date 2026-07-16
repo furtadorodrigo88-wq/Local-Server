@@ -1,23 +1,27 @@
-import { Router } from "express"
-import { servicoControler } from "../controlers/servico.controler.js"
-import authMidlewere, { authorize } from "../security/auth.midlewere.js"
-import { Role } from "../utils/types.js"
+import { ServicoController } from "../controllers/servico.controller.js";
+import { Router } from "express";
+import AuthMiddleware, { authorize } from "../security/auth.middleware.js";
+import { Role } from "../utils/types.js";
 
-const ServiceRoute = {
+const ServicoRoute = {
     create: "/create",
     getById: "/get-by-id/:id",
     getAll: "/",
-    update:"/update/:id",
+    update: "/update/:id",
     delete: "/delete/:id",
     getAllDetailed: "/get-all-detailed"
-}
-const router = Router()
-router.get(ServiceRoute.getAll,authorize([Role.ADMIN, Role.PRESTADOR, Role.CLIENTE, Role.EMPRESA]), servicoControler.getAll)
-router.get(ServiceRoute.getAllDetailed,authorize([Role.ADMIN, Role.PRESTADOR, Role.CLIENTE, Role.EMPRESA]), servicoControler.getAllServicesDetailed)
-router.get(ServiceRoute.getById,authorize([Role.ADMIN, Role.PRESTADOR, Role.CLIENTE, Role.EMPRESA]), servicoControler.get)
-router.use(authMidlewere)
-router.post(ServiceRoute.create,authorize([Role.ADMIN]), servicoControler.createService)
-router.put(ServiceRoute.update,authorize([Role.ADMIN]), servicoControler.update)
-router.delete(ServiceRoute.delete,authorize([Role.ADMIN]), servicoControler.delete)
+};
 
-export { router }
+const router = Router();
+
+router.get(ServicoRoute.getAll, ServicoController.getAll);
+router.get(ServicoRoute.getById, ServicoController.get);
+router.get(ServicoRoute.getAllDetailed, ServicoController.getAllServicoDetalhado);
+
+router.use(AuthMiddleware);
+
+router.post(ServicoRoute.create, authorize([Role.ADMIN]), ServicoController.createServico);
+router.put(ServicoRoute.update, authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]), ServicoController.update);
+router.delete(ServicoRoute.delete, authorize([Role.ADMIN]), ServicoController.delete);
+
+export { router };
