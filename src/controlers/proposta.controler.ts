@@ -50,7 +50,6 @@ export const proposalControler = {
     },
     async get(req: Request, res: Response) {
         const id = req.params.id
-        console.log(id)
         if (!id) {
             const response: ResponseType<null> = {
                 status: "error",

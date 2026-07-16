@@ -152,3 +152,32 @@ paths:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseErroPrestador"
+        /provider/get-preco-hora/{id}:
+          get:
+            summary: Buscar o preco hora de um prestador
+            tags:
+              - Provider
+            description: Retorna o preco hora de um prestador especifico pelo ID
+            parameters:
+              - name: id
+                in: path
+                required: true
+                description: ID do prestador a ser buscado
+                schema:
+                  type: string
+                  example: "uuid-123-456"
+            responses:
+              "200":
+                description: Prestador encontrado
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      $ref: "#/components/schemas/ResponseSucessoPrestador"
+              "404":
+                description: Prestador não encontrado
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      $ref: "#/components/schemas/ResponseErroPrestador"

@@ -20,5 +20,9 @@ router.use(authMidlewere)
 router.post(ProviderRoute.create, authorize ([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]),provaiderControler.createProvider)
 router.put(ProviderRoute.update, authorize([Role.ADMIN, Role.EMPRESA, Role.PRESTADOR]), isOwner(ProviderModel, "owner"), provaiderControler.update)
 router.delete(ProviderRoute.delete, authorize([Role.ADMIN, Role.PRESTADOR]), isOwner(ProviderModel, "owner"), provaiderControler.delete)
+<<<<<<< HEAD
 router.get(ProviderRoute.getPrecoHora, authorize([Role.ADMIN, Role.EMPRESA, Role.PRESTADOR]), provaiderControler.getPrecoHora)
+=======
+router.get(ProviderRoute.getPrecoHora, provaiderControler.getPrecoHora)
+>>>>>>> dc3632255aa931ede8e1318ffa1c46d7e3e5b217
 export { router }

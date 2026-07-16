@@ -76,7 +76,21 @@ components:
         enabled:
           type: boolean
           default: true
-
+    PrecoHora:
+      type: object
+      properties:
+        precohora:
+          type: number
+          format: float
+          example: 50.00
+        taxaurgency:
+          type: number
+          format: float
+          example: 15.00
+        taxadesconto:
+          type: number
+          format: float
+          example: 5.00
     ResponseSucessoPrestador:
       type: object
       properties:
